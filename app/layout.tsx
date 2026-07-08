@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <header className="border-b border-hairline">
-          <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
             <div className="font-display">
               <span className="font-semibold">Magnolia Place</span>{" "}
               <span className="text-moss">of Roswell</span>
@@ -41,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </nav>
           </div>
         </header>
-        <main className="mx-auto max-w-3xl px-4 py-6 pb-16">{children}</main>
+        <main className="mx-auto max-w-6xl px-4 py-6 pb-16">{children}</main>
       </body>
     </html>
   );
