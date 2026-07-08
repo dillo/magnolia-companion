@@ -19,6 +19,7 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
 
   useEffect(() => {
     const t = todayISO();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- today must come from the browser clock after mount (static site)
     setToday(t);
     const i = months.findIndex((m) => m.month === t.slice(0, 7));
     setIdx(i >= 0 ? i : Math.max(0, months.length - 1));

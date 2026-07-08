@@ -77,7 +77,7 @@ magnolia-companion/
 **Interfaces:**
 - Produces: `npm run dev`, `npm test` (vitest, `tests/**/*.test.ts`), `npm run test:e2e` (Playwright, `e2e/`), `npm run ingest`, import alias `@/*` → repo root.
 
-- [ ] **Step 1: Scaffold Next.js in the existing repo**
+- [x] **Step 1: Scaffold Next.js in the existing repo**
 
 Run from `/Users/locutus/Dev/magnolia-companion`:
 
@@ -87,7 +87,7 @@ npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir
 
 If it refuses because `docs/` exists: `mv docs /tmp/mc-docs`, rerun, then `mv /tmp/mc-docs/superpowers docs/superpowers`... (restore with `mv /tmp/mc-docs docs` if docs was fully moved). Verify `docs/superpowers/specs/` is back before continuing.
 
-- [ ] **Step 2: Install dependencies**
+- [x] **Step 2: Install dependencies**
 
 ```bash
 npm install zod framer-motion
@@ -95,7 +95,7 @@ npm install -D vitest tsx @playwright/test @anthropic-ai/sdk
 npx playwright install chromium
 ```
 
-- [ ] **Step 3: Add scripts and configs**
+- [x] **Step 3: Add scripts and configs**
 
 In `package.json` `"scripts"`, add/replace:
 
@@ -141,12 +141,12 @@ export default defineConfig({
 
 Append to `.gitignore` if not already present: `.env`, `test-results/`, `playwright-report/`.
 
-- [ ] **Step 4: Verify toolchain**
+- [x] **Step 4: Verify toolchain**
 
 Run: `npm test` → expected: `No test files found, exiting with code 0`.
 Run: `npm run dev` briefly → expected: default Next.js page at http://localhost:3000, then stop it.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add -A
@@ -172,7 +172,7 @@ git commit -m "chore: scaffold Next.js 16 + Tailwind 4 + vitest/playwright tooli
   - `monthNameOfISO(iso: string): string` — `"July"`
   - `formatTime(hhmm: string): string` — `"15:00"` → `"3:00"` (print style, no am/pm)
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `tests/dates.test.ts`:
 
@@ -229,12 +229,12 @@ describe("formatTime", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test`
 Expected: FAIL — `Cannot find module '@/lib/dates'` (or equivalent).
 
-- [ ] **Step 3: Implement `lib/dates.ts`**
+- [x] **Step 3: Implement `lib/dates.ts`**
 
 ```ts
 const DAY_MS = 86_400_000;
@@ -284,11 +284,11 @@ export function formatTime(hhmm: string): string {
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `npm test` → Expected: all `tests/dates.test.ts` tests PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/dates.ts tests/dates.test.ts
@@ -313,7 +313,7 @@ git commit -m "feat: pure date utilities with New York today logic"
   - `DIMENSION_META: Record<Dimension, { label: string; bg: string; fg: string; dot: string }>`
 - Event shape: `{ start: "HH:MM"|null, end: "HH:MM"|null, title: string, location: string|null, dimension: Dimension|null, routine: boolean }`
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `tests/schema.test.ts`:
 
@@ -387,11 +387,11 @@ describe("menuWeekSchema", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test` → Expected: FAIL — `Cannot find module '@/lib/schema'`.
 
-- [ ] **Step 3: Implement `lib/schema.ts`**
+- [x] **Step 3: Implement `lib/schema.ts`**
 
 ```ts
 import { z } from "zod";
@@ -487,7 +487,7 @@ export const menuWeekSchema = z
 export type MenuWeek = z.infer<typeof menuWeekSchema>;
 ```
 
-- [ ] **Step 4: Implement `lib/dimensions.ts`**
+- [x] **Step 4: Implement `lib/dimensions.ts`**
 
 ```ts
 import type { Dimension } from "./schema";
@@ -507,7 +507,7 @@ export const DIMENSION_META: Record<Dimension, { label: string; bg: string; fg: 
 };
 ```
 
-- [ ] **Step 5: Commit the July 2026 activities fixture**
+- [x] **Step 5: Commit the July 2026 activities fixture**
 
 Create `content/activities/2026-07.json`. This is a **hand-transcribed** week (July 6–12) from the real printout — enough for tests and UI development. The full month arrives in Task 11 when the ingest CLI runs against the real photos and replaces this file (`routine` flags below are hand-set; the CLI computes them).
 
@@ -584,7 +584,7 @@ Create `content/activities/2026-07.json`. This is a **hand-transcribed** week (J
 }
 ```
 
-- [ ] **Step 6: Commit the placeholder menu fixture**
+- [x] **Step 6: Commit the placeholder menu fixture**
 
 Create `content/menus/2026-07-06.json` — **placeholder content** (the real printed menu hasn't been photographed yet; see spec open item). `sourceScan` is null until then.
 
@@ -626,11 +626,11 @@ Create `content/menus/2026-07-06.json` — **placeholder content** (the real pri
 }
 ```
 
-- [ ] **Step 7: Run tests to verify they pass**
+- [x] **Step 7: Run tests to verify they pass**
 
 Run: `npm test` → Expected: all `tests/schema.test.ts` tests PASS (fixtures parse; bad inputs throw).
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add lib/schema.ts lib/dimensions.ts content/ tests/schema.test.ts
@@ -657,7 +657,7 @@ git commit -m "feat: zod content schemas, dimension metadata, July 2026 fixtures
   - `routineTitles(days: RawDay[]): Set<string>` — lowercase titles on ≥ 10 distinct days
   - `buildActivityMonth(month: string, sourceScans: string[], pages: RawDay[][]): { data: ActivityMonth; warnings: string[] }`
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `tests/postprocess.test.ts`:
 
@@ -781,11 +781,11 @@ describe("buildActivityMonth", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test` → Expected: FAIL — `Cannot find module '@/lib/ingest/postprocess'`.
 
-- [ ] **Step 3: Implement `lib/ingest/postprocess.ts`**
+- [x] **Step 3: Implement `lib/ingest/postprocess.ts`**
 
 ```ts
 import { DIMENSIONS, activityMonthSchema, type ActivityMonth, type Dimension } from "@/lib/schema";
@@ -898,11 +898,11 @@ export function buildActivityMonth(
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `npm test` → Expected: all `tests/postprocess.test.ts` tests PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add lib/ingest/postprocess.ts tests/postprocess.test.ts
@@ -927,7 +927,7 @@ git commit -m "feat: deterministic ingest post-processing (times, locations, rou
   - `menuWeekFor(weeks: MenuWeek[], date: string): MenuWeek | null`
   - `scansForDate(months: ActivityMonth[], date: string): string[]` — sourceScans of the month containing `date`, else `[]`
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Create `tests/lookup.test.ts`:
 
@@ -972,11 +972,11 @@ describe("lookup", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test` → Expected: FAIL — `Cannot find module '@/lib/content'`.
 
-- [ ] **Step 3: Implement `lib/content.ts`**
+- [x] **Step 3: Implement `lib/content.ts`**
 
 ```ts
 import fs from "node:fs";
@@ -1020,7 +1020,7 @@ export function loadMenuWeeks(): MenuWeek[] {
 }
 ```
 
-- [ ] **Step 4: Implement `lib/lookup.ts`**
+- [x] **Step 4: Implement `lib/lookup.ts`**
 
 ```ts
 import type { ActivityMonth, ActivityDay, MenuWeek, MenuDay } from "./schema";
@@ -1044,11 +1044,11 @@ export function scansForDate(months: ActivityMonth[], date: string): string[] {
 }
 ```
 
-- [ ] **Step 5: Run tests to verify they pass**
+- [x] **Step 5: Run tests to verify they pass**
 
 Run: `npm test` → Expected: all tests PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add lib/content.ts lib/lookup.ts tests/lookup.test.ts
@@ -1073,7 +1073,7 @@ git commit -m "feat: content loaders with build-time validation and pure lookup 
   - `<ScanLightbox scans={string[]} label={string} />` — renders nothing when `scans` is empty; images resolve as `/${scan}`
   - `<DimensionChip dimension={Dimension} />`
 
-- [ ] **Step 1: Replace `app/globals.css`**
+- [x] **Step 1: Replace `app/globals.css`**
 
 ```css
 @import "tailwindcss";
@@ -1101,7 +1101,7 @@ body { background: var(--color-petal); color: var(--color-ink); }
 }
 ```
 
-- [ ] **Step 2: Replace `app/layout.tsx`**
+- [x] **Step 2: Replace `app/layout.tsx`**
 
 ```tsx
 import type { Metadata } from "next";
@@ -1154,7 +1154,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-- [ ] **Step 3: Create `app/template.tsx`** (page-transition fade)
+- [x] **Step 3: Create `app/template.tsx`** (page-transition fade)
 
 ```tsx
 "use client";
@@ -1175,7 +1175,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
 }
 ```
 
-- [ ] **Step 4: Create the shared components**
+- [x] **Step 4: Create the shared components**
 
 `components/TextSizeControl.tsx`:
 
@@ -1279,12 +1279,12 @@ export default function DimensionChip({ dimension }: { dimension: Dimension }) {
 }
 ```
 
-- [ ] **Step 5: Verify**
+- [x] **Step 5: Verify**
 
 Run: `npx tsc --noEmit` → Expected: no errors.
 Run: `npm run dev`, open http://localhost:3000 → Expected: header with brand, nav, and working A/A+/A++ control (text grows, persists across reload). The default page body is still Next.js boilerplate — replaced in Task 7.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add app/ components/
@@ -1307,7 +1307,7 @@ git commit -m "feat: layout, magnolia design tokens, text-size control, lightbox
   - `MEAL_HOURS: [key: "breakfast"|"lunch"|"dinner", label: string, hours: string][]` exported from `MealCards.tsx` (placeholder serving hours until the real menu arrives)
   - `<HomeClient months={ActivityMonth[]} weeks={MenuWeek[]} />` — remembers Activities/Meals tab in `localStorage["mc-mode"]`
 
-- [ ] **Step 1: Create `components/Timeline.tsx`**
+- [x] **Step 1: Create `components/Timeline.tsx`**
 
 ```tsx
 import type { ActivityEvent } from "@/lib/schema";
@@ -1349,7 +1349,7 @@ export default function Timeline({ events }: { events: ActivityEvent[] }) {
 }
 ```
 
-- [ ] **Step 2: Create `components/MealCards.tsx`**
+- [x] **Step 2: Create `components/MealCards.tsx`**
 
 ```tsx
 import type { MenuDay } from "@/lib/schema";
@@ -1394,7 +1394,7 @@ export default function MealCards({ day }: { day: MenuDay | null }) {
 }
 ```
 
-- [ ] **Step 3: Create `components/HomeClient.tsx`**
+- [x] **Step 3: Create `components/HomeClient.tsx`**
 
 ```tsx
 "use client";
@@ -1573,7 +1573,7 @@ function WeekMeals({ weeks, dates, today }: { weeks: MenuWeek[]; dates: string[]
 }
 ```
 
-- [ ] **Step 4: Replace `app/page.tsx`**
+- [x] **Step 4: Replace `app/page.tsx`**
 
 ```tsx
 import { loadActivityMonths, loadMenuWeeks } from "@/lib/content";
@@ -1584,13 +1584,13 @@ export default function HomePage() {
 }
 ```
 
-- [ ] **Step 5: Verify**
+- [x] **Step 5: Verify**
 
 Run: `npx tsc --noEmit` → no errors. Run: `npm run dev` →
 - `/` shows Wednesday July 8 content when system date is in the fixture week (otherwise the empty state — expected).
 - Day pills switch; Meals tab shows three cards without scrolling; This Week groups by day with "+ n daily routine items"; tab choice survives reload; lightbox button hidden (no scan files yet — they arrive in Task 11).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add components/Timeline.tsx components/MealCards.tsx components/HomeClient.tsx app/page.tsx
@@ -1608,7 +1608,7 @@ git commit -m "feat: home page with day pills, activities/meals tabs, week views
 - Consumes: `loadActivityMonths`, `Timeline`, `EmptyState`, `ScanLightbox`, `DIMENSION_META`, `DIMENSIONS`, dates lib.
 - Produces: `/calendar` route. Month grid (≥ md screens) with day themes + special events, dimension filter chips (`aria-pressed`), agenda list on phones, tap-a-day detail panel using `Timeline`, prev/next month across uploaded months.
 
-- [ ] **Step 1: Create `components/CalendarClient.tsx`**
+- [x] **Step 1: Create `components/CalendarClient.tsx`**
 
 ```tsx
 "use client";
@@ -1761,7 +1761,7 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
 }
 ```
 
-- [ ] **Step 2: Create `app/calendar/page.tsx`**
+- [x] **Step 2: Create `app/calendar/page.tsx`**
 
 ```tsx
 import { loadActivityMonths } from "@/lib/content";
@@ -1772,13 +1772,13 @@ export default function CalendarPage() {
 }
 ```
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 Run: `npx tsc --noEmit` → no errors. Run: `npm run dev`, open `/calendar` →
 - Wide window: July 2026 grid, day themes in italic copper, July 8 ringed copper; clicking "Emotional" dims everything except the Therapy Dog Visit; clicking a day opens the detail panel with the full timeline.
 - Narrow window (< 768px): agenda list instead of grid.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add components/CalendarClient.tsx app/calendar/
@@ -1796,7 +1796,7 @@ git commit -m "feat: calendar page with month grid, dimension filters, agenda vi
 - Consumes: `loadMenuWeeks`, `MealCards`, `EmptyState`, `ScanLightbox`, dates lib.
 - Produces: `/menu` route — week navigation, seven day tabs (default: today), `MealCards`, always-available footer.
 
-- [ ] **Step 1: Create `components/MenuClient.tsx`**
+- [x] **Step 1: Create `components/MenuClient.tsx`**
 
 ```tsx
 "use client";
@@ -1871,7 +1871,7 @@ export default function MenuClient({ weeks }: { weeks: MenuWeek[] }) {
 }
 ```
 
-- [ ] **Step 2: Create `app/menu/page.tsx`**
+- [x] **Step 2: Create `app/menu/page.tsx`**
 
 ```tsx
 import { loadMenuWeeks } from "@/lib/content";
@@ -1882,12 +1882,12 @@ export default function MenuPage() {
 }
 ```
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 Run: `npx tsc --noEmit` → no errors. Run: `npm run dev`, open `/menu` →
 day tabs render Mon 6 – Sun 12, tapping a tab swaps the three meal cards, desserts render in copper, always-available footer shows. Week arrows disabled (single week uploaded).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add components/MenuClient.tsx app/menu/
@@ -1904,7 +1904,7 @@ git commit -m "feat: menu page with week navigation and day tabs"
 **Interfaces:**
 - Consumes: the three routes, fixture content, `page.clock` (Playwright ≥ 1.45) to pin the browser date inside the fixture week.
 
-- [ ] **Step 1: Write the tests**
+- [x] **Step 1: Write the tests**
 
 Create `e2e/smoke.spec.ts`:
 
@@ -1965,13 +1965,13 @@ test("menu: day tabs swap the meal cards", async ({ page }) => {
 });
 ```
 
-- [ ] **Step 2: Run the suite**
+- [x] **Step 2: Run the suite**
 
 Run: `npm run test:e2e`
 Expected: 4 passed. (Playwright starts `npm run dev` itself per `playwright.config.ts`.)
 If a locator is ambiguous (strict-mode violation), tighten the locator in the test — do not loosen the page markup.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add e2e/smoke.spec.ts
@@ -1998,7 +1998,7 @@ git commit -m "test: playwright smoke coverage for home, calendar, menu"
 
 **Requires from the user:** the two July calendar photos on disk, and `ANTHROPIC_API_KEY` in `.env`.
 
-- [ ] **Step 1: Write the failing tests (pure parts)**
+- [x] **Step 1: Write the failing tests (pure parts)**
 
 Create `tests/extract.test.ts`:
 
@@ -2032,11 +2032,11 @@ describe("rawPageSchema", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test` → Expected: FAIL — `Cannot find module '@/lib/ingest/extract'`.
 
-- [ ] **Step 3: Implement `lib/ingest/extract.ts`**
+- [x] **Step 3: Implement `lib/ingest/extract.ts`**
 
 ```ts
 import fs from "node:fs";
@@ -2116,11 +2116,11 @@ export async function extractActivityPage(
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `npm test` → Expected: all tests PASS.
 
-- [ ] **Step 5: Implement `scripts/ingest.ts`**
+- [x] **Step 5: Implement `scripts/ingest.ts`**
 
 ```ts
 import fs from "node:fs";
@@ -2230,7 +2230,7 @@ git commit -m "feat: ingest CLI with Claude vision extraction; real July 2026 co
 - Create: `README.md`
 - Modify: nothing else — this task verifies and ships.
 
-- [ ] **Step 1: Write `README.md`**
+- [x] **Step 1: Write `README.md`**
 
 ```markdown
 # Magnolia Companion
@@ -2267,7 +2267,7 @@ Menu ingest is not built yet — waiting on a photo of the real printed menu.
 Vercel has **no** environment variables; the deployed site makes no API calls.
 ```
 
-- [ ] **Step 2: Full verification**
+- [x] **Step 2: Full verification**
 
 ```bash
 npm test          # all unit tests pass

@@ -14,6 +14,7 @@ export default function MenuClient({ weeks }: { weeks: MenuWeek[] }) {
 
   useEffect(() => {
     const t = todayISO();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- today must come from the browser clock after mount (static site)
     setToday(t);
     const i = weeks.findIndex((w) => w.weekOf === mondayOfISO(t));
     setIdx(i >= 0 ? i : Math.max(0, weeks.length - 1));

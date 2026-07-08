@@ -11,10 +11,12 @@ const SIZES = [
 export default function TextSizeControl() {
   const [size, setSize] = useState("");
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- saved size lives in localStorage, readable only after mount
     try { setSize(localStorage.getItem("mc-textsize") ?? ""); } catch {}
   }, []);
   function apply(key: string) {
     setSize(key);
+    // eslint-disable-next-line react-hooks/immutability -- root data attribute drives the CSS font-size tokens
     document.documentElement.dataset.textsize = key;
     try { localStorage.setItem("mc-textsize", key); } catch {}
   }

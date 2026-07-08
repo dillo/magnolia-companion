@@ -28,6 +28,7 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
   const [mode, setModeState] = useState<Mode>("activities");
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- today must come from the browser clock after mount (static site)
     setToday(todayISO());
     try {
       if (localStorage.getItem("mc-mode") === "meals") setModeState("meals");
