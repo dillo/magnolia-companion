@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { stripFences, rawPageSchema } from "@/lib/ingest/extract";
+import { stripFences, rawPageSchema, parsePageText } from "@/lib/ingest/extract";
 
 describe("stripFences", () => {
   test("unwraps a json code fence", () => {
@@ -23,5 +23,22 @@ describe("rawPageSchema", () => {
   });
   test("rejects a day without a date", () => {
     expect(() => rawPageSchema.parse({ days: [{ theme: null, events: [] }], warnings: [] })).toThrow();
+  });
+});
+
+describe("parsePageText", () => {
+  const page = '{"days":[{"date":"2026-07-08","theme":null,"events":[]}],"warnings":[]}';
+  test("parses a complete response", () => {
+    expect(parsePageText(page, "end_turn").days).toHaveLength(1);
+  });
+  test("parses even when wrapped in a fence", () => {
+    expect(parsePageText("```json\n" + page + "\n```", "end_turn").days).toHaveLength(1);
+  });
+  test("truncated output raises a clear error, not a JSON parse crash", () => {
+    expect(() => parsePageText('```json\n{"days":[{"da', "max_tokens"))
+      .toThrow(/truncated/);
+  });
+  test("refusal raises a clear error", () => {
+    expect(() => parsePageText("", "refusal")).toThrow(/refus/i);
   });
 });

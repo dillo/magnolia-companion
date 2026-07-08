@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import Anthropic from "@anthropic-ai/sdk";
+import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import type { RawDay } from "./postprocess";
 
@@ -24,6 +25,19 @@ export const rawPageSchema = z.object({
 export function stripFences(s: string): string {
   const m = /```(?:json)?\s*([\s\S]*?)```/.exec(s);
   return (m ? m[1] : s).trim();
+}
+
+export function parsePageText(
+  text: string,
+  stopReason: string | null,
+): { days: RawDay[]; warnings: string[] } {
+  if (stopReason === "max_tokens") {
+    throw new Error("model output was truncated (hit max_tokens) — raise max_tokens in lib/ingest/extract.ts and retry");
+  }
+  if (stopReason === "refusal") {
+    throw new Error("the model refused this request — check the photo and retry");
+  }
+  return rawPageSchema.parse(JSON.parse(stripFences(text)));
 }
 
 export function buildActivityPrompt(month: string): string {
@@ -56,20 +70,25 @@ export async function extractActivityPage(
 ): Promise<{ days: RawDay[]; warnings: string[] }> {
   const mediaType = imagePath.toLowerCase().endsWith(".png") ? "image/png" : "image/jpeg";
   const data = fs.readFileSync(imagePath).toString("base64");
-  const res = await client.messages.create({
-    model: "claude-sonnet-5",
-    max_tokens: 8000,
-    messages: [{
-      role: "user",
-      content: [
-        { type: "image", source: { type: "base64", media_type: mediaType, data } },
-        { type: "text", text: buildActivityPrompt(month) },
-      ],
-    }],
-  });
+  // Structured outputs guarantee schema-valid JSON; streaming avoids HTTP
+  // timeouts at the large max_tokens a full calendar page needs.
+  const res = await client.messages
+    .stream({
+      model: "claude-sonnet-5",
+      max_tokens: 64000,
+      output_config: { format: zodOutputFormat(rawPageSchema) },
+      messages: [{
+        role: "user",
+        content: [
+          { type: "image", source: { type: "base64", media_type: mediaType, data } },
+          { type: "text", text: buildActivityPrompt(month) },
+        ],
+      }],
+    })
+    .finalMessage();
   const text = res.content
     .filter((b): b is Anthropic.TextBlock => b.type === "text")
     .map((b) => b.text)
     .join("");
-  return rawPageSchema.parse(JSON.parse(stripFences(text)));
+  return parsePageText(text, res.stop_reason);
 }

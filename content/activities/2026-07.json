@@ -1,70 +1,1923 @@
 {
   "month": "2026-07",
-  "sourceScans": ["scans/2026-07-activities-p1.jpg", "scans/2026-07-activities-p2.jpg"],
+  "sourceScans": [
+    "scans/2026-07-activities-p1.jpg",
+    "scans/2026-07-activities-p2.jpg"
+  ],
   "days": [
-    { "date": "2026-07-06", "theme": "Let's Talk Lemonade Day", "events": [
-      { "start": "09:00", "end": null, "title": "Magnolia Gazette", "location": "Living Room", "dimension": "learn", "routine": true },
-      { "start": "10:15", "end": null, "title": "Silver Sneaker Exercise", "location": "Living Room", "dimension": "physical", "routine": true },
-      { "start": "10:30", "end": null, "title": "Newspaper Reading", "location": "Living Room", "dimension": "learn", "routine": false },
-      { "start": "10:45", "end": null, "title": "Lemonade Tasting", "location": "Living Room", "dimension": "nutritional", "routine": false },
-      { "start": "11:00", "end": null, "title": "Spintopia Challenge", "location": "Living Room", "dimension": "intellectual", "routine": true },
-      { "start": "13:30", "end": null, "title": "Tabletop Board Games & Beads", "location": "Bistro", "dimension": "intellectual", "routine": false },
-      { "start": "15:00", "end": null, "title": "Afternoon Walk", "location": null, "dimension": "move", "routine": false },
-      { "start": "16:00", "end": null, "title": "Brain Games", "location": "Activity Room", "dimension": "intellectual", "routine": false },
-      { "start": "18:00", "end": null, "title": "Evening News", "location": "Living Room", "dimension": "learn", "routine": true }
-    ]},
-    { "date": "2026-07-07", "theme": "Nat'l Strawberry Sundae Day", "events": [
-      { "start": "09:00", "end": null, "title": "Magnolia Gazette", "location": "Living Room", "dimension": "learn", "routine": true },
-      { "start": "09:30", "end": null, "title": "Daily Chronicles & Current Events", "location": "Living Room", "dimension": "intellectual", "routine": true },
-      { "start": "10:15", "end": null, "title": "Silver Sneaker Exercise", "location": "Living Room", "dimension": "physical", "routine": true },
-      { "start": "11:00", "end": null, "title": "Lunch Outing at AJ's Southern Home Cooking", "location": "Bus Trip", "dimension": "social", "routine": false },
-      { "start": "13:30", "end": null, "title": "Afternoon Spa and Mimosas", "location": "Living Room", "dimension": "emotional", "routine": false },
-      { "start": "16:00", "end": null, "title": "Pub Trivia", "location": "Bistro", "dimension": "intellectual", "routine": false },
-      { "start": "17:00", "end": null, "title": "Movie Night", "location": "Living Room", "dimension": "entertainment", "routine": false },
-      { "start": "18:00", "end": null, "title": "Evening News", "location": "Living Room", "dimension": "learn", "routine": true }
-    ]},
-    { "date": "2026-07-08", "theme": "Nat'l Raspberry Day", "events": [
-      { "start": "09:00", "end": null, "title": "Magnolia Gazette", "location": "Living Room", "dimension": "learn", "routine": true },
-      { "start": "09:30", "end": null, "title": "Daily Chronicles & Current Events", "location": "Living Room", "dimension": "intellectual", "routine": true },
-      { "start": "10:15", "end": null, "title": "Chair Yoga Exercises", "location": "Living Room", "dimension": "move", "routine": false },
-      { "start": "11:00", "end": null, "title": "Spintopia Challenge", "location": "Living Room", "dimension": "intellectual", "routine": true },
-      { "start": "13:00", "end": null, "title": "Prize Bingo", "location": "Bistro", "dimension": "entertainment", "routine": false },
-      { "start": "15:00", "end": null, "title": "Wine Down Wednesday — Music with Brian", "location": "Living Room", "dimension": "entertainment", "routine": false },
-      { "start": "17:00", "end": null, "title": "Brain Teasers & Word Search", "location": "Bistro", "dimension": "intellectual", "routine": true },
-      { "start": "18:00", "end": null, "title": "Evening News", "location": "Living Room", "dimension": "learn", "routine": true }
-    ]},
-    { "date": "2026-07-09", "theme": "Nat'l Dimples Day", "events": [
-      { "start": "09:00", "end": null, "title": "Magnolia Gazette", "location": "Living Room", "dimension": "learn", "routine": true },
-      { "start": "09:30", "end": null, "title": "Daily Chronicles & Current Events", "location": "Living Room", "dimension": "intellectual", "routine": true },
-      { "start": "10:15", "end": null, "title": "Silver Sneaker Exercise", "location": "Living Room", "dimension": "physical", "routine": true },
-      { "start": "13:00", "end": null, "title": "Kroger Shopping", "location": "Bus Trip", "dimension": "social", "routine": false },
-      { "start": "15:00", "end": null, "title": "Travel the Globe Documentaries", "location": "Living Room", "dimension": "learn", "routine": false },
-      { "start": "18:00", "end": null, "title": "Evening News", "location": "Living Room", "dimension": "learn", "routine": true }
-    ]},
-    { "date": "2026-07-10", "theme": "Classic Car Collection Day", "events": [
-      { "start": "09:00", "end": null, "title": "Magnolia Gazette", "location": "Living Room", "dimension": "learn", "routine": true },
-      { "start": "09:30", "end": null, "title": "Daily Chronicles & Current Events", "location": "Living Room", "dimension": "intellectual", "routine": true },
-      { "start": "10:15", "end": null, "title": "Age in Motion Exercise with Powerback", "location": "Living Room", "dimension": "physical", "routine": false },
-      { "start": "13:00", "end": null, "title": "Therapy Dog Visit with Canine Assistants", "location": "Living Room", "dimension": "emotional", "routine": false },
-      { "start": "15:00", "end": null, "title": "Entertainment in the Lobby", "location": "Living Room", "dimension": "entertainment", "routine": false },
-      { "start": "18:00", "end": null, "title": "Evening News", "location": "Living Room", "dimension": "learn", "routine": true }
-    ]},
-    { "date": "2026-07-11", "theme": "Nat'l Blueberry Muffin Day", "events": [
-      { "start": "09:00", "end": null, "title": "Magnolia Gazette", "location": "Living Room", "dimension": "learn", "routine": true },
-      { "start": "09:30", "end": null, "title": "Daily Chronicles & Current Events", "location": "Living Room", "dimension": "intellectual", "routine": true },
-      { "start": "12:00", "end": null, "title": "Sports Saturday", "location": "Living Room", "dimension": "move", "routine": false },
-      { "start": "17:00", "end": null, "title": "Movie & Munchies", "location": "Living Room", "dimension": "entertainment", "routine": false },
-      { "start": "18:00", "end": null, "title": "Evening News", "location": "Living Room", "dimension": "learn", "routine": true }
-    ]},
-    { "date": "2026-07-12", "theme": "Paper Bag Day", "events": [
-      { "start": "09:00", "end": null, "title": "Magnolia Gazette", "location": "Living Room", "dimension": "learn", "routine": true },
-      { "start": "09:30", "end": null, "title": "Daily Chronicles & Current Events", "location": "Living Room", "dimension": "intellectual", "routine": true },
-      { "start": "10:00", "end": null, "title": "Daily Devotions Reading", "location": "Living Room", "dimension": "spiritual", "routine": false },
-      { "start": "10:15", "end": null, "title": "Sunday Morning Exercise", "location": "Living Room", "dimension": "physical", "routine": false },
-      { "start": "13:00", "end": null, "title": "Prize Bingo", "location": "Bistro", "dimension": "entertainment", "routine": false },
-      { "start": "14:00", "end": null, "title": "Church Services", "location": "Living Room", "dimension": "spiritual", "routine": false },
-      { "start": "16:00", "end": null, "title": "Afternoon Meditation", "location": "Living Room", "dimension": "spiritual", "routine": false },
-      { "start": "18:00", "end": null, "title": "Evening News", "location": "Living Room", "dimension": "learn", "routine": true }
-    ]}
+    {
+      "date": "2026-07-01",
+      "theme": "Canada Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Chair Yoga Exercises",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Spintopia Challenge",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Prize Bingo",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Wine Down Wednesday- Music with Wynn",
+          "location": "Living Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Brain Teasers & Word Search",
+          "location": "Bistro",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-02",
+      "theme": "Mid-Year Momentum Wellness",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "WalMart Shopping",
+          "location": "Bus Trip",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Travel The Globe Documentaries",
+          "location": "Living Room",
+          "dimension": "learn",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-03",
+      "theme": "Porch Conversation Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Age in Motion Exercise with Powerback",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Celebrate July B-days- Music with Butch",
+          "location": "Living Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-04",
+      "theme": "Independence Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "12:00",
+          "end": null,
+          "title": "Sports Saturday",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "14:00",
+          "end": null,
+          "title": "Independence Day Celebration",
+          "location": "Living Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Movie & Munchies",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-05",
+      "theme": "Nat'l Bikini Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:00",
+          "end": null,
+          "title": "Daily Devotions Reading",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Sunday Morning Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Prize Bingo",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "14:00",
+          "end": null,
+          "title": "Church Services",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "Afternoon Meditation",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-06",
+      "theme": "Let's Talk Lemonade Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "10:30",
+          "end": null,
+          "title": "Newspaper Reading",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "10:45",
+          "end": null,
+          "title": "Lemonade Tasting",
+          "location": "Living Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Spintopia Challenge",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "13:30",
+          "end": null,
+          "title": "Tabletop Board Games & Beads",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Afternoon Walk",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "Brain Games",
+          "location": "Activity Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-07",
+      "theme": "Nat'l Strawberry Sundae Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Lunch Outing at AJ's Southern Home Cooking",
+          "location": "Bus Trip",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "13:30",
+          "end": null,
+          "title": "Afternoon Spa and Mimosas",
+          "location": "Activity Room",
+          "dimension": "emotional",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "Pub Trivia",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Movie Night",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-08",
+      "theme": "Nat'l Raspberry Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Chair Yoga Exercises",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Spintopia Challenge",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Prize Bingo",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Wine Down Wednesday- Music with Brian",
+          "location": "Living Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Brain Teasers & Word Search",
+          "location": "Bistro",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-09",
+      "theme": "Nat'l Dimples Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Kroger Shopping",
+          "location": "Bus Trip",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Travel The Globe Documentaries",
+          "location": "Living Room",
+          "dimension": "learn",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-10",
+      "theme": "Classic Car Collection Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Age in Motion Exercise with Powerback",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Therapy Dog Visit with Canine Assistants",
+          "location": "Living Room",
+          "dimension": "emotional",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Entertainment in the lobby",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-11",
+      "theme": "Nat'l Blueberry Muffin Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "12:00",
+          "end": null,
+          "title": "Sports Saturday",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Movie & Munchies",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-12",
+      "theme": "Paper Bag Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:00",
+          "end": null,
+          "title": "Daily Devotions Reading",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Sunday Morning Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Prize Bingo",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "14:00",
+          "end": null,
+          "title": "Church Services",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "Afternoon Meditation",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-13",
+      "theme": "Barbershop Quartet Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "10:30",
+          "end": null,
+          "title": "Wash, Rinse, Shine Summer Splash!!!",
+          "location": "Front Portico",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Spintopia Challenge",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "13:30",
+          "end": null,
+          "title": "Tabletop Board Games & Beads",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Afternoon Walk",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "Brain Games",
+          "location": "Activity Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-14",
+      "theme": "Mac & Cheese Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "13:30",
+          "end": null,
+          "title": "Afternoon Spa and Mimosas",
+          "location": "Activity Room",
+          "dimension": "emotional",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "SINGO",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Movie Night",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-15",
+      "theme": "Gummy Bear Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Chair Yoga Exercises",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Spintopia Challenge",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Prize Bingo",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Wine Down Wednesday- Music with Butch",
+          "location": "Living Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Brain Teasers & Word Search",
+          "location": "Bistro",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-16",
+      "theme": "Nat'l Ai Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "PSL Helping Hands: Cooling Kits",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "WalMart Shopping",
+          "location": "Bus Trip",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Travel The Globe Documentaries",
+          "location": "Living Room",
+          "dimension": "learn",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-17",
+      "theme": "World Emoji Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Age in Motion Exercise with Powerback",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Happy Hour - Piano with John F.",
+          "location": "Living Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-18",
+      "theme": "Nat'l Hot Dog Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "12:00",
+          "end": null,
+          "title": "Sports Saturday",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Movie & Munchies",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-19",
+      "theme": "Nat'l Ice Cream Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:00",
+          "end": null,
+          "title": "Daily Devotions Reading",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Sunday Morning Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Prize Bingo",
+          "location": "Bistro",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "14:00",
+          "end": null,
+          "title": "Church Services",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Ice Cream Social",
+          "location": "Living Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-20",
+      "theme": "Nat'l Lollipop Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "10:30",
+          "end": null,
+          "title": "Newspaper Reading",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Spintopia Challenge",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "13:30",
+          "end": null,
+          "title": "Tabletop Board Games & Beads",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Afternoon Walk",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "Brain Games",
+          "location": "Activity Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-21",
+      "theme": "Nat'l Junk Food Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "10:30",
+          "end": null,
+          "title": "Junk Food Social",
+          "location": "Living Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "13:30",
+          "end": null,
+          "title": "Afternoon Spa and Mimosas",
+          "location": "Activity Room",
+          "dimension": "emotional",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "Pub Trivia",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Movie Night",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-22",
+      "theme": "Nat'l Hammock Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Chair Yoga Exercises",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Spintopia Challenge",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Prize Bingo",
+          "location": "Bistro",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Wine Down Wednesday- Music with Randy & Cindy",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Brain Teasers & Word Search",
+          "location": "Bistro",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-23",
+      "theme": "Gorgeous Grandparents Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "14:00",
+          "end": null,
+          "title": "RESIDENT COUNCIL MEETING",
+          "location": "Activity Room",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Kroger Shopping",
+          "location": "Bus Trip",
+          "dimension": "connect",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Travel The Globe Documentaries",
+          "location": "Living Room",
+          "dimension": "learn",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-24",
+      "theme": "Nat'l Cousins Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Age in Motion Exercise with Powerback",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Lunch Outing at Olive Garden (sign-up)",
+          "location": "Bus Trip",
+          "dimension": "connect",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Happy Hour - Karaoke with Raquel",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-25",
+      "theme": "Thread The Needle Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "12:00",
+          "end": null,
+          "title": "Sports Saturday",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Movie & Munchies",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-26",
+      "theme": "Nat'l Bagel Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:00",
+          "end": null,
+          "title": "Daily Devotions Reading",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Sunday Morning Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Prize Bingo",
+          "location": "Bistro",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "14:00",
+          "end": null,
+          "title": "Church Services",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "Afternoon Meditation",
+          "location": "Living Room",
+          "dimension": "spiritual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "theme": "Walking On Sunshine Day",
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "10:30",
+          "end": null,
+          "title": "Newspaper Reading",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Spintopia Challenge",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "13:30",
+          "end": null,
+          "title": "Tabletop Board Games & Beads",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Afternoon Walk",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "Brain Games",
+          "location": "Activity Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-28",
+      "theme": null,
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "13:30",
+          "end": null,
+          "title": "Afternoon Spa and Mimosas",
+          "location": "Activity Room",
+          "dimension": "emotional",
+          "routine": false
+        },
+        {
+          "start": "16:00",
+          "end": null,
+          "title": "SINGO",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Movie Night",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-29",
+      "theme": null,
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Chair Yoga Exercises",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "Spintopia Challenge",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "13:00",
+          "end": null,
+          "title": "Prize Bingo",
+          "location": "Bistro",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Wine Down Wednesday- Jazz with Jeff",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Brain Teasers & Word Search",
+          "location": "Bistro",
+          "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-30",
+      "theme": null,
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Silver Sneaker Exercise",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": true
+        },
+        {
+          "start": "11:00",
+          "end": null,
+          "title": "PSL Helping Hands: Start School Kits",
+          "location": "Bistro",
+          "dimension": "social",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "WalMart Shopping",
+          "location": "Bus Trip",
+          "dimension": "connect",
+          "routine": false
+        },
+        {
+          "start": "17:00",
+          "end": null,
+          "title": "Travel The Globe Documentaries",
+          "location": "Living Room",
+          "dimension": "learn",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    },
+    {
+      "date": "2026-07-31",
+      "theme": null,
+      "events": [
+        {
+          "start": "09:00",
+          "end": null,
+          "title": "Magnolia Gazette",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "09:30",
+          "end": null,
+          "title": "Daily Chronicles and Current Events",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        },
+        {
+          "start": "10:15",
+          "end": null,
+          "title": "Age in Motion Exercise with Powerback",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Happy Hour - Music with Steve C.",
+          "location": "Living Room",
+          "dimension": "entertainment",
+          "routine": false
+        },
+        {
+          "start": "18:00",
+          "end": null,
+          "title": "Evening News",
+          "location": "Living Room",
+          "dimension": "intellectual",
+          "routine": true
+        }
+      ]
+    }
   ]
 }
