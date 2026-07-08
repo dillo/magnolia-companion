@@ -47,6 +47,18 @@ test("calendar: grid, filter, day detail", async ({ page }) => {
   ).toBeVisible();
 });
 
+test("nav: current page is marked active", async ({ page }) => {
+  await pinClock(page);
+  await page.goto("/");
+  const nav = page.getByRole("navigation", { name: "Main" });
+  await expect(nav.getByRole("link", { name: "Today" })).toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Calendar" })).not.toHaveAttribute("aria-current", "page");
+
+  await nav.getByRole("link", { name: "Calendar" }).click();
+  await expect(nav.getByRole("link", { name: "Calendar" })).toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Today" })).not.toHaveAttribute("aria-current", "page");
+});
+
 test("menu: day tabs swap the meal cards", async ({ page }) => {
   await pinClock(page);
   await page.goto("/menu");
