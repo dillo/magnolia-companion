@@ -59,6 +59,18 @@ test("nav: current page is marked active", async ({ page }) => {
   await expect(nav.getByRole("link", { name: "Today" })).not.toHaveAttribute("aria-current", "page");
 });
 
+test("no hydration errors, including under reduced motion", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await pinClock(page);
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Wednesday" })).toBeVisible();
+  expect(errors.filter((e) => e.toLowerCase().includes("hydrat"))).toEqual([]);
+});
+
 test("menu: day tabs swap the meal cards", async ({ page }) => {
   await pinClock(page);
   await page.goto("/menu");
