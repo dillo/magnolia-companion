@@ -2199,7 +2199,7 @@ main().catch((err) => {
 
 Note: `tsx` resolves the `@/*` alias from `tsconfig.json` automatically.
 
-- [ ] **Step 6: Create `.env` and run the real ingest** *(requires the user)*
+- [x] **Step 6: Create `.env` and run the real ingest** *(requires the user)*
 
 ```bash
 echo 'ANTHROPIC_API_KEY=sk-ant-...' > .env   # user supplies the key
@@ -2209,13 +2209,13 @@ npm run ingest -- --type activities --month 2026-07 ~/Desktop/july-p1.jpeg ~/Des
 
 Expected: `Wrote content/activities/2026-07.json: 31 days, ~250 events.` plus a warnings list. The hand-transcribed 7-day fixture is replaced by the full month.
 
-- [ ] **Step 7: Review and verify**
+- [x] **Step 7: Review and verify**
 
 - `git diff content/activities/2026-07.json` — sanity-check the fixture week barely changed (titles/times should match what was hand-transcribed).
 - `npm run dev` — compare July against both photos day by day; fix misreads directly in the JSON.
 - Run: `npm test` → all tests still PASS (fixture week assertions still hold: July 8 theme, Fried catfish lunch, etc. If a legitimately-corrected reading breaks an assertion, update the test to the corrected truth).
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add lib/ingest/extract.ts scripts/ingest.ts tests/extract.test.ts content/activities/2026-07.json public/scans/
