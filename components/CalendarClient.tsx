@@ -4,27 +4,27 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActivityMonth } from "@/lib/schema";
 import { DIMENSIONS, type Dimension } from "@/lib/schema";
 import { DIMENSION_META } from "@/lib/dimensions";
-import { todayISO, formatTime, dayNameOfISO, longDateOfISO } from "@/lib/dates";
+import { formatTime, dayNameOfISO, longDateOfISO } from "@/lib/dates";
 import Timeline from "@/components/Timeline";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
+import { useToday } from "@/components/useToday";
 
 const DOWS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export default function CalendarClient({ months }: { months: ActivityMonth[] }) {
-  const [today, setToday] = useState<string | null>(null);
+  const today = useToday();
   const [idx, setIdx] = useState(0);
   const [filter, setFilter] = useState<Dimension | "all">("all");
   const [selected, setSelected] = useState<string | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const t = todayISO();
+    if (!today) return;
+    const i = months.findIndex((m) => m.month === today.slice(0, 7));
     // eslint-disable-next-line react-hooks/set-state-in-effect -- today must come from the browser clock after mount (static site)
-    setToday(t);
-    const i = months.findIndex((m) => m.month === t.slice(0, 7));
     setIdx(i >= 0 ? i : Math.max(0, months.length - 1));
-  }, [months]);
+  }, [months, today]);
 
   const closeDayDetails = useCallback(() => {
     setSelected(null);

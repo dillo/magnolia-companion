@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 import {
   todayISO, addDaysISO, mondayOfISO, monthOfISO,
   dayNameOfISO, longDateOfISO, monthNameOfISO, formatTime,
+  msUntilNextLocalDate,
 } from "@/lib/dates";
 
 describe("todayISO", () => {
@@ -11,6 +12,16 @@ describe("todayISO", () => {
   });
   test("midnight rollover in New York", () => {
     expect(todayISO(new Date("2026-07-09T04:01:00Z"))).toBe("2026-07-09");
+  });
+});
+
+describe("msUntilNextLocalDate", () => {
+  test("returns time until the next New York midnight", () => {
+    expect(msUntilNextLocalDate(new Date("2026-07-09T02:00:00Z"))).toBe(2 * 60 * 60 * 1000);
+  });
+
+  test("handles daylight saving boundaries", () => {
+    expect(msUntilNextLocalDate(new Date("2026-03-08T04:30:00Z"))).toBe(30 * 60 * 1000);
   });
 });
 

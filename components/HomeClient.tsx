@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { ActivityMonth } from "@/lib/schema";
 import {
-  todayISO, addDaysISO, mondayOfISO,
+  addDaysISO, mondayOfISO,
   dayNameOfISO, longDateOfISO, monthNameOfISO, formatTime,
 } from "@/lib/dates";
 import { findActivityDay, scansForDate } from "@/lib/lookup";
@@ -12,6 +12,7 @@ import Timeline from "@/components/Timeline";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
+import { useToday } from "@/components/useToday";
 
 type DayPick = "today" | "tomorrow" | "week";
 
@@ -28,13 +29,8 @@ function pageTitle(pick: DayPick) {
 }
 
 export default function HomeClient({ months }: { months: ActivityMonth[] }) {
-  const [today, setToday] = useState<string | null>(null);
+  const today = useToday();
   const [pick, setPick] = useState<DayPick>("today");
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- today must come from the browser clock after mount (static site)
-    setToday(todayISO());
-  }, []);
 
   if (!today) return null; // date is client-side by design; render after mount
 

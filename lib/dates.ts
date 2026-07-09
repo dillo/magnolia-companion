@@ -1,14 +1,34 @@
 const DAY_MS = 86_400_000;
+export const APP_TIME_ZONE = "America/New_York";
 
 /** Anchor an ISO date at UTC noon so day math never crosses DST boundaries. */
 function toUTCNoon(iso: string): Date {
   return new Date(`${iso}T12:00:00Z`);
 }
 
-export function todayISO(now: Date = new Date(), timeZone = "America/New_York"): string {
+export function todayISO(now: Date = new Date(), timeZone = APP_TIME_ZONE): string {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone, year: "numeric", month: "2-digit", day: "2-digit",
   }).format(now);
+}
+
+export function msUntilNextLocalDate(now: Date = new Date(), timeZone = APP_TIME_ZONE): number {
+  const current = todayISO(now, timeZone);
+  const startMs = now.getTime();
+  let low = startMs + 1;
+  let high = startMs + DAY_MS * 2;
+
+  while (todayISO(new Date(high), timeZone) === current) {
+    high += DAY_MS;
+  }
+
+  while (low < high) {
+    const mid = Math.floor((low + high) / 2);
+    if (todayISO(new Date(mid), timeZone) === current) low = mid + 1;
+    else high = mid;
+  }
+
+  return Math.max(0, low - startMs);
 }
 
 export function addDaysISO(iso: string, n: number): string {

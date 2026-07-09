@@ -1,25 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MenuWeek } from "@/lib/schema";
-import { todayISO, mondayOfISO, addDaysISO, dayNameOfISO, longDateOfISO } from "@/lib/dates";
+import { mondayOfISO, addDaysISO, dayNameOfISO, longDateOfISO } from "@/lib/dates";
 import MealCards from "@/components/MealCards";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
+import { useToday } from "@/components/useToday";
 
 export default function MenuClient({ weeks }: { weeks: MenuWeek[] }) {
-  const [today, setToday] = useState<string | null>(null);
+  const today = useToday();
   const [idx, setIdx] = useState(0);
   const [date, setDate] = useState<string | null>(null);
+  const previousTodayRef = useRef<string | null>(null);
+  const dateRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const t = todayISO();
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- today must come from the browser clock after mount (static site)
-    setToday(t);
-    const i = weeks.findIndex((w) => w.weekOf === mondayOfISO(t));
-    setIdx(i >= 0 ? i : Math.max(0, weeks.length - 1));
-    setDate(t);
-  }, [weeks]);
+    dateRef.current = date;
+  }, [date]);
+
+  useEffect(() => {
+    if (!today) return;
+    const previousToday = previousTodayRef.current;
+    previousTodayRef.current = today;
+    const todayWeekIdx = weeks.findIndex((w) => w.weekOf === mondayOfISO(today));
+    const fallbackIdx = Math.max(0, weeks.length - 1);
+    const currentDate = dateRef.current;
+
+    if (currentDate && currentDate !== previousToday) return;
+    setIdx(todayWeekIdx >= 0 ? todayWeekIdx : fallbackIdx);
+    setDate(today);
+  }, [today, weeks]);
 
   if (!today || !date) return null;
   if (weeks.length === 0) return <EmptyState message="No menus have been added yet." />;
