@@ -12,6 +12,21 @@ import { useToday } from "@/components/useToday";
 
 const DOWS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+function ordinalDay(iso: string): string {
+  const day = Number(iso.slice(8));
+  const mod100 = day % 100;
+  const suffix = mod100 >= 11 && mod100 <= 13
+    ? "th"
+    : day % 10 === 1
+      ? "st"
+      : day % 10 === 2
+        ? "nd"
+        : day % 10 === 3
+          ? "rd"
+          : "th";
+  return `${day}${suffix}`;
+}
+
 export default function CalendarClient({ months }: { months: ActivityMonth[] }) {
   const today = useToday();
   const [idx, setIdx] = useState(0);
@@ -157,7 +172,7 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
               <div className="mb-1 flex items-start justify-between gap-3">
                 <div>
                   <div className="font-semibold">
-                    {dayNameOfISO(day.date).slice(0, 3)} {Number(day.date.slice(8))}
+                    {dayNameOfISO(day.date).slice(0, 3)} {ordinalDay(day.date)}
                     {isToday && <span className="font-normal text-moss"> · Today</span>}
                   </div>
                   {day.theme && <div className="font-display text-[15px] italic text-copper">{day.theme}</div>}
