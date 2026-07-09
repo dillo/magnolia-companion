@@ -21,8 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="border-b border-hairline">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
             <div className="font-display">
-              <span className="font-semibold">Magnolia Place</span>{" "}
-              <span className="text-moss">of Roswell</span>
+              <span className="font-semibold">Magnolia Companion</span>
             </div>
             <TextSizeControl />
             <NavLinks />
