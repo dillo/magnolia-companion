@@ -32,7 +32,7 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
   }, []);
 
   useEffect(() => {
-    if (!selected || !window.matchMedia("(min-width: 768px)").matches) return;
+    if (!selected) return;
     closeButtonRef.current?.focus();
   }, [selected]);
 
@@ -150,15 +150,24 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
           if (specials.length === 0) return null;
           const isToday = day.date === today;
           return (
-            <button key={day.date} onClick={() => setSelected(day.date)}
-              className={`block w-full px-3 py-3 text-left ${
+            <div key={day.date}
+              className={`px-3 py-3 ${
                 isToday ? "rounded-lg border border-copper bg-copper/10" : ""
               }`}>
-              <div className="font-semibold">
-                {dayNameOfISO(day.date).slice(0, 3)} {Number(day.date.slice(8))}
-                {isToday && <span className="font-normal text-moss"> · Today</span>}
+              <div className="mb-1 flex items-start justify-between gap-3">
+                <div>
+                  <div className="font-semibold">
+                    {dayNameOfISO(day.date).slice(0, 3)} {Number(day.date.slice(8))}
+                    {isToday && <span className="font-normal text-moss"> · Today</span>}
+                  </div>
+                  {day.theme && <div className="font-display text-[15px] italic text-copper">{day.theme}</div>}
+                </div>
+                <button type="button" onClick={() => setSelected(day.date)}
+                  aria-label={`Show details for ${dayNameOfISO(day.date)}, ${longDateOfISO(day.date)}`}
+                  className="shrink-0 font-semibold text-copper underline-offset-4 hover:underline">
+                  <span>Details</span>
+                </button>
               </div>
-              {day.theme && <div className="font-display text-[15px] italic text-copper">{day.theme}</div>}
               {specials.map((e, i) => (
                 <div key={i} className="flex items-baseline gap-2">
                   <span className="w-20 shrink-0 text-right font-semibold tabular-nums text-copper">
@@ -167,25 +176,14 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
                   <span>{e.title}</span>
                 </div>
               ))}
-            </button>
+            </div>
           );
         })}
       </div>
 
-      {/* Day detail */}
-      {selDay && (
-        <section aria-label="Day detail" className="mt-5 rounded-xl border border-hairline bg-petal p-4 md:hidden">
-          <h2 className="font-display text-2xl font-semibold">
-            {dayNameOfISO(selDay.date)}, {longDateOfISO(selDay.date)}
-          </h2>
-          {selDay.theme && <p className="mb-3 font-display italic text-copper">{selDay.theme}</p>}
-          <Timeline events={selDay.events} />
-        </section>
-      )}
-
       {selDay && (
         <div role="dialog" aria-modal="true" aria-labelledby="calendar-day-title"
-          className="fixed inset-0 z-50 hidden items-center justify-center bg-ink/55 p-6 md:flex"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/55 p-4 md:p-6"
           onClick={closeDayDetails}>
           <section className="max-h-[85vh] w-full max-w-2xl overflow-auto rounded-lg bg-petal p-5 shadow-xl"
             onClick={(event) => event.stopPropagation()}>
