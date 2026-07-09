@@ -37,9 +37,9 @@ test("calendar: grid, filter, day detail", async ({ page }) => {
   await page.goto("/calendar");
   await expect(page.getByRole("heading", { name: "July 2026" })).toBeVisible();
 
-  const emotional = page.getByRole("button", { name: "Emotional" });
-  await emotional.click();
-  await expect(emotional).toHaveAttribute("aria-pressed", "true");
+  const filter = page.getByLabel("Activity type");
+  await filter.selectOption("emotional");
+  await expect(filter).toHaveValue("emotional");
 
   await page.getByRole("button", { name: /Classic Car Collection Day/ }).click();
   await expect(

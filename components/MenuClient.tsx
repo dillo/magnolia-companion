@@ -110,12 +110,6 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
 
         <MealCards day={day} />
 
-        {week.alwaysAvailable.length > 0 && (
-          <p className="mt-4 text-[15px] text-moss">
-            <b className="text-ink">Always available:</b> {week.alwaysAvailable.join(" · ")}
-          </p>
-        )}
-
         <ScanLightbox scans={week.sourceScan ? [week.sourceScan] : []} label="View the printed menu" />
       </section>
 
@@ -129,7 +123,7 @@ function TodayActivitiesSummary({ day, today }: { day: ActivityDay | null; today
   const routineCount = day ? day.events.filter((event) => event.routine).length : 0;
 
   return (
-    <aside className="border-t border-hairline pt-5 text-moss lg:sticky lg:top-6 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+    <aside className="pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
       <div className="mb-3">
         <h2 className="font-display text-xl font-semibold text-ink">Today&apos;s Activities</h2>
         <p className="mt-1 text-moss">

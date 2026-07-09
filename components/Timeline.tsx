@@ -9,14 +9,14 @@ export default function Timeline({ events }: { events: ActivityEvent[] }) {
     <div className="divide-y divide-hairline border-y border-hairline">
       {events.map((e, i) =>
         e.routine ? (
-          <section key={i} className="flex items-baseline gap-3 py-2">
+          <section key={i} className="flex items-baseline gap-3 px-3 py-2 sm:px-0">
             <span className="w-20 shrink-0 text-right tabular-nums text-moss">
               {e.start ? formatTime(e.start) : "All day"}
             </span>
             <span className="text-moss">{e.title}</span>
           </section>
         ) : (
-          <section key={i} className="flex gap-3 py-3">
+          <section key={i} className="flex gap-3 px-3 py-3 sm:px-0">
             <span className="w-20 shrink-0 text-right font-semibold tabular-nums text-copper">
               {e.start ? formatTime(e.start) : "All day"}
             </span>

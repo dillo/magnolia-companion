@@ -45,7 +45,7 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
 
   return (
     <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
-      <section className="max-w-xl">
+      <section className="min-w-0 max-w-xl">
         <h1 className="font-display text-3xl font-semibold">{pageTitle(pick)}</h1>
         <p className="mt-1 text-moss">
           {activeDateLabel}
@@ -66,11 +66,8 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
             ))}
           </div>
           <Link href="/calendar" aria-label="View all activities"
-            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-card text-copper hover:bg-hairline sm:h-auto sm:w-auto sm:border-0 sm:bg-transparent sm:font-semibold sm:underline-offset-4 sm:hover:bg-transparent sm:hover:underline">
-            <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 sm:hidden">
-              <path d="M7 2v3M17 2v3M4 9h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-            </svg>
-            <span className="hidden sm:inline">View all activities</span>
+            className="hidden shrink-0 text-copper hover:underline sm:inline-flex sm:font-semibold sm:underline-offset-4">
+            View all activities
           </Link>
         </div>
 
@@ -90,7 +87,7 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
 
 function TodayMenuSummary({ day, today }: { day: MenuDay | null; today: string }) {
   return (
-    <aside className="border-t border-hairline pt-5 text-moss lg:sticky lg:top-6 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+    <aside className="pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
       <div className="mb-3">
         <h2 className="font-display text-xl font-semibold text-ink">Today&apos;s Menu</h2>
         <p className="mt-1 text-moss">

@@ -27,6 +27,39 @@ function ordinalDay(iso: string): string {
   return `${day}${suffix}`;
 }
 
+function ActivityFilterSelect({
+  value,
+  onChange,
+}: {
+  value: Dimension | "all";
+  onChange: (value: Dimension | "all") => void;
+}) {
+  return (
+    <div className="max-w-sm md:flex md:max-w-none md:items-center md:gap-3">
+      <label htmlFor="calendar-filter" className="sr-only">
+        Activity type
+      </label>
+      <div className="relative min-w-0 flex-1">
+        <select
+          id="calendar-filter"
+          value={value}
+          onChange={(event) => onChange(event.target.value as Dimension | "all")}
+          className="w-full appearance-none rounded-lg border border-hairline bg-card px-4 py-3 pr-11 font-semibold text-ink shadow-sm"
+        >
+          <option value="all">All activities</option>
+          {DIMENSIONS.map((d) => (
+            <option key={d} value={d}>{DIMENSION_META[d].label}</option>
+          ))}
+        </select>
+        <svg aria-hidden="true" viewBox="0 0 24 24"
+          className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-copper">
+          <path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 export default function CalendarClient({ months }: { months: ActivityMonth[] }) {
   const today = useToday();
   const [idx, setIdx] = useState(0);
@@ -81,30 +114,23 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl font-semibold">{monthTitle}</h1>
-        <div className="flex gap-2">
-          <button aria-label="Previous month" disabled={idx === 0} onClick={() => moveMonth(-1)}
-            className="rounded-full border border-hairline px-4 py-1.5 font-bold text-copper disabled:opacity-30">‹</button>
-          <button aria-label="Next month" disabled={idx === months.length - 1} onClick={() => moveMonth(1)}
-            className="rounded-full border border-hairline px-4 py-1.5 font-bold text-copper disabled:opacity-30">›</button>
+      <div className="md:flex md:items-start md:justify-between md:gap-5">
+        <div className="flex items-center justify-between">
+          <h1 className="font-display text-3xl font-semibold">{monthTitle}</h1>
+          <div className="flex gap-2 md:ml-4">
+            <button aria-label="Previous month" disabled={idx === 0} onClick={() => moveMonth(-1)}
+              className="rounded-full border border-hairline px-4 py-1.5 font-bold text-copper disabled:opacity-30">‹</button>
+            <button aria-label="Next month" disabled={idx === months.length - 1} onClick={() => moveMonth(1)}
+              className="rounded-full border border-hairline px-4 py-1.5 font-bold text-copper disabled:opacity-30">›</button>
+          </div>
+        </div>
+        <div className="my-4 md:my-0 md:w-[22rem]">
+          <ActivityFilterSelect value={filter} onChange={setFilter} />
         </div>
       </div>
 
-      <div className="my-3 flex flex-wrap gap-2">
-        {(["all", ...DIMENSIONS] as const).map((d) => (
-          <button key={d} aria-pressed={filter === d}
-            onClick={() => setFilter(d)}
-            className={`rounded-full border px-3.5 py-1.5 font-semibold ${
-              filter === d ? "border-ink bg-ink text-petal" : "border-hairline bg-card text-moss"
-            }`}>
-            {d === "all" ? "All" : DIMENSION_META[d].label}
-          </button>
-        ))}
-      </div>
-
       {/* Month grid: tablet & desktop */}
-      <div className="hidden grid-cols-7 gap-1 md:grid" role="grid" aria-label={monthTitle}>
+      <div className="hidden grid-cols-7 gap-1 md:mt-6 md:grid" role="grid" aria-label={monthTitle}>
         {DOWS.map((d) => (
           <div key={d} className="py-1 text-center text-[13px] font-bold uppercase tracking-wider text-moss">{d}</div>
         ))}
