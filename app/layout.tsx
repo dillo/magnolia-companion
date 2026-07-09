@@ -19,11 +19,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <header className="border-b border-hairline">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-            <div className="font-display">
-              <span className="font-semibold">Magnolia Companion</span>
+          <div className="mx-auto max-w-6xl px-4 py-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
+            <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+              <div className="whitespace-nowrap text-center font-display text-[1.35rem] leading-tight">
+                <span className="font-semibold">Magnolia Companion</span>
+              </div>
+              <TextSizeControl />
             </div>
-            <TextSizeControl />
             <NavLinks />
           </div>
         </header>

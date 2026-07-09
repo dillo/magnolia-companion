@@ -74,7 +74,7 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
       <section className="max-w-xl">
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-2">
           <button disabled={idx === 0} onClick={() => moveWeek(-1)}
-            className="mt-1 whitespace-nowrap font-bold text-copper disabled:opacity-30">‹ Last week</button>
+            className="mt-1 whitespace-nowrap font-bold text-copper disabled:opacity-30">‹ Last</button>
           <div className="min-w-0 text-center">
             <h1 className="whitespace-nowrap font-display text-3xl font-semibold">This Week</h1>
             <p className="mt-1 truncate text-moss">{weekRange}</p>
