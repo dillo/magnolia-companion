@@ -88,9 +88,13 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
                 <div className="truncate font-display italic text-copper">{day.theme}</div>
               )}
               {specials.slice(0, 3).map((e, j) => {
-                const dim = filter !== "all" && e.dimension !== filter;
+                const filtered = filter !== "all";
+                const dim = filtered && e.dimension !== filter;
+                const highlighted = filtered && e.dimension === filter;
                 return (
-                  <div key={j} className={`flex items-center gap-1 truncate ${dim ? "opacity-20" : ""}`}>
+                  <div key={j} className={`flex items-center gap-1 truncate ${
+                    dim ? "opacity-20" : highlighted ? "font-semibold text-ink" : ""
+                  }`}>
                     {e.dimension && (
                       <span className="h-2 w-2 shrink-0 rounded-full"
                         style={{ background: DIMENSION_META[e.dimension].dot }} />
@@ -104,6 +108,17 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
           );
         })}
       </div>
+      <section aria-label="Activity dimension legend" className="mt-4 hidden border-y border-hairline py-3 md:block">
+        <h2 className="mb-2 font-semibold">Activity dot colors</h2>
+        <div className="flex flex-wrap gap-x-4 gap-y-2 text-[15px] text-moss">
+          {DIMENSIONS.map((d) => (
+            <div key={d} className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: DIMENSION_META[d].dot }} />
+              <span>{DIMENSION_META[d].label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Agenda list: phones */}
       <div className="divide-y divide-hairline border-y border-hairline md:hidden">
