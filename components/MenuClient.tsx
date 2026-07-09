@@ -40,19 +40,19 @@ export default function MenuClient({ weeks }: { weeks: MenuWeek[] }) {
       <div className="flex items-center justify-between">
         <button disabled={idx === 0} onClick={() => moveWeek(-1)}
           className="font-bold text-copper disabled:opacity-30">‹ Last week</button>
-        <h1 className="font-display text-xl font-semibold">Week of {longDateOfISO(week.weekOf)}</h1>
+        <h1 className="font-display text-3xl font-semibold">Week of {longDateOfISO(week.weekOf)}</h1>
         <button disabled={idx === weeks.length - 1} onClick={() => moveWeek(1)}
           className="font-bold text-copper disabled:opacity-30">Next ›</button>
       </div>
 
-      <div role="tablist" aria-label="Day of week" className="my-4 flex gap-1">
+      <div role="tablist" aria-label="Day of week" className="my-4 grid grid-cols-7 gap-1.5">
         {weekDates.map((d) => (
           <button key={d} role="tab" aria-selected={activeDate === d} onClick={() => setDate(d)}
-            className={`flex-1 rounded-lg py-1.5 text-center ${
-              activeDate === d ? "bg-copper text-petal" : "text-moss"
+            className={`rounded-lg border py-2 text-center ${
+              activeDate === d ? "border-copper bg-copper text-petal" : "border-hairline bg-card text-moss"
             }`}>
-            <span className="block text-[13px] font-bold">{dayNameOfISO(d).slice(0, 3)}</span>
-            <span className="block font-semibold tabular-nums">{Number(d.slice(8))}</span>
+            <span className="block text-[13px] font-bold uppercase">{dayNameOfISO(d).slice(0, 3)}</span>
+            <span className="block text-xl font-semibold leading-tight tabular-nums">{Number(d.slice(8))}</span>
           </button>
         ))}
       </div>

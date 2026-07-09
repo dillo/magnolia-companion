@@ -98,7 +98,7 @@ function DayHeading({ date, today, theme }: { date: string; today: string; theme
 
 function WeekActivities({ months, dates, today }: { months: ActivityMonth[]; dates: string[]; today: string }) {
   return (
-    <div className="divide-y divide-hairline">
+    <div className="divide-y divide-hairline border-y border-hairline">
       {dates.map((date) => {
         const day = findActivityDay(months, date);
         const specials = day?.events.filter((e) => !e.routine) ?? [];
