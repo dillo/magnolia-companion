@@ -98,12 +98,13 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
           const date = dateOf(i + 1);
           const day = byDate.get(date);
           const specials = day?.events.filter((e) => !e.routine) ?? [];
+          const isToday = date === today;
           return (
             <button key={date} onClick={() => setSelected(date)}
-              className={`min-h-24 rounded-lg border bg-card p-1.5 text-left align-top text-[13px] ${
-                date === today ? "border-2 border-copper" : "border-hairline"
+              className={`min-h-24 rounded-lg border p-1.5 text-left align-top text-[13px] ${
+                isToday ? "border-2 border-copper bg-copper/10" : "border-hairline bg-card"
               }`}>
-              <div className={`font-semibold tabular-nums ${date === today ? "text-copper" : "text-moss"}`}>{i + 1}</div>
+              <div className={`font-semibold tabular-nums ${isToday ? "text-copper" : "text-moss"}`}>{i + 1}</div>
               {day?.theme && (
                 <div className="truncate font-display italic text-copper">{day.theme}</div>
               )}
@@ -147,11 +148,15 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
             (e) => !e.routine && (filter === "all" || e.dimension === filter),
           );
           if (specials.length === 0) return null;
+          const isToday = day.date === today;
           return (
-            <button key={day.date} onClick={() => setSelected(day.date)} className="block w-full py-3 text-left">
+            <button key={day.date} onClick={() => setSelected(day.date)}
+              className={`block w-full px-3 py-3 text-left ${
+                isToday ? "rounded-lg border border-copper bg-copper/10" : ""
+              }`}>
               <div className="font-semibold">
                 {dayNameOfISO(day.date).slice(0, 3)} {Number(day.date.slice(8))}
-                {day.date === today && <span className="font-normal text-moss"> · Today</span>}
+                {isToday && <span className="font-normal text-moss"> · Today</span>}
               </div>
               {day.theme && <div className="font-display text-[15px] italic text-copper">{day.theme}</div>}
               {specials.map((e, i) => (
