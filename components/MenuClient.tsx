@@ -10,6 +10,25 @@ import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
 import { useToday } from "@/components/useToday";
 
+function weekRangeLabel(start: string): string {
+  const end = addDaysISO(start, 6);
+  const startDate = new Date(`${start}T12:00:00Z`);
+  const endDate = new Date(`${end}T12:00:00Z`);
+  const sameMonth = start.slice(0, 7) === end.slice(0, 7);
+  const sameYear = start.slice(0, 4) === end.slice(0, 4);
+  const month = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "long" });
+  const monthDay = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "long", day: "numeric" });
+  const fullDate = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "long", day: "numeric", year: "numeric" });
+
+  if (sameMonth) {
+    return `${month.format(startDate)} ${startDate.getUTCDate()}-${endDate.getUTCDate()}, ${endDate.getUTCFullYear()}`;
+  }
+  if (sameYear) {
+    return `${monthDay.format(startDate)} - ${monthDay.format(endDate)}, ${endDate.getUTCFullYear()}`;
+  }
+  return `${fullDate.format(startDate)} - ${fullDate.format(endDate)}`;
+}
+
 export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; months: ActivityMonth[] }) {
   const today = useToday();
   const [idx, setIdx] = useState(0);
@@ -42,6 +61,7 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
   const activeDate = weekDates.includes(date) ? date : week.weekOf;
   const day = week.days.find((d) => d.date === activeDate) ?? null;
   const todayActivities = findActivityDay(months, today);
+  const weekRange = weekRangeLabel(week.weekOf);
 
   function moveWeek(delta: number) {
     const next = Math.min(weeks.length - 1, Math.max(0, idx + delta));
@@ -52,12 +72,15 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
   return (
     <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
       <section className="max-w-xl">
-        <div className="flex items-center justify-between">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-2">
           <button disabled={idx === 0} onClick={() => moveWeek(-1)}
-            className="font-bold text-copper disabled:opacity-30">‹ Last week</button>
-          <h1 className="font-display text-3xl font-semibold">Week of {longDateOfISO(week.weekOf)}</h1>
+            className="mt-1 whitespace-nowrap font-bold text-copper disabled:opacity-30">‹ Last week</button>
+          <div className="min-w-0 text-center">
+            <h1 className="whitespace-nowrap font-display text-3xl font-semibold">This Week</h1>
+            <p className="mt-1 truncate text-moss">{weekRange}</p>
+          </div>
           <button disabled={idx === weeks.length - 1} onClick={() => moveWeek(1)}
-            className="font-bold text-copper disabled:opacity-30">Next ›</button>
+            className="mt-1 whitespace-nowrap font-bold text-copper disabled:opacity-30">Next ›</button>
         </div>
 
         <div
