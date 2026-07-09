@@ -46,15 +46,23 @@ export default function MenuClient({ weeks }: { weeks: MenuWeek[] }) {
       </div>
 
       <div role="tablist" aria-label="Day of week" className="my-4 grid grid-cols-7 gap-1.5">
-        {weekDates.map((d) => (
-          <button key={d} role="tab" aria-selected={activeDate === d} onClick={() => setDate(d)}
-            className={`rounded-lg border py-2 text-center ${
-              activeDate === d ? "border-copper bg-copper text-petal" : "border-hairline bg-card text-moss"
-            }`}>
-            <span className="block text-[13px] font-bold uppercase">{dayNameOfISO(d).slice(0, 3)}</span>
-            <span className="block text-xl font-semibold leading-tight tabular-nums">{Number(d.slice(8))}</span>
-          </button>
-        ))}
+        {weekDates.map((d) => {
+          const selected = activeDate === d;
+          const isToday = today === d;
+          return (
+            <button key={d} role="tab" aria-selected={selected} onClick={() => setDate(d)}
+              aria-label={`${dayNameOfISO(d)}, ${longDateOfISO(d)}${isToday ? ", today" : ""}`}
+              className={`rounded-lg border py-2 text-center ${
+                selected ? "border-copper bg-copper text-petal" : "border-hairline bg-card text-moss"
+              }`}>
+              <span className="block text-[13px] font-bold uppercase">{dayNameOfISO(d).slice(0, 3)}</span>
+              <span className="block text-xl font-semibold leading-tight tabular-nums">{Number(d.slice(8))}</span>
+              <span aria-hidden="true" className={`mx-auto mt-1 block h-1.5 w-1.5 rounded-full ${
+                isToday && !selected ? "bg-copper" : "bg-transparent"
+              }`} />
+            </button>
+          );
+        })}
       </div>
 
       <MealCards day={day} />
