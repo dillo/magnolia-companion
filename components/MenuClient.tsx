@@ -94,14 +94,15 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
             return (
               <button key={d} role="tab" aria-selected={selected} onClick={() => setDate(d)}
                 aria-label={`${dayNameOfISO(d)}, ${longDateOfISO(d)}${isToday ? ", today" : ""}`}
-                className={`rounded-lg border px-0.5 py-2 text-center sm:px-1 ${
-                  selected ? "border-copper bg-copper text-petal" : "border-hairline bg-card text-moss"
+                className={`rounded-lg border-2 px-0.5 py-1 text-center sm:px-1 sm:py-2 ${
+                  selected
+                    ? "border-copper bg-copper text-petal"
+                    : isToday
+                      ? "border-copper bg-card text-moss"
+                      : "border-transparent bg-card text-moss ring-1 ring-inset ring-hairline"
                 }`}>
                 <span className="block text-[13px] font-bold uppercase">{dayNameOfISO(d).slice(0, 3)}</span>
                 <span className="block text-xl font-semibold leading-tight tabular-nums">{Number(d.slice(8))}</span>
-                <span aria-hidden="true" className={`mx-auto mt-1 block h-1.5 w-1.5 rounded-full ${
-                  isToday && !selected ? "bg-copper" : "bg-transparent"
-                }`} />
               </button>
             );
           })}
