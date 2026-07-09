@@ -49,10 +49,12 @@ export default function HomeClient({ months }: { months: ActivityMonth[] }) {
   return (
     <div className="mx-auto max-w-xl">
       <h1 className="font-display text-3xl font-semibold">{pageTitle(pick)}</h1>
-      <p className="mt-1 text-moss">{activeDateLabel}</p>
-      {pick !== "week" && day?.theme && (
-        <p className="font-display italic text-copper">{day.theme}</p>
-      )}
+      <p className="mt-1 text-moss">
+        {activeDateLabel}
+        {pick !== "week" && day?.theme && (
+          <span className="font-display italic text-copper"> · {day.theme}</span>
+        )}
+      </p>
 
       <div className="my-4 flex items-center gap-2 sm:gap-3">
         <div role="tablist" aria-label="Activity dates" className="flex w-fit rounded-full bg-hairline/60 p-1">
@@ -90,13 +92,11 @@ export default function HomeClient({ months }: { months: ActivityMonth[] }) {
 function DayHeading({ date, today, theme }: { date: string; today: string; theme: string | null }) {
   const note = date === today ? "Today" : date === addDaysISO(today, 1) ? "Tomorrow" : null;
   return (
-    <>
-      <h2 className="mt-4 font-semibold">
-        {dayNameOfISO(date).slice(0, 3)} {Number(date.slice(8))}
-        {note && <span className="font-normal text-moss"> · {note}</span>}
-      </h2>
-      {theme && <p className="font-display text-[15px] italic text-copper">{theme}</p>}
-    </>
+    <h2 className="mt-4 font-semibold">
+      {dayNameOfISO(date).slice(0, 3)} {Number(date.slice(8))}
+      {note && <span className="font-normal text-moss"> · {note}</span>}
+      {theme && <span className="font-display text-[15px] font-normal italic text-copper"> · {theme}</span>}
+    </h2>
   );
 }
 

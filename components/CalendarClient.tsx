@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActivityMonth } from "@/lib/schema";
 import { DIMENSIONS, type Dimension } from "@/lib/schema";
 import { DIMENSION_META } from "@/lib/dimensions";
@@ -16,6 +16,7 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
   const [idx, setIdx] = useState(0);
   const [filter, setFilter] = useState<Dimension | "all">("all");
   const [selected, setSelected] = useState<string | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const t = todayISO();
@@ -24,6 +25,25 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
     const i = months.findIndex((m) => m.month === t.slice(0, 7));
     setIdx(i >= 0 ? i : Math.max(0, months.length - 1));
   }, [months]);
+
+  const closeDayDetails = useCallback(() => {
+    setSelected(null);
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+  }, []);
+
+  useEffect(() => {
+    if (!selected || !window.matchMedia("(min-width: 768px)").matches) return;
+    closeButtonRef.current?.focus();
+  }, [selected]);
+
+  useEffect(() => {
+    if (!selected) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") closeDayDetails();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [closeDayDetails, selected]);
 
   if (!today) return null;
   if (months.length === 0) return <EmptyState message="No activity calendars have been added yet." />;
@@ -82,7 +102,7 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
             <button key={date} onClick={() => setSelected(date)}
               className={`min-h-24 rounded-lg border bg-card p-1.5 text-left align-top text-[13px] ${
                 date === today ? "border-2 border-copper" : "border-hairline"
-              } ${selected === date ? "ring-2 ring-ink" : ""}`}>
+              }`}>
               <div className={`font-semibold tabular-nums ${date === today ? "text-copper" : "text-moss"}`}>{i + 1}</div>
               {day?.theme && (
                 <div className="truncate font-display italic text-copper">{day.theme}</div>
@@ -149,13 +169,38 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
 
       {/* Day detail */}
       {selDay && (
-        <section aria-label="Day detail" className="mt-5 rounded-xl border border-hairline bg-petal p-4">
+        <section aria-label="Day detail" className="mt-5 rounded-xl border border-hairline bg-petal p-4 md:hidden">
           <h2 className="font-display text-2xl font-semibold">
             {dayNameOfISO(selDay.date)}, {longDateOfISO(selDay.date)}
           </h2>
           {selDay.theme && <p className="mb-3 font-display italic text-copper">{selDay.theme}</p>}
           <Timeline events={selDay.events} />
         </section>
+      )}
+
+      {selDay && (
+        <div role="dialog" aria-modal="true" aria-labelledby="calendar-day-title"
+          className="fixed inset-0 z-50 hidden items-center justify-center bg-ink/55 p-6 md:flex"
+          onClick={closeDayDetails}>
+          <section className="max-h-[85vh] w-full max-w-2xl overflow-auto rounded-lg bg-petal p-5 shadow-xl"
+            onClick={(event) => event.stopPropagation()}>
+            <div className="mb-3 flex items-start justify-between gap-4">
+              <div>
+                <h2 id="calendar-day-title" className="font-display text-3xl font-semibold">
+                  {dayNameOfISO(selDay.date)}, {longDateOfISO(selDay.date)}
+                </h2>
+                {selDay.theme && <p className="font-display italic text-copper">{selDay.theme}</p>}
+              </div>
+              <button ref={closeButtonRef} type="button" aria-label="Close day details" onClick={closeDayDetails}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-card text-copper hover:bg-hairline">
+                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+                  <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2.5" />
+                </svg>
+              </button>
+            </div>
+            <Timeline events={selDay.events} />
+          </section>
+        </div>
       )}
 
       <ScanLightbox scans={month.sourceScans} label="View this month's printed pages" />
