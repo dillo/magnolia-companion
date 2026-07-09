@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { ActivityMonth } from "@/lib/schema";
 import {
@@ -53,15 +54,20 @@ export default function HomeClient({ months }: { months: ActivityMonth[] }) {
         <p className="font-display italic text-copper">{day.theme}</p>
       )}
 
-      <div role="tablist" aria-label="Activity dates" className="my-4 flex w-fit rounded-full bg-hairline/60 p-1">
-        {PICKS.map((p) => (
-          <button key={p.key} role="tab" aria-selected={pick === p.key} onClick={() => setPick(p.key)}
-            className={`whitespace-nowrap rounded-full px-4 py-2 font-semibold ${
-              pick === p.key ? "bg-copper text-petal" : "text-moss"
-            }`}>
-            {p.label}
-          </button>
-        ))}
+      <div className="my-4 flex flex-wrap items-center gap-3">
+        <div role="tablist" aria-label="Activity dates" className="flex w-fit rounded-full bg-hairline/60 p-1">
+          {PICKS.map((p) => (
+            <button key={p.key} role="tab" aria-selected={pick === p.key} onClick={() => setPick(p.key)}
+              className={`whitespace-nowrap rounded-full px-4 py-2 font-semibold ${
+                pick === p.key ? "bg-copper text-petal" : "text-moss"
+              }`}>
+              {p.label}
+            </button>
+          ))}
+        </div>
+        <Link href="/calendar" className="font-semibold text-copper underline-offset-4 hover:underline">
+          View all activities
+        </Link>
       </div>
 
       {pick === "week" ? (
@@ -103,7 +109,7 @@ function WeekActivities({ months, dates, today }: { months: ActivityMonth[]; dat
             {!day && <p className="text-moss">Not added yet.</p>}
             {specials.map((e, i) => (
               <div key={i} className="mb-1.5 flex items-baseline gap-2">
-                <span className="w-14 shrink-0 text-right font-semibold tabular-nums text-copper">
+                <span className="w-20 shrink-0 text-right font-semibold tabular-nums text-copper">
                   {e.start ? formatTime(e.start) : "All day"}
                 </span>
                 <span>
@@ -112,7 +118,7 @@ function WeekActivities({ months, dates, today }: { months: ActivityMonth[]; dat
               </div>
             ))}
             {routineCount > 0 && (
-              <p className="ml-16 text-[15px] text-moss">+ {routineCount} daily routine items</p>
+              <p className="ml-[5.5rem] text-[15px] text-moss">+ {routineCount} daily routine items</p>
             )}
           </div>
         );

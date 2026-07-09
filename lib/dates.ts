@@ -41,5 +41,6 @@ export function monthNameOfISO(iso: string): string {
 export function formatTime(hhmm: string): string {
   const [h, m] = hhmm.split(":").map(Number);
   const h12 = h % 12 === 0 ? 12 : h % 12;
-  return `${h12}:${String(m).padStart(2, "0")}`;
+  const meridiem = h < 12 ? "AM" : "PM";
+  return `${h12}:${String(m).padStart(2, "0")} ${meridiem}`;
 }

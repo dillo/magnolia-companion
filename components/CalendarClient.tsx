@@ -121,7 +121,7 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
               {day.theme && <div className="font-display text-[15px] italic text-copper">{day.theme}</div>}
               {specials.map((e, i) => (
                 <div key={i} className="flex items-baseline gap-2">
-                  <span className="w-12 shrink-0 text-right font-semibold tabular-nums text-copper">
+                  <span className="w-20 shrink-0 text-right font-semibold tabular-nums text-copper">
                     {e.start ? formatTime(e.start) : "All day"}
                   </span>
                   <span>{e.title}</span>

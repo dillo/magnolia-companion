@@ -43,8 +43,8 @@ describe("formatting", () => {
 });
 
 describe("formatTime", () => {
-  test("pm hours drop to 12h clock", () => expect(formatTime("15:00")).toBe("3:00"));
-  test("am hour keeps minutes", () => expect(formatTime("09:05")).toBe("9:05"));
-  test("noon stays 12", () => expect(formatTime("12:30")).toBe("12:30"));
-  test("midnight is 12", () => expect(formatTime("00:15")).toBe("12:15"));
+  test("pm hours drop to 12h clock", () => expect(formatTime("15:00")).toBe("3:00 PM"));
+  test("am hour keeps minutes", () => expect(formatTime("09:05")).toBe("9:05 AM"));
+  test("noon stays 12", () => expect(formatTime("12:30")).toBe("12:30 PM"));
+  test("midnight is 12", () => expect(formatTime("00:15")).toBe("12:15 AM"));
 });
