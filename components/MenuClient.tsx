@@ -45,14 +45,18 @@ export default function MenuClient({ weeks }: { weeks: MenuWeek[] }) {
           className="font-bold text-copper disabled:opacity-30">Next ›</button>
       </div>
 
-      <div role="tablist" aria-label="Day of week" className="my-4 grid grid-cols-7 gap-1.5">
+      <div
+        role="tablist"
+        aria-label="Day of week"
+        className="my-4 grid grid-cols-7 gap-1 sm:gap-1.5"
+      >
         {weekDates.map((d) => {
           const selected = activeDate === d;
           const isToday = today === d;
           return (
             <button key={d} role="tab" aria-selected={selected} onClick={() => setDate(d)}
               aria-label={`${dayNameOfISO(d)}, ${longDateOfISO(d)}${isToday ? ", today" : ""}`}
-              className={`rounded-lg border py-2 text-center ${
+              className={`rounded-lg border px-0.5 py-2 text-center sm:px-1 ${
                 selected ? "border-copper bg-copper text-petal" : "border-hairline bg-card text-moss"
               }`}>
               <span className="block text-[13px] font-bold uppercase">{dayNameOfISO(d).slice(0, 3)}</span>
