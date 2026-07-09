@@ -7,11 +7,10 @@ import {
   addDaysISO, mondayOfISO,
   dayNameOfISO, longDateOfISO, monthNameOfISO, formatTime,
 } from "@/lib/dates";
-import { findActivityDay, findMenuDay, scansForDate } from "@/lib/lookup";
+import { findActivityDay, findMenuDay } from "@/lib/lookup";
 import Timeline from "@/components/Timeline";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
-import ScanLightbox from "@/components/ScanLightbox";
 import { useToday } from "@/components/useToday";
 import { MEAL_HOURS } from "@/components/MealCards";
 
@@ -82,8 +81,6 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
             ? <Timeline events={day.events} />
             : <EmptyState message={`${monthNameOfISO(date)}'s calendar hasn't been added yet.`} />
         )}
-
-        <ScanLightbox scans={scansForDate(months, date)} label="View this month's printed pages" />
       </section>
 
       <TodayMenuSummary day={todayMenu} today={today} />
@@ -94,16 +91,11 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
 function TodayMenuSummary({ day, today }: { day: MenuDay | null; today: string }) {
   return (
     <aside className="border-t border-hairline pt-5 text-[15px] text-moss lg:sticky lg:top-6 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
-      <div className="mb-3 flex items-start justify-between gap-3">
-        <div>
-          <h2 className="font-display text-xl font-semibold text-ink">Today&apos;s Menu</h2>
-          <p className="mt-1 text-moss">
-            {dayNameOfISO(today)}, {longDateOfISO(today)}
-          </p>
-        </div>
-        <Link href="/menu" className="shrink-0 font-semibold text-copper underline-offset-4 hover:underline">
-          Full menu
-        </Link>
+      <div className="mb-3">
+        <h2 className="font-display text-xl font-semibold text-ink">Today&apos;s Menu</h2>
+        <p className="mt-1 text-moss">
+          {dayNameOfISO(today)}, {longDateOfISO(today)}
+        </p>
       </div>
 
       {!day ? (
@@ -134,6 +126,10 @@ function TodayMenuSummary({ day, today }: { day: MenuDay | null; today: string }
           })}
         </div>
       )}
+
+      <Link href="/menu" className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
+        Full menu
+      </Link>
     </aside>
   );
 }
