@@ -106,7 +106,7 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
       </div>
 
       {/* Agenda list: phones */}
-      <div className="divide-y divide-hairline md:hidden">
+      <div className="divide-y divide-hairline border-y border-hairline md:hidden">
         {month.days.map((day) => {
           const specials = day.events.filter(
             (e) => !e.routine && (filter === "all" || e.dimension === filter),

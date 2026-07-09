@@ -54,7 +54,7 @@ export default function HomeClient({ months }: { months: ActivityMonth[] }) {
         <p className="font-display italic text-copper">{day.theme}</p>
       )}
 
-      <div className="my-4 flex flex-wrap items-center gap-3">
+      <div className="my-4 flex items-center gap-2 sm:gap-3">
         <div role="tablist" aria-label="Activity dates" className="flex w-fit rounded-full bg-hairline/60 p-1">
           {PICKS.map((p) => (
             <button key={p.key} role="tab" aria-selected={pick === p.key} onClick={() => setPick(p.key)}
@@ -65,8 +65,12 @@ export default function HomeClient({ months }: { months: ActivityMonth[] }) {
             </button>
           ))}
         </div>
-        <Link href="/calendar" className="font-semibold text-copper underline-offset-4 hover:underline">
-          View all activities
+        <Link href="/calendar" aria-label="View all activities"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-card text-copper hover:bg-hairline sm:h-auto sm:w-auto sm:border-0 sm:bg-transparent sm:font-semibold sm:underline-offset-4 sm:hover:bg-transparent sm:hover:underline">
+          <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 sm:hidden">
+            <path d="M7 2v3M17 2v3M4 9h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+          </svg>
+          <span className="hidden sm:inline">View all activities</span>
         </Link>
       </div>
 
