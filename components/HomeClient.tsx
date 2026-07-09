@@ -152,8 +152,11 @@ function WeekActivities({ months, dates, today }: { months: ActivityMonth[]; dat
         const day = findActivityDay(months, date);
         const specials = day?.events.filter((e) => !e.routine) ?? [];
         const routineCount = (day?.events.length ?? 0) - specials.length;
+        const isToday = date === today;
         return (
-          <div key={date} className="pb-3">
+          <div key={date} className={`pb-3 ${
+            isToday ? "rounded-lg border border-copper bg-copper/10 px-3" : ""
+          }`}>
             <DayHeading date={date} today={today} theme={day?.theme ?? null} />
             {!day && <p className="text-moss">Not added yet.</p>}
             {specials.map((e, i) => (
