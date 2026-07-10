@@ -9,7 +9,7 @@ describe("loaders", () => {
   test("loads and validates committed fixtures", () => {
     expect(months.length).toBeGreaterThanOrEqual(1);
     expect(months[0].month).toBe("2026-07");
-    expect(weeks[0].weekOf).toBe("2026-07-06");
+    expect(weeks[0].weekOf).toBe("2026-07-05");
   });
 });
 
@@ -21,7 +21,7 @@ describe("lookup", () => {
     expect(findActivityDay(months, "2026-09-01")).toBeNull();
   });
   test("findMenuDay hits and misses", () => {
-    expect(findMenuDay(weeks, "2026-07-08")?.lunch.items[0].name).toBe("Fried catfish");
+    expect(findMenuDay(weeks, "2026-07-08")?.lunch.items[0].name).toBe("Garden Green Salad");
     expect(findMenuDay(weeks, "2026-08-01")).toBeNull();
   });
   test("menuWeekFor maps any date inside the stored menu week range", () => {

@@ -100,7 +100,7 @@ function TodayMenuSummary({ day, today }: { day: MenuDay | null; today: string }
       ) : (
         <div className="space-y-4">
           {MEAL_HOURS.map(([key, label, hours]) => {
-            const items = day[key].items.slice(0, 2);
+            const items = day[key].items;
             return (
               <section key={key}>
                 <div className="mb-1">
@@ -112,8 +112,9 @@ function TodayMenuSummary({ day, today }: { day: MenuDay | null; today: string }
                 ) : (
                   <ul className="space-y-1">
                     {items.map((item, index) => (
-                      <li key={index} className={item.kind === "dessert" ? "text-copper" : ""}>
-                        {item.name}
+                      <li key={index} className="flex gap-2 leading-snug">
+                        <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-copper" />
+                        <span className={item.kind === "dessert" ? "text-copper" : ""}>{item.name}</span>
                       </li>
                     ))}
                   </ul>
