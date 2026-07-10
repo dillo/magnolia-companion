@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { stripFences, rawPageSchema, parsePageText } from "@/lib/ingest/extract";
+import { stripFences, rawMenuWeekSchema, rawPageSchema, parseMenuText, parsePageText } from "@/lib/ingest/extract";
 
 describe("stripFences", () => {
   test("unwraps a json code fence", () => {
@@ -26,6 +26,23 @@ describe("rawPageSchema", () => {
   });
 });
 
+describe("rawMenuWeekSchema", () => {
+  test("accepts a well-formed menu week", () => {
+    const week = {
+      weekOf: "2026-07-05",
+      alwaysAvailable: ["Milk offered at every meal"],
+      days: [{
+        date: "2026-07-05",
+        breakfast: { items: [{ name: "Coffee", kind: "drink" }] },
+        lunch: { items: [{ name: "Baked Ham", kind: "main" }] },
+        dinner: { items: [{ name: "Fruit Cobbler", kind: "dessert" }] },
+      }],
+      warnings: [],
+    };
+    expect(rawMenuWeekSchema.parse(week).days[0].lunch.items[0].name).toBe("Baked Ham");
+  });
+});
+
 describe("parsePageText", () => {
   const page = '{"days":[{"date":"2026-07-08","theme":null,"events":[]}],"warnings":[]}';
   test("parses a complete response", () => {
@@ -40,5 +57,15 @@ describe("parsePageText", () => {
   });
   test("refusal raises a clear error", () => {
     expect(() => parsePageText("", "refusal")).toThrow(/refus/i);
+  });
+});
+
+describe("parseMenuText", () => {
+  const week = '{"weekOf":"2026-07-05","alwaysAvailable":["Milk offered at every meal"],"days":[{"date":"2026-07-05","breakfast":{"items":[]},"lunch":{"items":[]},"dinner":{"items":[]}}],"warnings":[]}';
+  test("parses a complete menu response", () => {
+    expect(parseMenuText(week, "end_turn").weekOf).toBe("2026-07-05");
+  });
+  test("truncated menu output raises a clear error", () => {
+    expect(() => parseMenuText('{"weekOf":"2026', "max_tokens")).toThrow(/truncated/);
   });
 });

@@ -73,9 +73,6 @@ export const menuWeekSchema = z
     days: z.array(menuDaySchema).min(1).max(7),
   })
   .superRefine((w, ctx) => {
-    if (new Date(`${w.weekOf}T12:00:00Z`).getUTCDay() !== 1) {
-      ctx.addIssue({ code: "custom", message: `weekOf ${w.weekOf} is not a Monday` });
-    }
     const end = addDaysISO(w.weekOf, 6);
     const seen = new Set<string>();
     for (const d of w.days) {

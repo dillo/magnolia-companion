@@ -2,6 +2,7 @@ import fs from "node:fs";
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
+import { MEAL_KINDS, type MenuWeek } from "@/lib/schema";
 import type { RawDay } from "./postprocess";
 
 export const rawPageSchema = z.object({
@@ -22,6 +23,27 @@ export const rawPageSchema = z.object({
   warnings: z.array(z.string()),
 });
 
+const mealItemSchema = z.object({
+  name: z.string().min(1),
+  kind: z.enum(MEAL_KINDS),
+});
+
+const mealSchema = z.object({ items: z.array(mealItemSchema) });
+
+export const rawMenuWeekSchema = z.object({
+  weekOf: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  alwaysAvailable: z.array(z.string().min(1)),
+  days: z.array(z.object({
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    breakfast: mealSchema,
+    lunch: mealSchema,
+    dinner: mealSchema,
+  })).min(1).max(7),
+  warnings: z.array(z.string()),
+});
+
+export type RawMenuWeek = z.infer<typeof rawMenuWeekSchema>;
+
 export function stripFences(s: string): string {
   const m = /```(?:json)?\s*([\s\S]*?)```/.exec(s);
   return (m ? m[1] : s).trim();
@@ -38,6 +60,16 @@ export function parsePageText(
     throw new Error("the model refused this request — check the photo and retry");
   }
   return rawPageSchema.parse(JSON.parse(stripFences(text)));
+}
+
+export function parseMenuText(text: string, stopReason: string | null): RawMenuWeek {
+  if (stopReason === "max_tokens") {
+    throw new Error("model output was truncated (hit max_tokens) — raise max_tokens in lib/ingest/extract.ts and retry");
+  }
+  if (stopReason === "refusal") {
+    throw new Error("the model refused this request — check the photo and retry");
+  }
+  return rawMenuWeekSchema.parse(JSON.parse(stripFences(text)));
 }
 
 export function buildActivityPrompt(month: string): string {
@@ -61,6 +93,72 @@ Rules:
 - "dimension" is your best classification of the event from exactly this list: physical, emotional, spiritual, move, learn, social, intellectual, entertainment, nutritional, connect. Use null when unsure. (The printed colored tick marks are unreadable in photos — classify from the event title.)
 - Ignore birthday lists, the meeting-places legend, the Dimensions of Wellness legend, and all page decoration.
 - For anything you cannot read confidently, add a warning string naming the date and time slot, and omit or best-guess the entry as appropriate.`;
+}
+
+export function buildMenuPrompt(): string {
+  return `You are reading a photographed weekly menu from Magnolia Place of Roswell, a senior assisted living facility.
+
+Return ONLY a JSON object (no prose, no markdown fence) with this exact shape:
+{
+  "weekOf": "YYYY-MM-DD",
+  "alwaysAvailable": [ string ],
+  "days": [
+    {
+      "date": "YYYY-MM-DD",
+      "breakfast": { "items": [ { "name": string, "kind": "main"|"side"|"dessert"|"drink" } ] },
+      "lunch": { "items": [ { "name": string, "kind": "main"|"side"|"dessert"|"drink" } ] },
+      "dinner": { "items": [ { "name": string, "kind": "main"|"side"|"dessert"|"drink" } ] }
+    }
+  ],
+  "warnings": [ string ]
+}
+
+Rules:
+- "weekOf" is the first visible date on the printed menu, even when the week starts on Sunday.
+- Include every visible day column in chronological order.
+- Convert printed dates like "Sun 07-05-2026" to ISO dates like "2026-07-05".
+- Preserve menu item names as printed, but normalize obvious line wrapping into one item.
+- Keep repeated items such as coffee, 100% juice, whole grain toast, garden green salad, soup du jour, baked roll, and beverage choice when they are printed in a meal cell.
+- Put footer-wide notes such as "Milk offered at every meal" in "alwaysAvailable" instead of repeating them on every meal.
+- Ignore nutrition icons and legends (heart, leaf, blue mark) because this app does not store dietary flags yet.
+- Classify beverages as "drink"; desserts as "dessert"; vegetables, fruit, bread, toast, rice, potatoes, salad, and other accompaniments as "side"; entrees, soups, sandwiches, pizza, and protein dishes as "main".
+- For anything you cannot read confidently, add a warning string naming the date and meal, and omit or best-guess the item as appropriate.`;
+}
+
+export async function extractMenuWeek(
+  client: Anthropic,
+  imagePath: string,
+): Promise<RawMenuWeek> {
+  const mediaType = imagePath.toLowerCase().endsWith(".png") ? "image/png" : "image/jpeg";
+  const data = fs.readFileSync(imagePath).toString("base64");
+  const res = await client.messages
+    .stream({
+      model: "claude-sonnet-5",
+      max_tokens: 32000,
+      output_config: { format: zodOutputFormat(rawMenuWeekSchema) },
+      messages: [{
+        role: "user",
+        content: [
+          { type: "image", source: { type: "base64", media_type: mediaType, data } },
+          { type: "text", text: buildMenuPrompt() },
+        ],
+      }],
+    })
+    .finalMessage();
+  const text = res.content
+    .filter((b): b is Anthropic.TextBlock => b.type === "text")
+    .map((b) => b.text)
+    .join("");
+  return parseMenuText(text, res.stop_reason);
+}
+
+export function buildMenuWeek(raw: RawMenuWeek, sourceScan: string): MenuWeek {
+  return {
+    weekOf: raw.weekOf,
+    sourceScan,
+    alwaysAvailable: raw.alwaysAvailable,
+    days: raw.days,
+  };
 }
 
 export async function extractActivityPage(

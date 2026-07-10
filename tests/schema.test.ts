@@ -52,11 +52,12 @@ describe("menuWeekSchema", () => {
     expect(parsed.weekOf).toBe("2026-07-06");
     expect(parsed.days).toHaveLength(7);
   });
-  test("rejects a weekOf that is not a Monday", () => {
-    const bad = { weekOf: "2026-07-07", sourceScan: null, alwaysAvailable: [], days: [
-      { date: "2026-07-07", breakfast: { items: [] }, lunch: { items: [] }, dinner: { items: [] } },
+  test("accepts the real printed Sunday-to-Saturday week shape", () => {
+    const week = { weekOf: "2026-07-05", sourceScan: "scans/menu.jpg", alwaysAvailable: ["Milk offered at every meal"], days: [
+      { date: "2026-07-05", breakfast: { items: [] }, lunch: { items: [] }, dinner: { items: [] } },
+      { date: "2026-07-11", breakfast: { items: [] }, lunch: { items: [] }, dinner: { items: [] } },
     ]};
-    expect(() => menuWeekSchema.parse(bad)).toThrow(/not a Monday/);
+    expect(menuWeekSchema.parse(week).weekOf).toBe("2026-07-05");
   });
   test("rejects a day outside the week", () => {
     const bad = { weekOf: "2026-07-06", sourceScan: null, alwaysAvailable: [], days: [

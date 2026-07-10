@@ -8,15 +8,15 @@ Static Next.js site; the git repo is the database. See
 ## Publishing new content (the whole job)
 
 1. Photograph the printed pages (well-lit, flat as possible). AirDrop them to this Mac.
-2. `npm run ingest -- --type activities --month 2026-08 photo1.jpeg photo2.jpeg`
+2. Activities: `npm run ingest -- --type activities --month 2026-08 photo1.jpeg photo2.jpeg`
+   Menus: `npm run ingest -- --type menu menu-photo.jpeg`
 3. Read the warnings. `npm run dev` and compare the site to the paper; fix any
-   misreads directly in `content/activities/2026-08.json`.
+   misreads directly in the generated `content/**/*.json`.
 4. `git add -A && git commit -m "content: August 2026 activities" && git push`
 5. Vercel rebuilds automatically (~1 min). A bad JSON edit fails the build and
    the live site keeps serving the previous version.
 
-Menu ingest is not built yet — waiting on a photo of the real printed menu.
-`content/menus/2026-07-06.json` is placeholder content.
+Menu files are named by the first visible date on the printed weekly menu.
 
 ## Commands
 

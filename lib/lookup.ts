@@ -1,5 +1,5 @@
 import type { ActivityMonth, ActivityDay, MenuWeek, MenuDay } from "./schema";
-import { monthOfISO, mondayOfISO } from "./dates";
+import { addDaysISO, monthOfISO } from "./dates";
 
 export function findActivityDay(months: ActivityMonth[], date: string): ActivityDay | null {
   const month = months.find((m) => m.month === monthOfISO(date));
@@ -7,7 +7,7 @@ export function findActivityDay(months: ActivityMonth[], date: string): Activity
 }
 
 export function menuWeekFor(weeks: MenuWeek[], date: string): MenuWeek | null {
-  return weeks.find((w) => w.weekOf === mondayOfISO(date)) ?? null;
+  return weeks.find((w) => date >= w.weekOf && date <= addDaysISO(w.weekOf, 6)) ?? null;
 }
 
 export function findMenuDay(weeks: MenuWeek[], date: string): MenuDay | null {

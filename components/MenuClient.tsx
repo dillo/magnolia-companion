@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { ActivityDay, ActivityMonth, MenuWeek } from "@/lib/schema";
-import { mondayOfISO, addDaysISO, dayNameOfISO, longDateOfISO, formatTime } from "@/lib/dates";
-import { findActivityDay } from "@/lib/lookup";
+import { addDaysISO, dayNameOfISO, longDateOfISO, formatTime } from "@/lib/dates";
+import { findActivityDay, menuWeekFor } from "@/lib/lookup";
 import MealCards from "@/components/MealCards";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
@@ -44,7 +44,8 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
     if (!today) return;
     const previousToday = previousTodayRef.current;
     previousTodayRef.current = today;
-    const todayWeekIdx = weeks.findIndex((w) => w.weekOf === mondayOfISO(today));
+    const todayWeek = menuWeekFor(weeks, today);
+    const todayWeekIdx = todayWeek ? weeks.indexOf(todayWeek) : -1;
     const fallbackIdx = Math.max(0, weeks.length - 1);
     const currentDate = dateRef.current;
 

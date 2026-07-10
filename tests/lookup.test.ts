@@ -24,7 +24,7 @@ describe("lookup", () => {
     expect(findMenuDay(weeks, "2026-07-08")?.lunch.items[0].name).toBe("Fried catfish");
     expect(findMenuDay(weeks, "2026-08-01")).toBeNull();
   });
-  test("menuWeekFor maps any weekday to its Monday week", () => {
+  test("menuWeekFor maps any date inside the stored menu week range", () => {
     expect(menuWeekFor(weeks, "2026-07-12")?.weekOf).toBe("2026-07-06");
     expect(menuWeekFor(weeks, "2026-07-14")).toBeNull();
   });
