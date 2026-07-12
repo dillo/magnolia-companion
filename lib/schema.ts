@@ -30,7 +30,7 @@ export type ActivityDay = z.infer<typeof activityDaySchema>;
 export const activityMonthSchema = z
   .object({
     month: z.string().regex(/^\d{4}-\d{2}$/, "expected YYYY-MM"),
-    sourceScans: z.array(z.string().min(1)).min(1),
+    sourceScans: z.array(z.string().min(1)),
     days: z.array(activityDaySchema),
   })
   .superRefine((m, ctx) => {

@@ -32,10 +32,7 @@ describe("lookup", () => {
     expect(menuWeekFor(weeks, "2026-07-14")).toBeNull();
   });
   test("scansForDate returns the month's scans", () => {
-    expect(scansForDate(months, "2026-07-08")).toEqual([
-      "scans/2026-07-activities-p1.jpg",
-      "scans/2026-07-activities-p2.jpg",
-    ]);
+    expect(scansForDate(months, "2026-07-08")).toEqual([]);
     expect(scansForDate(months, "2026-09-01")).toEqual([]);
   });
 });

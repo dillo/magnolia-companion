@@ -7,13 +7,15 @@ Static Next.js site; the git repo is the database. See
 
 ## Publishing new content (the whole job)
 
-1. Photograph the printed pages (well-lit, flat as possible). AirDrop them to this Mac.
-2. Activities: `npm run ingest -- --type activities --month 2026-08 photo1.jpeg photo2.jpeg`
-   Menus: `npm run ingest -- --type menu menu-photo.jpeg`
-3. Read the warnings. `npm run dev` and compare the site to the paper; fix any
+1. Activities from Go Icon: `npm run ingest -- --type goicon-activities`
+   This writes the current month and next month for Personal Care.
+2. Fallback scanned activities: photograph the printed pages (well-lit, flat as possible), then run
+   `npm run ingest -- --type activities --month 2026-08 photo1.jpeg photo2.jpeg`
+3. Menus: `npm run ingest -- --type menu menu-photo.jpeg`
+4. Read the warnings. `npm run dev` and compare the site to the source; fix any
    misreads directly in the generated `content/**/*.json`.
-4. `git add -A && git commit -m "content: August 2026 activities" && git push`
-5. Vercel rebuilds automatically (~1 min). A bad JSON edit fails the build and
+5. `git add -A && git commit -m "content: refresh activities" && git push`
+6. Vercel rebuilds automatically (~1 min). A bad JSON edit fails the build and
    the live site keeps serving the previous version.
 
 Menu files are named by the first visible date on the printed weekly menu.
@@ -24,9 +26,9 @@ Menu files are named by the first visible date on the printed weekly menu.
 - `npm test` — unit tests (vitest)
 - `npm run test:e2e` — Playwright smoke tests
 - `npm run build` — production build (also validates all content JSON)
-- `npm run ingest` — extract structured data from scan photos (needs `.env` with `ANTHROPIC_API_KEY`)
+- `npm run ingest` — refresh content from Go Icon or extract structured data from scan photos
 
 ## Secrets
 
-`ANTHROPIC_API_KEY` lives only in the local `.env` (git-ignored).
+`ANTHROPIC_API_KEY` lives only in the local `.env` (git-ignored) and is only needed for photo ingest.
 Vercel has **no** environment variables; the deployed site makes no API calls.

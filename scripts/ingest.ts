@@ -4,11 +4,14 @@ import Anthropic from "@anthropic-ai/sdk";
 import { buildMenuWeek, extractActivityPage, extractMenuWeek } from "@/lib/ingest/extract";
 import { menuWeekSchema } from "@/lib/schema";
 import { buildActivityMonth, type RawDay } from "@/lib/ingest/postprocess";
+import { currentAndNextMonth, fetchGoIconActivityMonths, GOICON_DEFAULTS } from "@/lib/ingest/goicon";
+import { todayISO } from "@/lib/dates";
 
 function fail(msg: string): never {
   console.error(`\nError: ${msg}`);
   console.error("\nUsage:");
   console.error("  npm run ingest -- --type activities --month YYYY-MM photo1.jpg [photo2.jpg ...]");
+  console.error("  npm run ingest -- --type goicon-activities [--month YYYY-MM]");
   console.error("  npm run ingest -- --type menu photo.jpg");
   process.exit(1);
 }
@@ -21,15 +24,36 @@ async function main() {
   };
   const type = opt("type");
   const month = opt("month");
+  const facilityId = opt("facilityId") ?? GOICON_DEFAULTS.facilityId;
+  const token = opt("token") ?? GOICON_DEFAULTS.token;
+  const serviceLevel = opt("serviceLevel") ?? GOICON_DEFAULTS.serviceLevel;
   const files = args.filter((a, i) => !a.startsWith("--") && args[i - 1]?.startsWith("--") !== true);
 
-  if (type !== "activities" && type !== "menu") fail(`unknown --type "${type}"`);
+  if (type !== "activities" && type !== "goicon-activities" && type !== "menu") fail(`unknown --type "${type}"`);
   if (type === "activities" && (!month || !/^\d{4}-\d{2}$/.test(month))) fail("--month must look like 2026-07");
+  if (type === "goicon-activities" && month && !/^\d{4}-\d{2}$/.test(month)) fail("--month must look like 2026-07");
   if (type === "menu" && month) fail("--month is only used for activities");
-  if (files.length === 0) fail("no photo files given");
+  if (type !== "goicon-activities" && files.length === 0) fail("no photo files given");
+  if (type === "goicon-activities" && files.length > 0) fail("goicon-activities ingest does not take photo files");
   if (type === "menu" && files.length !== 1) fail("menu ingest expects exactly one photo");
   for (const f of files) if (!fs.existsSync(f)) fail(`file not found: ${f}`);
-  if (!process.env.ANTHROPIC_API_KEY) fail("ANTHROPIC_API_KEY missing — put it in .env");
+  if (type !== "goicon-activities" && !process.env.ANTHROPIC_API_KEY) fail("ANTHROPIC_API_KEY missing — put it in .env");
+
+  if (type === "goicon-activities") {
+    const months = month ? [month, currentAndNextMonth(`${month}-01`)[1]] : currentAndNextMonth(todayISO());
+    console.log(`Fetching Personal Care activities from Go Icon for ${months.join(" and ")} ...`);
+    const activityMonths = await fetchGoIconActivityMonths(months, { facilityId, token, serviceLevel });
+
+    fs.mkdirSync(path.join("content", "activities"), { recursive: true });
+    for (const data of activityMonths) {
+      const outPath = path.join("content", "activities", `${data.month}.json`);
+      fs.writeFileSync(outPath, `${JSON.stringify(data, null, 2)}\n`);
+      const eventCount = data.days.reduce((n, d) => n + d.events.length, 0);
+      console.log(`Wrote ${outPath}: ${data.days.length} days, ${eventCount} events.`);
+    }
+    console.log("\nNext: npm run dev — compare the site against the embedded Go Icon calendar, then commit and push.");
+    return;
+  }
 
   const client = new Anthropic();
 

@@ -13,6 +13,14 @@ describe("activityMonthSchema", () => {
     expect(parsed.month).toBe("2026-07");
     expect(parsed.days.length).toBeGreaterThanOrEqual(7);
   });
+  test("accepts API-generated activity months without source scans", () => {
+    const parsed = activityMonthSchema.parse({
+      month: "2026-08",
+      sourceScans: [],
+      days: [{ date: "2026-08-01", theme: null, events: [] }],
+    });
+    expect(parsed.sourceScans).toEqual([]);
+  });
   test("rejects a day outside the month", () => {
     const bad = {
       month: "2026-07",
