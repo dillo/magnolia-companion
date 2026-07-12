@@ -45,8 +45,12 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
     ? `${longDateOfISO(weekStart)} – ${longDateOfISO(addDaysISO(weekStart, 6))}`
     : `${dayNameOfISO(date)}, ${longDateOfISO(date)}`;
 
+  const showMenuSummary = pick !== "week";
+
   return (
-    <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+    <div className={`mx-auto grid max-w-5xl gap-8 ${
+      showMenuSummary ? "lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start" : ""
+    }`}>
       <section className="min-w-0 max-w-xl">
         <h1 className="font-display text-3xl font-semibold">{pageTitle(pick)}</h1>
         <p className="mt-1 text-moss">
@@ -74,7 +78,12 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
         </div>
 
         {pick === "week" ? (
-          <WeekActivities months={months} dates={weekDates} today={today} />
+          <>
+            <WeekActivities months={months} dates={weekDates} today={today} />
+            <Link href="/menu" className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
+              Full menu
+            </Link>
+          </>
         ) : (
           day
             ? <Timeline events={day.events} />
@@ -82,7 +91,7 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
         )}
       </section>
 
-      <MenuSummary day={menuDay} date={menuDate} title={menuTitle} />
+      {showMenuSummary && <MenuSummary day={menuDay} date={menuDate} title={menuTitle} />}
     </div>
   );
 }
