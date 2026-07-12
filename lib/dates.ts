@@ -40,6 +40,10 @@ export function mondayOfISO(iso: string): string {
   return addDaysISO(iso, dow === 0 ? -6 : 1 - dow);
 }
 
+export function sundayOfISO(iso: string): string {
+  return addDaysISO(iso, -toUTCNoon(iso).getUTCDay());
+}
+
 export function monthOfISO(iso: string): string {
   return iso.slice(0, 7);
 }

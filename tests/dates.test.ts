@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import {
-  todayISO, addDaysISO, mondayOfISO, monthOfISO,
+  todayISO, addDaysISO, mondayOfISO, sundayOfISO, monthOfISO,
   dayNameOfISO, longDateOfISO, monthNameOfISO, formatTime,
   msUntilNextLocalDate,
 } from "@/lib/dates";
@@ -43,6 +43,15 @@ describe("mondayOfISO", () => {
   });
   test("Monday maps to itself", () => {
     expect(mondayOfISO("2026-07-06")).toBe("2026-07-06");
+  });
+});
+
+describe("sundayOfISO", () => {
+  test("Wednesday maps to its Sunday-start menu week", () => {
+    expect(sundayOfISO("2026-07-08")).toBe("2026-07-05");
+  });
+  test("Sunday maps to itself", () => {
+    expect(sundayOfISO("2026-07-12")).toBe("2026-07-12");
   });
 });
 

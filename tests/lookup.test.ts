@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { loadActivityMonths, loadMenuWeeks } from "@/lib/content";
-import { findActivityDay, findMenuDay, menuWeekFor, scansForDate } from "@/lib/lookup";
+import { findActivityDay, findMenuDay, menuWeekFor, publishedMenuWeeks, scansForDate } from "@/lib/lookup";
 
 const months = loadActivityMonths();
 const weeks = loadMenuWeeks();
@@ -22,10 +22,13 @@ describe("lookup", () => {
   });
   test("findMenuDay hits and misses", () => {
     expect(findMenuDay(weeks, "2026-07-08")?.lunch.items[0].name).toBe("Garden Green Salad");
+    expect(findMenuDay(weeks, "2026-07-12")).toBeNull();
     expect(findMenuDay(weeks, "2026-08-01")).toBeNull();
   });
-  test("menuWeekFor maps any date inside the stored menu week range", () => {
-    expect(menuWeekFor(weeks, "2026-07-12")?.weekOf).toBe("2026-07-06");
+  test("menu lookups ignore placeholder menu files that have not been ingested", () => {
+    expect(publishedMenuWeeks(weeks).map((w) => w.weekOf)).not.toContain("2026-07-06");
+    expect(menuWeekFor(weeks, "2026-07-11")?.weekOf).toBe("2026-07-05");
+    expect(menuWeekFor(weeks, "2026-07-12")).toBeNull();
     expect(menuWeekFor(weeks, "2026-07-14")).toBeNull();
   });
   test("scansForDate returns the month's scans", () => {

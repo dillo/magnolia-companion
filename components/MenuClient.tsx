@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { ActivityDay, ActivityMonth, MenuWeek } from "@/lib/schema";
-import { addDaysISO, dayNameOfISO, longDateOfISO, formatTime } from "@/lib/dates";
-import { findActivityDay, menuWeekFor } from "@/lib/lookup";
+import { addDaysISO, dayNameOfISO, longDateOfISO, formatTime, sundayOfISO } from "@/lib/dates";
+import { findActivityDay, menuWeekFor, publishedMenuWeeks } from "@/lib/lookup";
 import MealCards from "@/components/MealCards";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
@@ -31,6 +31,7 @@ function weekRangeLabel(start: string): string {
 
 export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; months: ActivityMonth[] }) {
   const today = useToday();
+  const menus = useMemo(() => publishedMenuWeeks(weeks), [weeks]);
   const [idx, setIdx] = useState(0);
   const [date, setDate] = useState<string | null>(null);
   const previousTodayRef = useRef<string | null>(null);
@@ -44,30 +45,30 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
     if (!today) return;
     const previousToday = previousTodayRef.current;
     previousTodayRef.current = today;
-    const todayWeek = menuWeekFor(weeks, today);
-    const todayWeekIdx = todayWeek ? weeks.indexOf(todayWeek) : -1;
-    const fallbackIdx = Math.max(0, weeks.length - 1);
+    const todayWeek = menuWeekFor(menus, today);
+    const todayWeekIdx = todayWeek ? menus.indexOf(todayWeek) : -1;
     const currentDate = dateRef.current;
 
     if (currentDate && currentDate !== previousToday) return;
-    setIdx(todayWeekIdx >= 0 ? todayWeekIdx : fallbackIdx);
+    setIdx(todayWeekIdx);
     setDate(today);
-  }, [today, weeks]);
+  }, [today, menus]);
 
   if (!today || !date) return null;
-  if (weeks.length === 0) return <EmptyState message="No menus have been added yet." />;
+  if (menus.length === 0) return <EmptyState message="No menus have been added yet." />;
 
-  const week = weeks[idx];
-  const weekDates = Array.from({ length: 7 }, (_, i) => addDaysISO(week.weekOf, i));
-  const activeDate = weekDates.includes(date) ? date : week.weekOf;
-  const day = week.days.find((d) => d.date === activeDate) ?? null;
+  const week = idx >= 0 ? menus[idx] : null;
+  const weekStart = week?.weekOf ?? sundayOfISO(today);
+  const weekDates = Array.from({ length: 7 }, (_, i) => addDaysISO(weekStart, i));
+  const activeDate = weekDates.includes(date) ? date : weekStart;
+  const day = week?.days.find((d) => d.date === activeDate) ?? null;
   const todayActivities = findActivityDay(months, today);
-  const weekRange = weekRangeLabel(week.weekOf);
+  const weekRange = weekRangeLabel(weekStart);
 
   function moveWeek(delta: number) {
-    const next = Math.min(weeks.length - 1, Math.max(0, idx + delta));
+    const next = idx < 0 ? menus.length - 1 : Math.min(menus.length - 1, Math.max(0, idx + delta));
     setIdx(next);
-    setDate(weeks[next].weekOf);
+    setDate(menus[next].weekOf);
   }
 
   return (
@@ -80,7 +81,7 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
             <h1 className="whitespace-nowrap font-display text-3xl font-semibold">This Week</h1>
             <p className="mt-1 truncate text-moss">{weekRange}</p>
           </div>
-          <button disabled={idx === weeks.length - 1} onClick={() => moveWeek(1)}
+          <button disabled={idx < 0 || idx === menus.length - 1} onClick={() => moveWeek(1)}
             className="mt-1 whitespace-nowrap font-bold text-copper disabled:opacity-30">Next ›</button>
         </div>
 
@@ -109,9 +110,15 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
           })}
         </div>
 
+        {!week && (
+          <p className="mb-3 text-moss">
+            This week&apos;s menu hasn&apos;t been added yet. Add the new menu after Sunday ingest.
+          </p>
+        )}
+
         <MealCards day={day} />
 
-        <ScanLightbox scans={week.sourceScan ? [week.sourceScan] : []} label="View the printed menu" />
+        <ScanLightbox scans={week?.sourceScan ? [week.sourceScan] : []} label="View the printed menu" />
       </section>
 
       <TodayActivitiesSummary day={todayActivities} today={today} />

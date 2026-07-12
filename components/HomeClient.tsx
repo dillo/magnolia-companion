@@ -38,7 +38,9 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
   const weekStart = mondayOfISO(today);
   const weekDates = Array.from({ length: 7 }, (_, i) => addDaysISO(weekStart, i));
   const day = findActivityDay(months, date);
-  const todayMenu = findMenuDay(weeks, today);
+  const menuDate = pick === "tomorrow" ? date : today;
+  const menuDay = findMenuDay(weeks, menuDate);
+  const menuTitle = pick === "tomorrow" ? "Tomorrow's Menu" : "Today's Menu";
   const activeDateLabel = pick === "week"
     ? `${longDateOfISO(weekStart)} – ${longDateOfISO(addDaysISO(weekStart, 6))}`
     : `${dayNameOfISO(date)}, ${longDateOfISO(date)}`;
@@ -80,23 +82,43 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
         )}
       </section>
 
-      <TodayMenuSummary day={todayMenu} today={today} />
+      <MenuSummary day={menuDay} date={menuDate} title={menuTitle} />
     </div>
   );
 }
 
-function TodayMenuSummary({ day, today }: { day: MenuDay | null; today: string }) {
+function MenuSummary({ day, date, title }: { day: MenuDay | null; date: string; title: string }) {
   return (
     <aside className="pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
       <div className="mb-3">
-        <h2 className="font-display text-xl font-semibold text-ink">Today&apos;s Menu</h2>
+        <h2 className="font-display text-xl font-semibold text-ink">{title}</h2>
         <p className="mt-1 text-moss">
-          {dayNameOfISO(today)}, {longDateOfISO(today)}
+          {dayNameOfISO(date)}, {longDateOfISO(date)}
         </p>
       </div>
 
       {!day ? (
-        <p>This week&apos;s menu hasn&apos;t been added yet.</p>
+        <div>
+          <p className="mb-3">The menu for this date hasn&apos;t been added yet.</p>
+          <div className="space-y-4">
+            {MEAL_HOURS.map(([key, label, hours]) => (
+              <section key={key}>
+                <div className="mb-1">
+                  <h3 className="font-semibold text-ink">{label}</h3>
+                  <p className="tabular-nums">{hours}</p>
+                </div>
+                <ul className="space-y-1">
+                  {Array.from({ length: 3 }, (_, index) => (
+                    <li key={index} className="flex gap-2 leading-snug text-moss">
+                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-copper/50" />
+                      <span className="tracking-widest">...</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </div>
       ) : (
         <div className="space-y-4">
           {MEAL_HOURS.map(([key, label, hours]) => {
