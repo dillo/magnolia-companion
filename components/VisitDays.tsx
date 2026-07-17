@@ -33,7 +33,7 @@ export function visitDateLabel(day: VisitDay): string {
 
 export function VisitDayCard({ day, compact = false }: { day: VisitDay; compact?: boolean }) {
   return (
-    <article className={compact ? "border-t border-hairline py-3 first:border-t-0 first:pt-0" : "py-4 md:rounded-lg md:border md:border-hairline md:bg-card md:p-4"}>
+    <article className={compact ? "border-t border-hairline py-3 first:border-t-0 first:pt-0" : "py-4"}>
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="font-display text-xl font-semibold text-ink">{day.title}</h3>
         <VisitTypePill type={day.type} />

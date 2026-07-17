@@ -42,7 +42,7 @@ export default function VisitsClient({ visitDays }: { visitDays: VisitDay[] }) {
         </div>
       </div>
 
-      <div className="mt-6 divide-y divide-hairline border-y border-hairline md:grid md:grid-cols-2 md:gap-4 md:divide-y-0 md:border-y-0">
+      <div className="mt-6 divide-y divide-hairline border-y border-hairline">
         {filtered.map((day) => <VisitDayCard key={`${day.startDate}-${day.title}`} day={day} />)}
       </div>
 

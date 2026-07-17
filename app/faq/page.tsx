@@ -221,16 +221,19 @@ export default function FaqPage() {
       </div>
 
       <div className="mt-6 grid gap-5 lg:grid-cols-[14rem_minmax(0,1fr)] lg:items-start">
-        <aside className="rounded-lg border border-hairline bg-card p-4 lg:sticky lg:top-6">
-          <h2 className="font-display text-xl font-semibold">Topics</h2>
-          <nav aria-label="FAQ topics" className="mt-3 grid gap-2 text-moss">
+        <aside className="lg:sticky lg:top-6">
+          <h2 className="font-display text-2xl font-semibold">Topics</h2>
+          <nav aria-label="FAQ topics" className="mt-3 divide-y divide-hairline border-y border-hairline text-moss">
             {FAQ_SECTIONS.map((section) => (
               <a
                 key={section.title}
                 href={`#${sectionId(section.title)}`}
-                className="rounded-md px-2 py-1 font-semibold underline-offset-4 hover:bg-hairline/60 hover:text-ink hover:underline"
+                className="flex items-center justify-between gap-3 py-3 font-semibold text-copper hover:text-ink"
               >
-                {section.title}
+                <span>{section.title}</span>
+                <span aria-hidden="true" className="text-xl leading-none text-copper">
+                  ›
+                </span>
               </a>
             ))}
           </nav>
