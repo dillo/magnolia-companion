@@ -78,7 +78,7 @@ describe("menuWeekSchema", () => {
 describe("visitDaysSchema", () => {
   test("accepts the committed visit day fixture", () => {
     const parsed = visitDaysSchema.parse(readJSON("content/visit-days.json"));
-    expect(parsed.some((day) => day.title === "Rosh Hashanah" && day.type === "jewish")).toBe(true);
+    expect(parsed.some((day) => day.title === "Hanukkah" && day.type === "jewish")).toBe(true);
     expect(parsed.some((day) => day.title === "Mother's Day" && day.type === "family")).toBe(true);
   });
   test("rejects a visit day that ends before it starts", () => {

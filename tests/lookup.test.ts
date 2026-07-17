@@ -41,6 +41,6 @@ describe("lookup", () => {
   });
   test("visit day lookups find upcoming and ranged holidays", () => {
     expect(upcomingVisitDays(visitDays, "2026-07-17", 1)[0].title).toBe("Labor Day");
-    expect(visitDaysInRange(visitDays, "2026-09-12", "2026-09-12").map((day) => day.title)).toContain("Rosh Hashanah");
+    expect(visitDaysInRange(visitDays, "2026-12-05", "2026-12-05").map((day) => day.title)).toContain("Hanukkah");
   });
 });
