@@ -16,10 +16,24 @@ html { scrollbar-gutter: stable; }
 :root { font-size: 106.25%; } /* 17px base — senior-readable floor */
 :root[data-textsize="lg"] { font-size: 118.75%; } /* 19px */
 :root[data-textsize="xl"] { font-size: 131.25%; } /* 21px */
+:root[data-contrast="high"] {
+  --color-petal: #FFFDF8;
+  --color-ink: #11150F;
+  --color-moss: #2F382D;
+  --color-copper: #78320C;
+  --color-hairline: #6C6F62;
+  --color-card: #FFFFFF;
+}
 
 body { background: var(--color-petal); color: var(--color-ink); }
 
 :focus-visible { outline: 2px solid var(--color-copper); outline-offset: 2px; }
+
+:root[data-reduced-motion="true"] *, :root[data-reduced-motion="true"] *::before, :root[data-reduced-motion="true"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
