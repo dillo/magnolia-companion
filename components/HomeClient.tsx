@@ -2,17 +2,18 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import type { ActivityMonth, MenuDay, MenuWeek } from "@/lib/schema";
+import type { ActivityMonth, MenuDay, MenuWeek, VisitDay } from "@/lib/schema";
 import {
   addDaysISO, mondayOfISO,
   dayNameOfISO, longDateOfISO, monthNameOfISO, formatTime,
 } from "@/lib/dates";
-import { findActivityDay, findMenuDay } from "@/lib/lookup";
+import { findActivityDay, findMenuDay, upcomingVisitDays } from "@/lib/lookup";
 import Timeline from "@/components/Timeline";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
 import { useToday } from "@/components/useToday";
 import { MEAL_HOURS } from "@/components/MealCards";
+import { VisitDaysSummary } from "@/components/VisitDays";
 
 type DayPick = "today" | "tomorrow" | "week";
 
@@ -28,7 +29,15 @@ function pageTitle(pick: DayPick) {
   return "This Week's Activities";
 }
 
-export default function HomeClient({ months, weeks }: { months: ActivityMonth[]; weeks: MenuWeek[] }) {
+export default function HomeClient({
+  months,
+  weeks,
+  visitDays,
+}: {
+  months: ActivityMonth[];
+  weeks: MenuWeek[];
+  visitDays: VisitDay[];
+}) {
   const today = useToday();
   const [pick, setPick] = useState<DayPick>("today");
 
@@ -46,6 +55,7 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
     : `${dayNameOfISO(date)}, ${longDateOfISO(date)}`;
 
   const showMenuSummary = pick !== "week";
+  const upcomingVisits = upcomingVisitDays(visitDays, today, 3);
 
   return (
     <div className={`mx-auto grid max-w-5xl gap-8 ${
@@ -71,34 +81,35 @@ export default function HomeClient({ months, weeks }: { months: ActivityMonth[];
               </button>
             ))}
           </div>
-          <Link href="/calendar" aria-label="View all activities"
-            className="hidden shrink-0 text-copper hover:underline sm:inline-flex sm:font-semibold sm:underline-offset-4">
-            View all activities
-          </Link>
         </div>
 
         {pick === "week" ? (
-          <>
-            <WeekActivities months={months} dates={weekDates} today={today} />
-            <Link href="/menu" className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
-              Full menu
-            </Link>
-          </>
+          <WeekActivities months={months} dates={weekDates} today={today} />
         ) : (
           day
             ? <Timeline events={day.events} />
             : <EmptyState message={`${monthNameOfISO(date)}'s calendar hasn't been added yet.`} />
         )}
+
+        <Link href="/calendar"
+          className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
+          View all activities
+        </Link>
       </section>
 
-      {showMenuSummary && <MenuSummary day={menuDay} date={menuDate} title={menuTitle} />}
+      {showMenuSummary && (
+        <aside className="space-y-5 pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
+          <MenuSummary day={menuDay} date={menuDate} title={menuTitle} />
+          <VisitDaysSummary days={upcomingVisits} />
+        </aside>
+      )}
     </div>
   );
 }
 
 function MenuSummary({ day, date, title }: { day: MenuDay | null; date: string; title: string }) {
   return (
-    <aside className="pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
+    <section>
       <div className="mb-3">
         <h2 className="font-display text-xl font-semibold text-ink">{title}</h2>
         <p className="mt-1 text-moss">
@@ -159,7 +170,7 @@ function MenuSummary({ day, date, title }: { day: MenuDay | null; date: string; 
       <Link href="/menu" className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
         Full menu
       </Link>
-    </aside>
+    </section>
   );
 }
 

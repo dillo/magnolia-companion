@@ -1,9 +1,13 @@
 import { describe, expect, test } from "vitest";
-import { loadActivityMonths, loadMenuWeeks } from "@/lib/content";
-import { findActivityDay, findMenuDay, menuWeekFor, publishedMenuWeeks, scansForDate } from "@/lib/lookup";
+import { loadActivityMonths, loadMenuWeeks, loadVisitDays } from "@/lib/content";
+import {
+  findActivityDay, findMenuDay, menuWeekFor, publishedMenuWeeks, scansForDate,
+  upcomingVisitDays, visitDaysInRange,
+} from "@/lib/lookup";
 
 const months = loadActivityMonths();
 const weeks = loadMenuWeeks();
+const visitDays = loadVisitDays();
 
 describe("loaders", () => {
   test("loads and validates committed fixtures", () => {
@@ -22,17 +26,21 @@ describe("lookup", () => {
   });
   test("findMenuDay hits and misses", () => {
     expect(findMenuDay(weeks, "2026-07-08")?.lunch.items[0].name).toBe("Garden Green Salad");
-    expect(findMenuDay(weeks, "2026-07-12")).toBeNull();
+    expect(findMenuDay(weeks, "2026-07-12")?.dinner.items.at(-1)?.name).toBe("Boston Cream Cake");
     expect(findMenuDay(weeks, "2026-08-01")).toBeNull();
   });
   test("menu lookups ignore placeholder menu files that have not been ingested", () => {
     expect(publishedMenuWeeks(weeks).map((w) => w.weekOf)).not.toContain("2026-07-06");
     expect(menuWeekFor(weeks, "2026-07-11")?.weekOf).toBe("2026-07-05");
-    expect(menuWeekFor(weeks, "2026-07-12")).toBeNull();
-    expect(menuWeekFor(weeks, "2026-07-14")).toBeNull();
+    expect(menuWeekFor(weeks, "2026-07-12")?.weekOf).toBe("2026-07-12");
+    expect(menuWeekFor(weeks, "2026-08-01")).toBeNull();
   });
   test("scansForDate returns the month's scans", () => {
     expect(scansForDate(months, "2026-07-08")).toEqual([]);
     expect(scansForDate(months, "2026-09-01")).toEqual([]);
+  });
+  test("visit day lookups find upcoming and ranged holidays", () => {
+    expect(upcomingVisitDays(visitDays, "2026-07-17", 1)[0].title).toBe("Labor Day");
+    expect(visitDaysInRange(visitDays, "2026-09-12", "2026-09-12").map((day) => day.title)).toContain("Rosh Hashanah");
   });
 });

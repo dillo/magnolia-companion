@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { activityMonthSchema, menuWeekSchema } from "@/lib/schema";
+import { activityMonthSchema, menuWeekSchema, visitDaysSchema } from "@/lib/schema";
 
 function readJSON(rel: string) {
   return JSON.parse(fs.readFileSync(path.join(process.cwd(), rel), "utf8"));
@@ -72,5 +72,24 @@ describe("menuWeekSchema", () => {
       { date: "2026-07-14", breakfast: { items: [] }, lunch: { items: [] }, dinner: { items: [] } },
     ]};
     expect(() => menuWeekSchema.parse(bad)).toThrow(/outside week/);
+  });
+});
+
+describe("visitDaysSchema", () => {
+  test("accepts the committed visit day fixture", () => {
+    const parsed = visitDaysSchema.parse(readJSON("content/visit-days.json"));
+    expect(parsed.some((day) => day.title === "Rosh Hashanah" && day.type === "jewish")).toBe(true);
+    expect(parsed.some((day) => day.title === "Mother's Day" && day.type === "family")).toBe(true);
+  });
+  test("rejects a visit day that ends before it starts", () => {
+    const bad = [{
+      startDate: "2026-12-25",
+      endDate: "2026-12-24",
+      title: "Christmas Day",
+      type: "federal",
+      timing: null,
+      note: "Family visit day.",
+    }];
+    expect(() => visitDaysSchema.parse(bad)).toThrow(/ends before it starts/);
   });
 });

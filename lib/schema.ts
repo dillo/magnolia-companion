@@ -86,3 +86,33 @@ export const menuWeekSchema = z
     }
   });
 export type MenuWeek = z.infer<typeof menuWeekSchema>;
+
+export const VISIT_DAY_TYPES = ["federal", "family", "jewish", "christian"] as const;
+export type VisitDayType = (typeof VISIT_DAY_TYPES)[number];
+
+export const visitDaySchema = z
+  .object({
+    startDate: isoDate,
+    endDate: isoDate,
+    title: z.string().min(1),
+    type: z.enum(VISIT_DAY_TYPES),
+    timing: z.string().min(1).nullable(),
+    note: z.string().min(1),
+  })
+  .superRefine((v, ctx) => {
+    if (v.endDate < v.startDate) {
+      ctx.addIssue({ code: "custom", message: `${v.title} ends before it starts` });
+    }
+  });
+export type VisitDay = z.infer<typeof visitDaySchema>;
+
+export const visitDaysSchema = z.array(visitDaySchema).superRefine((days, ctx) => {
+  const seen = new Set<string>();
+  for (const day of days) {
+    const key = `${day.startDate}:${day.title}`;
+    if (seen.has(key)) {
+      ctx.addIssue({ code: "custom", message: `duplicate visit day ${key}` });
+    }
+    seen.add(key);
+  }
+});

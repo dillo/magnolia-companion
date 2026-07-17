@@ -7,12 +7,13 @@ const NAV = [
   { href: "/", label: "Activities" },
   { href: "/menu", label: "Menu" },
   { href: "/calendar", label: "Calendar" },
+  { href: "/visits", label: "Visits" },
 ];
 
 export default function NavLinks() {
   const pathname = usePathname();
   return (
-    <nav aria-label="Main" className="mt-3 inline-grid grid-cols-3 rounded-full bg-hairline/60 p-1 sm:mt-0 sm:flex sm:w-auto sm:justify-end sm:gap-2 sm:bg-transparent sm:p-0">
+    <nav aria-label="Main" className="mt-3 inline-grid grid-cols-4 rounded-full bg-hairline/60 p-1 sm:mt-0 sm:flex sm:w-auto sm:justify-end sm:gap-2 sm:bg-transparent sm:p-0">
       {NAV.map((n) => {
         const active = pathname === n.href;
         return (

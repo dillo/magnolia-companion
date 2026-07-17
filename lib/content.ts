@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import {
-  activityMonthSchema, menuWeekSchema,
-  type ActivityMonth, type MenuWeek,
+  activityMonthSchema, menuWeekSchema, visitDaysSchema,
+  type ActivityMonth, type MenuWeek, type VisitDay,
 } from "./schema";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
@@ -36,4 +36,15 @@ export function loadMenuWeeks(): MenuWeek[] {
       throw new Error(`content/menus/${file}: ${err instanceof Error ? err.message : err}`);
     }
   }).sort((a, b) => a.weekOf.localeCompare(b.weekOf));
+}
+
+export function loadVisitDays(): VisitDay[] {
+  const file = path.join(CONTENT_DIR, "visit-days.json");
+  if (!fs.existsSync(file)) return [];
+  try {
+    return visitDaysSchema.parse(JSON.parse(fs.readFileSync(file, "utf8")))
+      .sort((a, b) => a.startDate.localeCompare(b.startDate) || a.title.localeCompare(b.title));
+  } catch (err) {
+    throw new Error(`content/visit-days.json: ${err instanceof Error ? err.message : err}`);
+  }
 }

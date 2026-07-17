@@ -1,14 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ActivityMonth } from "@/lib/schema";
+import type { ActivityMonth, VisitDay } from "@/lib/schema";
 import { DIMENSIONS, type Dimension } from "@/lib/schema";
 import { DIMENSION_META } from "@/lib/dimensions";
 import { formatTime, dayNameOfISO, longDateOfISO } from "@/lib/dates";
+import { visitDaysInRange } from "@/lib/lookup";
 import Timeline from "@/components/Timeline";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
 import { useToday } from "@/components/useToday";
+import { VisitDayCard } from "@/components/VisitDays";
 
 const DOWS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -60,7 +62,7 @@ function ActivityFilterSelect({
   );
 }
 
-export default function CalendarClient({ months }: { months: ActivityMonth[] }) {
+export default function CalendarClient({ months, visitDays }: { months: ActivityMonth[]; visitDays: VisitDay[] }) {
   const today = useToday();
   const [idx, setIdx] = useState(0);
   const [filter, setFilter] = useState<Dimension | "all">("all");
@@ -102,10 +104,16 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
   const firstDow = new Date(Date.UTC(y, mo - 1, 1)).getUTCDay();
   const byDate = new Map(month.days.map((d) => [d.date, d]));
   const dateOf = (n: number) => `${month.month}-${String(n).padStart(2, "0")}`;
+  const monthStart = dateOf(1);
+  const monthEnd = dateOf(daysInMonth);
+  const monthVisitDays = visitDaysInRange(visitDays, monthStart, monthEnd);
   const monthTitle = new Intl.DateTimeFormat("en-US", {
     timeZone: "UTC", month: "long", year: "numeric",
   }).format(new Date(Date.UTC(y, mo - 1, 1)));
   const selDay = selected ? byDate.get(selected) ?? null : null;
+  const selectedVisitDays = selected
+    ? visitDaysInRange(visitDays, selected, selected)
+    : [];
 
   function moveMonth(delta: number) {
     setIdx((i) => Math.min(months.length - 1, Math.max(0, i + delta)));
@@ -139,6 +147,7 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
           const date = dateOf(i + 1);
           const day = byDate.get(date);
           const specials = day?.events.filter((e) => !e.routine) ?? [];
+          const visits = monthVisitDays.filter((visit) => visit.startDate <= date && visit.endDate >= date);
           const isToday = date === today;
           return (
             <button key={date} onClick={() => setSelected(date)}
@@ -149,6 +158,11 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
               {day?.theme && (
                 <div className="truncate font-display italic text-copper">{day.theme}</div>
               )}
+              {visits.slice(0, 2).map((visit) => (
+                <div key={visit.title} className="mb-1 truncate rounded-full border border-copper/30 bg-copper/10 px-2 py-0.5 font-semibold text-copper">
+                  {visit.title}
+                </div>
+              ))}
               {specials.slice(0, 3).map((e, j) => {
                 const filtered = filter !== "all";
                 const dim = filtered && e.dimension !== filter;
@@ -188,7 +202,8 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
           const specials = day.events.filter(
             (e) => !e.routine && (filter === "all" || e.dimension === filter),
           );
-          if (specials.length === 0) return null;
+          const visits = monthVisitDays.filter((visit) => visit.startDate <= day.date && visit.endDate >= day.date);
+          if (specials.length === 0 && visits.length === 0) return null;
           const isToday = day.date === today;
           return (
             <div key={day.date}
@@ -202,6 +217,9 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
                     {isToday && <span className="font-normal text-moss"> · Today</span>}
                   </div>
                   {day.theme && <div className="font-display text-[15px] italic text-copper">{day.theme}</div>}
+                  {visits.map((visit) => (
+                    <div key={visit.title} className="mt-1 font-semibold text-copper">{visit.title}</div>
+                  ))}
                 </div>
                 <button type="button" onClick={() => setSelected(day.date)}
                   aria-label={`Show details for ${dayNameOfISO(day.date)}, ${longDateOfISO(day.date)}`}
@@ -222,7 +240,21 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
         })}
       </div>
 
-      {selDay && (
+      {monthVisitDays.length > 0 && (
+        <section className="mt-4 border-y border-hairline py-3">
+          <h2 className="mb-2 font-semibold">Family visit days this month</h2>
+          <div className="flex flex-wrap gap-2 text-[15px]">
+            {monthVisitDays.map((day) => (
+              <button key={`${day.startDate}-${day.title}`} type="button" onClick={() => setSelected(day.startDate)}
+                className="rounded-full border border-hairline bg-card px-3 py-1 text-left font-semibold text-copper">
+                {day.title}
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {(selDay || selectedVisitDays.length > 0) && selected && (
         <div role="dialog" aria-modal="true" aria-labelledby="calendar-day-title"
           className="fixed inset-0 z-50 flex items-center justify-center bg-ink/55 p-4 md:p-6"
           onClick={closeDayDetails}>
@@ -231,9 +263,9 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
             <div className="mb-3 flex items-start justify-between gap-4">
               <div>
                 <h2 id="calendar-day-title" className="font-display text-3xl font-semibold">
-                  {dayNameOfISO(selDay.date)}, {longDateOfISO(selDay.date)}
+                  {dayNameOfISO(selected)}, {longDateOfISO(selected)}
                 </h2>
-                {selDay.theme && <p className="font-display italic text-copper">{selDay.theme}</p>}
+                {selDay?.theme && <p className="font-display italic text-copper">{selDay.theme}</p>}
               </div>
               <button ref={closeButtonRef} type="button" aria-label="Close day details" onClick={closeDayDetails}
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-card text-copper hover:bg-hairline">
@@ -242,7 +274,14 @@ export default function CalendarClient({ months }: { months: ActivityMonth[] }) 
                 </svg>
               </button>
             </div>
-            <Timeline events={selDay.events} />
+            {selectedVisitDays.length > 0 && (
+              <div className="mb-5 space-y-3">
+                {selectedVisitDays.map((day) => (
+                  <VisitDayCard key={`${day.startDate}-${day.title}`} day={day} compact />
+                ))}
+              </div>
+            )}
+            {selDay ? <Timeline events={selDay.events} /> : <EmptyState message="No activities have been added for this date." />}
           </section>
         </div>
       )}
