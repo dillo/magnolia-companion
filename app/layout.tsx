@@ -31,12 +31,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <NavLinks />
                 <VisitNotifications visitDays={visitDays} />
               </div>
-              <div className="sm:hidden">
+              <div className="flex items-center gap-2 sm:hidden">
                 <VisitNotifications visitDays={visitDays} />
+                <NavLinks />
               </div>
-            </div>
-            <div className="sm:hidden">
-              <NavLinks />
             </div>
           </div>
         </header>

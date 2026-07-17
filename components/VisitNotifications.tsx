@@ -77,7 +77,7 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
       </button>
 
       {open && (
-        <section className="absolute right-0 z-40 mt-2 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-hairline bg-petal text-left shadow-xl">
+        <section className="absolute -right-12 z-40 mt-2 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-hairline bg-petal text-left shadow-xl sm:right-0">
           <div className="border-b border-hairline bg-card px-4 py-3">
             <h2 className="font-display text-2xl font-semibold leading-tight text-ink">Visit Reminders</h2>
           </div>
