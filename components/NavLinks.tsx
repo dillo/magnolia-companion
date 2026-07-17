@@ -54,7 +54,7 @@ export default function NavLinks() {
         {open && (
           <div
             id="mobile-main-nav"
-            className="absolute right-0 z-20 mt-2 grid w-48 gap-1 rounded-lg border border-hairline bg-card p-2 shadow-lg"
+            className="absolute right-0 z-20 mt-3 w-56 overflow-hidden rounded-lg border border-hairline bg-petal shadow-[0_12px_24px_rgba(42,46,34,0.14)]"
           >
             {NAV.map((n) => (
               <NavLink
@@ -97,11 +97,22 @@ function NavLink({
       href={href}
       aria-current={active ? "page" : undefined}
       onClick={onNavigate}
-      className={`whitespace-nowrap rounded-full px-4 py-2 font-semibold ${
-        mobile ? "block text-left" : "text-center"
-      } ${active ? "bg-ink text-petal" : "text-moss hover:bg-hairline hover:text-ink"}`}
+      className={`whitespace-nowrap font-semibold ${
+        mobile
+          ? `flex items-center justify-between border-b border-hairline px-4 py-3 last:border-b-0 ${
+              active ? "bg-ink text-petal" : "text-moss hover:bg-hairline/60 hover:text-ink"
+            }`
+          : `rounded-full px-4 py-2 text-center ${
+              active ? "bg-ink text-petal" : "text-moss hover:bg-hairline hover:text-ink"
+            }`
+      }`}
     >
-      {label}
+      <span>{label}</span>
+      {mobile && (
+        <span aria-hidden="true" className={active ? "text-petal" : "text-copper"}>
+          ›
+        </span>
+      )}
     </Link>
   );
 }

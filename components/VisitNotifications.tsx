@@ -77,22 +77,22 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
       </button>
 
       {open && (
-        <section className="absolute -right-12 z-40 mt-2 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-hairline bg-petal text-left shadow-xl sm:right-0">
-          <div className="border-b border-hairline bg-card px-4 py-3">
+        <section className="absolute -right-12 z-40 mt-3 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-hairline bg-petal text-left shadow-[0_12px_24px_rgba(42,46,34,0.14)] sm:right-0">
+          <div className="border-b border-hairline px-4 py-3">
             <h2 className="font-display text-2xl font-semibold leading-tight text-ink">Visit Reminders</h2>
           </div>
 
-          <div className="p-2">
+          <div className="divide-y divide-hairline">
             {upcoming.map((day) => {
               const inDays = daysUntil(today, day.startDate);
               const soon = inDays <= 30;
               return (
                 <article key={`${day.startDate}-${day.title}`}
-                  className={`grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 rounded-lg px-2 py-3 ${
+                  className={`grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 px-4 py-3 ${
                     soon ? "bg-copper/10" : ""
                   }`}>
                   <div className={`flex h-16 flex-col items-center justify-center rounded-lg border text-center ${
-                    soon ? "border-copper bg-petal text-copper" : "border-hairline bg-card text-moss"
+                    soon ? "border-copper bg-card text-copper" : "border-hairline bg-card text-moss"
                   }`}>
                     <span className="text-[12px] font-bold uppercase leading-none">{shortMonth(day.startDate)}</span>
                     <span className="mt-1 text-2xl font-semibold leading-none tabular-nums">{Number(day.startDate.slice(8))}</span>
@@ -112,10 +112,11 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
               );
             })}
           </div>
-          <div className="border-t border-hairline bg-card px-4 py-3">
+          <div className="border-t border-hairline px-4 py-3">
             <Link href="/visits" onClick={() => setOpen(false)}
-              className="inline-block font-semibold text-copper underline-offset-4 hover:underline">
-              All visit days
+              className="flex items-center justify-between font-semibold text-copper hover:text-ink">
+              <span>All visit days</span>
+              <span aria-hidden="true" className="text-xl leading-none">›</span>
             </Link>
           </div>
         </section>
