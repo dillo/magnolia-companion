@@ -5,7 +5,7 @@ import MagnoliaLogo from "@/components/MagnoliaLogo";
 import NavLinks from "@/components/NavLinks";
 
 export const metadata: Metadata = {
-  title: "Magnolia Place of Roswell — Daily Companion",
+  title: "Magnolia Companion",
   description: "Today's activities and meals at Magnolia Place of Roswell.",
 };
 
