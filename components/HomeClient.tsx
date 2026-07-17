@@ -194,24 +194,24 @@ function WeekActivities({ months, dates, today }: { months: ActivityMonth[]; dat
         const routineCount = (day?.events.length ?? 0) - specials.length;
         const isToday = date === today;
         return (
-          <div key={date} className={`pb-3 ${
-            isToday ? "rounded-lg border border-copper bg-copper/10 px-3" : ""
-          }`}>
+          <div key={date} className="pb-3">
             <DayHeading date={date} today={today} theme={day?.theme ?? null} />
-            {!day && <p className="text-moss">Not added yet.</p>}
-            {specials.map((e, i) => (
-              <div key={i} className="mb-1.5 flex items-baseline gap-2">
-                <span className="w-20 shrink-0 text-right font-semibold tabular-nums text-copper">
-                  {e.start ? formatTime(e.start) : "All day"}
-                </span>
-                <span>
-                  {e.title} {e.dimension && <DimensionChip dimension={e.dimension} />}
-                </span>
-              </div>
-            ))}
-            {routineCount > 0 && (
-              <p className="ml-[5.5rem] text-[15px] text-moss">+ {routineCount} daily routine items</p>
-            )}
+            <div className={isToday ? "mt-2 rounded-lg border border-copper bg-copper/10 py-2" : ""}>
+              {!day && <p className="text-moss">Not added yet.</p>}
+              {specials.map((e, i) => (
+                <div key={i} className="mb-1.5 flex items-baseline gap-2">
+                  <span className="w-20 shrink-0 text-right font-semibold tabular-nums text-copper">
+                    {e.start ? formatTime(e.start) : "All day"}
+                  </span>
+                  <span>
+                    {e.title} {e.dimension && <DimensionChip dimension={e.dimension} />}
+                  </span>
+                </div>
+              ))}
+              {routineCount > 0 && (
+                <p className="ml-[5.5rem] text-[15px] text-moss">+ {routineCount} daily routine items</p>
+              )}
+            </div>
           </div>
         );
       })}
