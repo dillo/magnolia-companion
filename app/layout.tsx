@@ -3,6 +3,8 @@ import "./globals.css";
 import AccessibilityControl from "@/components/AccessibilityControl";
 import MagnoliaLogo from "@/components/MagnoliaLogo";
 import NavLinks from "@/components/NavLinks";
+import VisitNotifications from "@/components/VisitNotifications";
+import { loadVisitDays } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Magnolia Companion",
@@ -10,6 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const visitDays = loadVisitDays();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-petal text-ink antialiased">
@@ -20,9 +24,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <header className="border-b border-hairline">
-          <div className="mx-auto max-w-6xl px-4 py-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
-            <MagnoliaLogo />
-            <NavLinks />
+          <div className="mx-auto max-w-6xl px-4 py-3">
+            <div className="flex items-center justify-between gap-4">
+              <MagnoliaLogo />
+              <div className="hidden items-center gap-4 sm:flex">
+                <NavLinks />
+                <VisitNotifications visitDays={visitDays} />
+              </div>
+              <div className="sm:hidden">
+                <VisitNotifications visitDays={visitDays} />
+              </div>
+            </div>
+            <div className="sm:hidden">
+              <NavLinks />
+            </div>
           </div>
         </header>
         <main className="mx-auto max-w-6xl px-4 py-6 pb-16">{children}</main>
