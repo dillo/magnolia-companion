@@ -8,7 +8,8 @@ Static Next.js site; the git repo is the database. See
 ## Publishing new content (the whole job)
 
 1. Activities from Go Icon: `npm run ingest -- --type goicon-activities`
-   This writes the current month and next month for Personal Care.
+   This writes the current month and next month for Personal Care, with Memory Care's
+   Wednesday 3pm activity copied in when Personal Care has no Wednesday 3pm slot.
 2. Fallback scanned activities: photograph the printed pages (well-lit, flat as possible), then run
    `npm run ingest -- --type activities --month 2026-08 photo1.jpeg photo2.jpeg`
 3. Menus: `npm run ingest -- --type menu menu-photo.jpeg`

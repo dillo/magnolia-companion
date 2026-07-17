@@ -41,6 +41,12 @@ export type GoIconFetchOptions = {
   serviceLevel?: string;
 };
 
+const MEMORY_CARE_SERVICE_LEVEL = "MC";
+const WEDNESDAY = 3;
+const WEDNESDAY_FLYER_TIME = "15:00";
+const WEDNESDAY_FLYER_SOURCE_START = "13:00";
+const WEDNESDAY_FLYER_SOURCE_END = "15:00";
+
 const DIMENSION_MAP: Record<string, Dimension> = {
   physical: "physical",
   emotional: "emotional",
@@ -112,6 +118,26 @@ function toRawEvent(event: GoIconEvent): RawEvent {
   };
 }
 
+function eventSlotKey(event: RawEvent): string {
+  return `${event.time ?? ""}|${event.locationCode?.trim().toLowerCase() ?? ""}`;
+}
+
+function isGenericEntertainmentPlaceholder(event: RawEvent): boolean {
+  return event.title.trim().toLowerCase() === "entertainment in the lobby";
+}
+
+function removeGenericEntertainmentPlaceholders(events: RawEvent[]): RawEvent[] {
+  const slotHasSpecificEvent = new Set<string>();
+
+  for (const event of events) {
+    if (!isGenericEntertainmentPlaceholder(event)) slotHasSpecificEvent.add(eventSlotKey(event));
+  }
+
+  return events.filter((event) => {
+    return !isGenericEntertainmentPlaceholder(event) || !slotHasSpecificEvent.has(eventSlotKey(event));
+  });
+}
+
 export function buildGoIconActivityMonth(month: string, events: GoIconEvent[]): ActivityMonth {
   const byDate = new Map<string, { theme: string | null; events: RawEvent[] }>();
   const [year, mo] = month.split("-").map(Number);
@@ -138,7 +164,8 @@ export function buildGoIconActivityMonth(month: string, events: GoIconEvent[]): 
   const rawDays: RawDay[] = [...byDate].map(([date, day]) => ({
     date,
     theme: day.theme,
-    events: day.events.sort((a, b) => (a.time ?? "").localeCompare(b.time ?? "")),
+    events: removeGenericEntertainmentPlaceholders(day.events)
+      .sort((a, b) => (a.time ?? "").localeCompare(b.time ?? "")),
   }));
   const routine = routineTitles(rawDays);
 
@@ -157,6 +184,45 @@ export function buildGoIconActivityMonth(month: string, events: GoIconEvent[]): 
         routine: routine.has(event.title.trim().toLowerCase()),
       })),
     })),
+  });
+}
+
+function dayOfWeekUTC(date: string): number {
+  return new Date(`${date}T12:00:00Z`).getUTCDay();
+}
+
+function isWednesdayFlyerCandidate(event: ActivityMonth["days"][number]["events"][number]): boolean {
+  if (!event.start || event.start < WEDNESDAY_FLYER_SOURCE_START || event.start > WEDNESDAY_FLYER_SOURCE_END) {
+    return false;
+  }
+
+  return /\b(entertainment|music|piano|live|wind down|wine down)\b/i.test(event.title);
+}
+
+export function mergeMemoryCareWednesdayFlyerActivities(
+  personalCare: ActivityMonth,
+  memoryCare: ActivityMonth,
+): ActivityMonth {
+  const memoryCareDays = new Map(memoryCare.days.map((day) => [day.date, day]));
+
+  return activityMonthSchema.parse({
+    ...personalCare,
+    days: personalCare.days.map((personalDay) => {
+      if (dayOfWeekUTC(personalDay.date) !== WEDNESDAY) return personalDay;
+      if (personalDay.events.some((event) => event.start === WEDNESDAY_FLYER_TIME)) return personalDay;
+
+      const memoryDay = memoryCareDays.get(personalDay.date);
+      const flyerEvents = memoryDay?.events
+        .filter(isWednesdayFlyerCandidate)
+        .filter((memoryEvent) => !personalDay.events.some((event) => event.start === memoryEvent.start))
+        .map((event) => ({ ...event, start: WEDNESDAY_FLYER_TIME })) ?? [];
+      if (flyerEvents.length === 0) return personalDay;
+
+      return {
+        ...personalDay,
+        events: [...personalDay.events, ...flyerEvents].sort((a, b) => (a.start ?? "").localeCompare(b.start ?? "")),
+      };
+    }),
   });
 }
 
@@ -199,4 +265,23 @@ export async function fetchGoIconActivityMonths(
     return buildGoIconActivityMonth(month, events);
   }));
   return data.sort((a, b) => a.month.localeCompare(b.month));
+}
+
+export async function fetchGoIconActivityMonthsWithMemoryCareWednesdayFallback(
+  months: string[],
+  options: GoIconFetchOptions = {},
+): Promise<ActivityMonth[]> {
+  const personalCareLevel = options.serviceLevel ?? GOICON_DEFAULTS.serviceLevel;
+  const [personalCareMonths, memoryCareMonths] = await Promise.all([
+    fetchGoIconActivityMonths(months, { ...options, serviceLevel: personalCareLevel }),
+    fetchGoIconActivityMonths(months, { ...options, serviceLevel: MEMORY_CARE_SERVICE_LEVEL }),
+  ]);
+  const memoryCareByMonth = new Map(memoryCareMonths.map((month) => [month.month, month]));
+
+  return personalCareMonths.map((personalCareMonth) => {
+    const memoryCareMonth = memoryCareByMonth.get(personalCareMonth.month);
+    return memoryCareMonth
+      ? mergeMemoryCareWednesdayFlyerActivities(personalCareMonth, memoryCareMonth)
+      : personalCareMonth;
+  });
 }

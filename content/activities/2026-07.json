@@ -47,6 +47,14 @@
           "routine": false
         },
         {
+          "start": "15:00",
+          "end": null,
+          "title": "Wind Down Wednesday with Live Entertainment",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
           "start": "17:00",
           "end": null,
           "title": "Brain Teasers & Word Search",
@@ -465,6 +473,14 @@
           "routine": false
         },
         {
+          "start": "15:00",
+          "end": null,
+          "title": "Wind Down Wednesday with Live Entertainment",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
           "start": "17:00",
           "end": null,
           "title": "Brain Teasers & Word Search",
@@ -872,6 +888,14 @@
           "title": "Prize Bingo",
           "location": "Bistro",
           "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Wind Down Wednesday with Live Entertainment",
+          "location": "Living Room",
+          "dimension": "physical",
           "routine": false
         },
         {
@@ -1301,6 +1325,14 @@
           "routine": false
         },
         {
+          "start": "15:00",
+          "end": null,
+          "title": "Wind Down Wednesday with Live Entertainment",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
           "start": "17:00",
           "end": null,
           "title": "Brain Teasers & Word Search",
@@ -1724,6 +1756,14 @@
           "title": "Prize Bingo",
           "location": "Bistro",
           "dimension": "intellectual",
+          "routine": false
+        },
+        {
+          "start": "15:00",
+          "end": null,
+          "title": "Wind Down Wednesday with Live Entertainment",
+          "location": "Living Room",
+          "dimension": "physical",
           "routine": false
         },
         {

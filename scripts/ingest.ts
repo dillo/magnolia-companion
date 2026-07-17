@@ -4,7 +4,11 @@ import Anthropic from "@anthropic-ai/sdk";
 import { buildMenuWeek, extractActivityPage, extractMenuWeek } from "@/lib/ingest/extract";
 import { menuWeekSchema } from "@/lib/schema";
 import { buildActivityMonth, type RawDay } from "@/lib/ingest/postprocess";
-import { currentAndNextMonth, fetchGoIconActivityMonths, GOICON_DEFAULTS } from "@/lib/ingest/goicon";
+import {
+  currentAndNextMonth,
+  fetchGoIconActivityMonthsWithMemoryCareWednesdayFallback,
+  GOICON_DEFAULTS,
+} from "@/lib/ingest/goicon";
 import { todayISO } from "@/lib/dates";
 
 function fail(msg: string): never {
@@ -41,8 +45,14 @@ async function main() {
 
   if (type === "goicon-activities") {
     const months = month ? [month, currentAndNextMonth(`${month}-01`)[1]] : currentAndNextMonth(todayISO());
-    console.log(`Fetching Personal Care activities from Go Icon for ${months.join(" and ")} ...`);
-    const activityMonths = await fetchGoIconActivityMonths(months, { facilityId, token, serviceLevel });
+    console.log(
+      `Fetching Personal Care activities from Go Icon for ${months.join(" and ")} ` +
+      "with Memory Care Wednesday 3pm flyer fallback ...",
+    );
+    const activityMonths = await fetchGoIconActivityMonthsWithMemoryCareWednesdayFallback(
+      months,
+      { facilityId, token, serviceLevel },
+    );
 
     fs.mkdirSync(path.join("content", "activities"), { recursive: true });
     for (const data of activityMonths) {

@@ -4,7 +4,7 @@
   "days": [
     {
       "date": "2026-08-01",
-      "theme": null,
+      "theme": "Girlfriend'S Day",
       "events": [
         {
           "start": "09:00",
@@ -50,7 +50,7 @@
     },
     {
       "date": "2026-08-02",
-      "theme": null,
+      "theme": "Ice Cream Sandwich Day",
       "events": [
         {
           "start": "09:00",
@@ -120,7 +120,7 @@
     },
     {
       "date": "2026-08-03",
-      "theme": null,
+      "theme": "Watermelon Day",
       "events": [
         {
           "start": "09:00",
@@ -198,7 +198,7 @@
     },
     {
       "date": "2026-08-04",
-      "theme": null,
+      "theme": "Friendship Day",
       "events": [
         {
           "start": "09:00",
@@ -235,7 +235,7 @@
         {
           "start": "16:00",
           "end": null,
-          "title": "Singo",
+          "title": "Pub Trivia",
           "location": "Living Room",
           "dimension": "intellectual",
           "routine": false
@@ -260,7 +260,7 @@
     },
     {
       "date": "2026-08-05",
-      "theme": null,
+      "theme": "Work Like A Dog Day",
       "events": [
         {
           "start": "09:00",
@@ -303,6 +303,14 @@
           "routine": false
         },
         {
+          "start": "15:00",
+          "end": null,
+          "title": "Wine Down Wednesday - Piano with Fred",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
           "start": "17:00",
           "end": null,
           "title": "Brain Teasers & Word Search",
@@ -322,7 +330,7 @@
     },
     {
       "date": "2026-08-06",
-      "theme": null,
+      "theme": "Rootbeer Float Day",
       "events": [
         {
           "start": "09:00",
@@ -349,9 +357,9 @@
           "routine": true
         },
         {
-          "start": "15:00",
+          "start": "13:00",
           "end": null,
-          "title": "Walmart Shopping",
+          "title": "Kroger Shopping",
           "location": "Bus Trip",
           "dimension": "physical",
           "routine": false
@@ -376,7 +384,7 @@
     },
     {
       "date": "2026-08-07",
-      "theme": null,
+      "theme": "Nat'l Lighthouse Day",
       "events": [
         {
           "start": "09:00",
@@ -405,7 +413,7 @@
         {
           "start": "15:00",
           "end": null,
-          "title": "Happy Hour - Karaoke with Raquel",
+          "title": "Celebrate August Birthdays - Music with Butch",
           "location": "Living Room",
           "dimension": "physical",
           "routine": false
@@ -422,7 +430,7 @@
     },
     {
       "date": "2026-08-08",
-      "theme": null,
+      "theme": "International Cat Day",
       "events": [
         {
           "start": "09:00",
@@ -468,7 +476,7 @@
     },
     {
       "date": "2026-08-09",
-      "theme": null,
+      "theme": "International Book Lover'S Day",
       "events": [
         {
           "start": "09:00",
@@ -538,7 +546,7 @@
     },
     {
       "date": "2026-08-10",
-      "theme": null,
+      "theme": "National Smores Day",
       "events": [
         {
           "start": "09:00",
@@ -616,7 +624,7 @@
     },
     {
       "date": "2026-08-11",
-      "theme": null,
+      "theme": "Nat'l Play in the Sand Day",
       "events": [
         {
           "start": "09:00",
@@ -678,7 +686,7 @@
     },
     {
       "date": "2026-08-12",
-      "theme": null,
+      "theme": "Vinyl Record Day",
       "events": [
         {
           "start": "09:00",
@@ -721,6 +729,14 @@
           "routine": false
         },
         {
+          "start": "15:00",
+          "end": null,
+          "title": "Wine Down Wednesday - Music with Sonya",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
           "start": "17:00",
           "end": null,
           "title": "Brain Teasers & Word Search",
@@ -740,7 +756,7 @@
     },
     {
       "date": "2026-08-13",
-      "theme": null,
+      "theme": "Left Hander'S Day",
       "events": [
         {
           "start": "09:00",
@@ -767,7 +783,7 @@
           "routine": true
         },
         {
-          "start": "15:00",
+          "start": "13:00",
           "end": null,
           "title": "Walmart Shopping",
           "location": "Bus Trip",
@@ -794,7 +810,7 @@
     },
     {
       "date": "2026-08-14",
-      "theme": null,
+      "theme": "Orange Creamsicle Day",
       "events": [
         {
           "start": "09:00",
@@ -821,7 +837,7 @@
           "routine": false
         },
         {
-          "start": "13:00",
+          "start": "13:30",
           "end": null,
           "title": "Therapy Dog Visit with Canine Assistants",
           "location": "Living Room",
@@ -831,7 +847,7 @@
         {
           "start": "15:00",
           "end": null,
-          "title": "Happy Hour - Karaoke with Raquel",
+          "title": "Happy Hour - Music with Susan",
           "location": "Living Room",
           "dimension": "physical",
           "routine": false
@@ -848,7 +864,7 @@
     },
     {
       "date": "2026-08-15",
-      "theme": null,
+      "theme": "Relaxation Day",
       "events": [
         {
           "start": "09:00",
@@ -894,7 +910,7 @@
     },
     {
       "date": "2026-08-16",
-      "theme": null,
+      "theme": "Tell A Joke Day",
       "events": [
         {
           "start": "09:00",
@@ -964,7 +980,7 @@
     },
     {
       "date": "2026-08-17",
-      "theme": null,
+      "theme": "Nat'l Trift Shop Day",
       "events": [
         {
           "start": "09:00",
@@ -1042,7 +1058,7 @@
     },
     {
       "date": "2026-08-18",
-      "theme": null,
+      "theme": "Nat'l Fajita Day",
       "events": [
         {
           "start": "09:00",
@@ -1079,7 +1095,7 @@
         {
           "start": "16:00",
           "end": null,
-          "title": "Singo",
+          "title": "Pub Trivia",
           "location": "Living Room",
           "dimension": "intellectual",
           "routine": false
@@ -1104,7 +1120,7 @@
     },
     {
       "date": "2026-08-19",
-      "theme": null,
+      "theme": "World Photography Day",
       "events": [
         {
           "start": "09:00",
@@ -1147,6 +1163,14 @@
           "routine": false
         },
         {
+          "start": "15:00",
+          "end": null,
+          "title": "Wine Down Wednesday- Music with Butch",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
           "start": "17:00",
           "end": null,
           "title": "Brain Teasers & Word Search",
@@ -1166,7 +1190,7 @@
     },
     {
       "date": "2026-08-20",
-      "theme": null,
+      "theme": "Nat'l Lemonade Day",
       "events": [
         {
           "start": "09:00",
@@ -1193,9 +1217,17 @@
           "routine": true
         },
         {
+          "start": "14:00",
+          "end": null,
+          "title": "Resident Council Meeting",
+          "location": "Activity Room",
+          "dimension": "emotional",
+          "routine": false
+        },
+        {
           "start": "15:00",
           "end": null,
-          "title": "Walmart Shopping",
+          "title": "Kroger Shopping",
           "location": "Bus Trip",
           "dimension": "physical",
           "routine": false
@@ -1220,7 +1252,7 @@
     },
     {
       "date": "2026-08-21",
-      "theme": null,
+      "theme": "Nat'l Senior Citizen'S Day",
       "events": [
         {
           "start": "09:00",
@@ -1249,7 +1281,7 @@
         {
           "start": "15:00",
           "end": null,
-          "title": "Happy Hour - Karaoke with Raquel",
+          "title": "Happy Hour - Music with Brian",
           "location": "Living Room",
           "dimension": "physical",
           "routine": false
@@ -1266,7 +1298,7 @@
     },
     {
       "date": "2026-08-22",
-      "theme": null,
+      "theme": "Nat'l Be An Angel Day",
       "events": [
         {
           "start": "09:00",
@@ -1312,7 +1344,7 @@
     },
     {
       "date": "2026-08-23",
-      "theme": null,
+      "theme": "Sponge Cake Day",
       "events": [
         {
           "start": "09:00",
@@ -1382,7 +1414,7 @@
     },
     {
       "date": "2026-08-24",
-      "theme": null,
+      "theme": "Nat'l Strange Music Day",
       "events": [
         {
           "start": "09:00",
@@ -1460,7 +1492,7 @@
     },
     {
       "date": "2026-08-25",
-      "theme": null,
+      "theme": "Banana Split Day",
       "events": [
         {
           "start": "09:00",
@@ -1522,7 +1554,7 @@
     },
     {
       "date": "2026-08-26",
-      "theme": null,
+      "theme": "Nat'l Dog Appreciation Day",
       "events": [
         {
           "start": "09:00",
@@ -1565,6 +1597,14 @@
           "routine": false
         },
         {
+          "start": "15:00",
+          "end": null,
+          "title": "Wine Down Wednesday - Music with Randy & Cindy",
+          "location": "Living Room",
+          "dimension": "physical",
+          "routine": false
+        },
+        {
           "start": "17:00",
           "end": null,
           "title": "Brain Teasers & Word Search",
@@ -1584,7 +1624,7 @@
     },
     {
       "date": "2026-08-27",
-      "theme": null,
+      "theme": "World Lake Day",
       "events": [
         {
           "start": "09:00",
@@ -1611,7 +1651,7 @@
           "routine": true
         },
         {
-          "start": "15:00",
+          "start": "13:00",
           "end": null,
           "title": "Walmart Shopping",
           "location": "Bus Trip",
@@ -1638,7 +1678,7 @@
     },
     {
       "date": "2026-08-28",
-      "theme": null,
+      "theme": "Nat'l Bow Tie Day",
       "events": [
         {
           "start": "09:00",
@@ -1667,7 +1707,7 @@
         {
           "start": "15:00",
           "end": null,
-          "title": "Happy Hour - Karaoke with Raquel",
+          "title": "Happy Hour - Live Music with Allan W.",
           "location": "Living Room",
           "dimension": "physical",
           "routine": false
@@ -1684,7 +1724,7 @@
     },
     {
       "date": "2026-08-29",
-      "theme": null,
+      "theme": "Nat'l Lemon Juice Day",
       "events": [
         {
           "start": "09:00",
@@ -1730,7 +1770,7 @@
     },
     {
       "date": "2026-08-30",
-      "theme": null,
+      "theme": "Nat'l Toasted Marsmallow Day",
       "events": [
         {
           "start": "09:00",
@@ -1800,7 +1840,7 @@
     },
     {
       "date": "2026-08-31",
-      "theme": null,
+      "theme": "Nat'l Trail Mix Day",
       "events": [
         {
           "start": "09:00",
