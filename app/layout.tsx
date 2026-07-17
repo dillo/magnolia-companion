@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AccessibilityControl from "@/components/AccessibilityControl";
+import MagnoliaLogo from "@/components/MagnoliaLogo";
 import NavLinks from "@/components/NavLinks";
 
 export const metadata: Metadata = {
@@ -20,11 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <header className="border-b border-hairline">
           <div className="mx-auto max-w-6xl px-4 py-3 sm:flex sm:items-center sm:justify-between sm:gap-4">
-            <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
-              <div className="whitespace-nowrap text-center font-display text-[1.35rem] leading-tight">
-                <span className="font-semibold">Magnolia Companion</span>
-              </div>
-            </div>
+            <MagnoliaLogo />
             <NavLinks />
           </div>
         </header>
