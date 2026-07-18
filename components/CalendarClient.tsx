@@ -244,7 +244,7 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
 
       {monthVisitDays.length > 0 && (
         <section className="mt-4 border-y border-hairline py-3">
-          <h2 className="mb-2 font-semibold">Family visit days this month</h2>
+          <h2 className="mb-2 font-semibold">Holidays this month</h2>
           <div className="flex flex-wrap gap-2 text-[15px]">
             {monthVisitDays.map((day) => (
               <button key={`${day.startDate}-${day.title}`} type="button" onClick={() => setSelected(day.startDate)}

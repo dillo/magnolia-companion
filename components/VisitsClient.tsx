@@ -30,9 +30,9 @@ export default function VisitsClient({ visitDays }: { visitDays: VisitDay[] }) {
       <Breadcrumbs />
       <div className="md:flex md:items-end md:justify-between md:gap-6">
         <div>
-          <h1 className="font-display text-3xl font-semibold">Family Visit Days</h1>
+          <h1 className="font-display text-3xl font-semibold">Holidays</h1>
         </div>
-        <div role="tablist" aria-label="Visit day type" className="mt-4 inline-grid w-fit grid-cols-3 rounded-full bg-hairline/60 p-1 md:mt-0">
+        <div role="tablist" aria-label="Holiday type" className="mt-4 inline-grid w-fit grid-cols-3 rounded-full bg-hairline/60 p-1 md:mt-0">
           {FILTERS.map((item) => (
             <button key={item.key} role="tab" aria-selected={filter === item.key} onClick={() => setFilter(item.key)}
               className={`whitespace-nowrap rounded-full px-2 py-2 text-center text-[15px] font-semibold sm:px-3 ${
@@ -48,7 +48,7 @@ export default function VisitsClient({ visitDays }: { visitDays: VisitDay[] }) {
         {filtered.map((day) => <VisitDayCard key={`${day.startDate}-${day.title}`} day={day} />)}
       </div>
 
-      {filtered.length === 0 && <EmptyState message="No upcoming visit days match this filter." />}
+      {filtered.length === 0 && <EmptyState message="No upcoming holidays match this filter." />}
     </div>
   );
 }

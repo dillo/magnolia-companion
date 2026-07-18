@@ -60,7 +60,7 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
 
   return (
     <div ref={rootRef} className="relative">
-      <button type="button" aria-label="Show visit day notifications" aria-expanded={open}
+      <button type="button" aria-label="Show holiday notifications" aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
         className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border ${
           prominent
@@ -79,7 +79,7 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
       {open && (
         <section className="absolute -right-12 z-40 mt-3 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-hairline bg-petal text-left shadow-[0_12px_24px_rgba(42,46,34,0.14)] sm:right-0">
           <div className="border-b border-hairline px-4 py-3">
-            <h2 className="font-display text-2xl font-semibold leading-tight text-ink">Visit Reminders</h2>
+            <h2 className="font-display text-2xl font-semibold leading-tight text-ink">Holiday Reminders</h2>
           </div>
 
           <div className="divide-y divide-hairline">
@@ -115,7 +115,7 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
           <div className="border-t border-hairline px-4 py-3">
             <Link href="/visits" onClick={() => setOpen(false)}
               className="flex items-center justify-between font-semibold text-copper hover:text-ink">
-              <span>All visit days</span>
+              <span>All holidays</span>
               <span aria-hidden="true" className="text-xl leading-none">›</span>
             </Link>
           </div>
