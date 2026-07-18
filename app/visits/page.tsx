@@ -1,6 +1,6 @@
-import { loadVisitDays } from "@/lib/content";
+import { loadActivityMonths, loadVisitDays } from "@/lib/content";
 import VisitsClient from "@/components/VisitsClient";
 
 export default function VisitsPage() {
-  return <VisitsClient visitDays={loadVisitDays()} />;
+  return <VisitsClient months={loadActivityMonths()} visitDays={loadVisitDays()} />;
 }
