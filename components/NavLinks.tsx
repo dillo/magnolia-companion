@@ -54,18 +54,28 @@ export default function NavLinks() {
         {open && (
           <div
             id="mobile-main-nav"
-            className="absolute right-0 z-20 mt-3 w-56 overflow-hidden rounded-lg border border-hairline bg-petal shadow-[0_12px_24px_rgba(42,46,34,0.14)]"
+            className="absolute right-0 z-20 mt-3 w-56"
           >
-            {NAV.map((n) => (
-              <NavLink
-                key={n.href}
-                href={n.href}
-                label={n.label}
-                active={pathname === n.href}
-                mobile
-                onNavigate={() => setOpen(false)}
-              />
-            ))}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-[10px] right-3 z-10 h-0 w-0 border-x-[11px] border-b-[11px] border-x-transparent border-b-hairline"
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-[9px] right-[13px] z-20 h-0 w-0 border-x-[10px] border-b-[10px] border-x-transparent border-b-card"
+            />
+            <div className="relative overflow-hidden rounded-lg border border-hairline bg-card shadow-[0_12px_24px_rgba(42,46,34,0.14)]">
+              {NAV.map((n) => (
+                <NavLink
+                  key={n.href}
+                  href={n.href}
+                  label={n.label}
+                  active={pathname === n.href}
+                  mobile
+                  onNavigate={() => setOpen(false)}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>

@@ -77,49 +77,55 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
       </button>
 
       {open && (
-        <section className="absolute -right-12 z-40 mt-3 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-hairline bg-petal text-left shadow-[0_12px_24px_rgba(42,46,34,0.14)] sm:right-0">
-          <div className="border-b border-hairline px-4 py-3">
-            <h2 className="font-display text-2xl font-semibold leading-tight text-ink">Holiday Reminders</h2>
-          </div>
+        <div className="absolute -right-12 z-40 mt-3 w-[min(24rem,calc(100vw-2rem))] sm:right-0">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-2 right-16 z-10 h-4 w-4 rotate-45 border-l border-t border-hairline bg-card sm:right-3"
+          />
+          <section className="relative overflow-hidden rounded-lg border border-hairline bg-card text-left shadow-[0_12px_24px_rgba(42,46,34,0.14)]">
+            <div className="border-b border-hairline px-4 py-3">
+              <h2 className="font-display text-2xl font-semibold leading-tight text-ink">Holiday Reminders</h2>
+            </div>
 
-          <div className="divide-y divide-hairline">
-            {upcoming.map((day) => {
-              const inDays = daysUntil(today, day.startDate);
-              const soon = inDays <= 30;
-              return (
-                <article key={`${day.startDate}-${day.title}`}
-                  className={`grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 px-4 py-3 ${
-                    soon ? "bg-copper/10" : ""
-                  }`}>
-                  <div className={`flex h-16 flex-col items-center justify-center rounded-lg border text-center ${
-                    soon ? "border-copper bg-card text-copper" : "border-hairline bg-card text-moss"
-                  }`}>
-                    <span className="text-[12px] font-bold uppercase leading-none">{shortMonth(day.startDate)}</span>
-                    <span className="mt-1 text-2xl font-semibold leading-none tabular-nums">{Number(day.startDate.slice(8))}</span>
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex items-start justify-between gap-3">
-                      <h3 className="min-w-0 font-semibold leading-tight text-ink">{day.title}</h3>
-                      <span className={`shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[13px] font-bold ${
-                        soon ? "bg-copper text-petal" : "bg-hairline text-moss"
-                      }`}>
-                      {relativeLabel(inDays)}
-                      </span>
+            <div className="divide-y divide-hairline">
+              {upcoming.map((day) => {
+                const inDays = daysUntil(today, day.startDate);
+                const soon = inDays <= 30;
+                return (
+                  <article key={`${day.startDate}-${day.title}`}
+                    className={`grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 px-4 py-3 ${
+                      soon ? "bg-copper/10" : ""
+                    }`}>
+                    <div className={`flex h-16 flex-col items-center justify-center rounded-lg border text-center ${
+                      soon ? "border-copper bg-petal text-copper" : "border-hairline bg-petal text-moss"
+                    }`}>
+                      <span className="text-[12px] font-bold uppercase leading-none">{shortMonth(day.startDate)}</span>
+                      <span className="mt-1 text-2xl font-semibold leading-none tabular-nums">{Number(day.startDate.slice(8))}</span>
                     </div>
-                    <p className="mt-1 leading-snug text-moss">{startDateLabel(day.startDate)}</p>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-          <div className="border-t border-hairline px-4 py-3">
-            <Link href="/visits" onClick={() => setOpen(false)}
-              className="flex items-center justify-between font-semibold text-copper hover:text-ink">
-              <span>All holidays</span>
-              <span aria-hidden="true" className="text-xl leading-none">›</span>
-            </Link>
-          </div>
-        </section>
+                    <div className="min-w-0">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="min-w-0 font-semibold leading-tight text-ink">{day.title}</h3>
+                        <span className={`shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[13px] font-bold ${
+                          soon ? "bg-copper text-petal" : "bg-hairline text-moss"
+                        }`}>
+                        {relativeLabel(inDays)}
+                        </span>
+                      </div>
+                      <p className="mt-1 leading-snug text-moss">{startDateLabel(day.startDate)}</p>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+            <div className="border-t border-hairline px-4 py-3">
+              <Link href="/visits" onClick={() => setOpen(false)}
+                className="flex items-center justify-between font-semibold text-copper hover:text-ink">
+                <span>All holidays</span>
+                <span aria-hidden="true" className="text-xl leading-none">›</span>
+              </Link>
+            </div>
+          </section>
+        </div>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 const TEXT_SIZES = [
   { key: "", label: "A", name: "Standard" },
@@ -35,6 +35,7 @@ export default function AccessibilityControl() {
   const [textSize, setTextSize] = useState<TextSize>("");
   const [contrast, setContrast] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- saved settings live in localStorage, readable only after mount
@@ -47,11 +48,19 @@ export default function AccessibilityControl() {
 
   useEffect(() => {
     if (!open) return;
+    function onPointerDown(event: PointerEvent) {
+      if (rootRef.current?.contains(event.target as Node)) return;
+      setOpen(false);
+    }
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") setOpen(false);
     }
+    document.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [open]);
 
   function applyTextSize(key: TextSize) {
@@ -95,14 +104,18 @@ export default function AccessibilityControl() {
   }
 
   return (
-    <div className="fixed right-4 bottom-4 z-50 flex flex-col items-end print:hidden">
+    <div ref={rootRef} className="fixed right-4 bottom-4 z-50 flex flex-col items-end print:hidden">
       {open ? (
         <div
           role="dialog"
           aria-modal="false"
           aria-labelledby={titleId}
-          className="mb-3 w-[min(calc(100vw-2rem),22rem)] rounded-2xl border border-hairline bg-card p-4 text-ink shadow-2xl"
+          className="relative mb-3 w-[min(calc(100vw-2rem),22rem)] rounded-lg border border-hairline bg-card p-4 text-ink shadow-2xl"
         >
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-2 right-4 h-4 w-4 rotate-45 border-b border-r border-hairline bg-card"
+          />
           <div className="mb-4 flex items-start justify-between gap-3">
             <div>
               <h2 id={titleId} className="font-display text-2xl font-semibold">
