@@ -9,15 +9,15 @@ export default function Timeline({ events }: { events: ActivityEvent[] }) {
     <div className="divide-y divide-hairline border-y border-hairline">
       {events.map((e, i) =>
         e.routine ? (
-          <section key={i} className="flex items-baseline gap-3 px-3 py-2 sm:px-0">
-            <span className="w-20 shrink-0 text-right tabular-nums text-moss">
+          <section key={i} className="flex items-baseline gap-3 px-0 py-2">
+            <span className="w-18 shrink-0 text-right tabular-nums text-moss sm:w-20">
               {e.start ? formatTime(e.start) : "All day"}
             </span>
             <span className="text-moss">{e.title}</span>
           </section>
         ) : (
-          <section key={i} className="flex gap-3 px-3 py-3 sm:px-0">
-            <span className="w-20 shrink-0 text-right font-semibold tabular-nums text-copper">
+          <section key={i} className="flex gap-3 px-0 py-3">
+            <span className="w-18 shrink-0 text-right font-semibold tabular-nums text-copper sm:w-20">
               {e.start ? formatTime(e.start) : "All day"}
             </span>
             <div className="flex-1">

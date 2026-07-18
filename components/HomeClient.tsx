@@ -61,7 +61,7 @@ export default function HomeClient({
     <div className={`mx-auto grid max-w-5xl gap-8 ${
       showMenuSummary ? "lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start" : ""
     }`}>
-      <section className="min-w-0 max-w-xl">
+      <section className="min-w-0 lg:max-w-xl">
         <h1 className="font-display text-3xl font-semibold">{pageTitle(pick)}</h1>
         <p className="mt-1 text-moss">
           {activeDateLabel}
@@ -71,10 +71,10 @@ export default function HomeClient({
         </p>
 
         <div className="my-4 flex items-center gap-2 sm:gap-3">
-          <div role="tablist" aria-label="Activity dates" className="flex w-fit rounded-full bg-hairline/60 p-1">
+          <div role="tablist" aria-label="Activity dates" className="grid w-full grid-cols-3 rounded-full bg-hairline/60 p-1 lg:flex lg:w-fit">
             {PICKS.map((p) => (
               <button key={p.key} role="tab" aria-selected={pick === p.key} onClick={() => setPick(p.key)}
-                className={`whitespace-nowrap rounded-full px-4 py-2 font-semibold ${
+                className={`whitespace-nowrap rounded-full px-2 py-2 text-center font-semibold sm:px-4 ${
                   pick === p.key ? "bg-copper text-petal" : "text-moss"
                 }`}>
                 {p.label}
