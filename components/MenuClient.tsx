@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { ActivityDay, ActivityMonth, MenuWeek } from "@/lib/schema";
 import { addDaysISO, dayNameOfISO, longDateOfISO, formatTime, sundayOfISO } from "@/lib/dates";
 import { findActivityDay, menuWeekFor, publishedMenuWeeks } from "@/lib/lookup";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import MealCards from "@/components/MealCards";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
@@ -74,6 +75,7 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
   return (
     <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
       <section className="max-w-xl">
+        <Breadcrumbs />
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-2">
           <button disabled={idx === 0} onClick={() => moveWeek(-1)}
             className="mt-1 whitespace-nowrap font-bold text-copper disabled:opacity-30">‹ Last</button>

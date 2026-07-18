@@ -6,6 +6,7 @@ import { DIMENSIONS, type Dimension } from "@/lib/schema";
 import { DIMENSION_META } from "@/lib/dimensions";
 import { formatTime, dayNameOfISO, longDateOfISO } from "@/lib/dates";
 import { visitDaysInRange } from "@/lib/lookup";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import Timeline from "@/components/Timeline";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
@@ -122,6 +123,7 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
 
   return (
     <div>
+      <Breadcrumbs />
       <div className="md:flex md:items-start md:justify-between md:gap-5">
         <div className="flex items-center justify-between">
           <h1 className="font-display text-3xl font-semibold">{monthTitle}</h1>

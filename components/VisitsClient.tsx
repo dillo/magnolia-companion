@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { VisitDay, VisitDayType } from "@/lib/schema";
 import { upcomingVisitDays } from "@/lib/lookup";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { useToday } from "@/components/useToday";
 import { VisitDayCard } from "@/components/VisitDays";
 import EmptyState from "@/components/EmptyState";
@@ -26,6 +27,7 @@ export default function VisitsClient({ visitDays }: { visitDays: VisitDay[] }) {
 
   return (
     <div className="mx-auto max-w-4xl">
+      <Breadcrumbs />
       <div className="md:flex md:items-end md:justify-between md:gap-6">
         <div>
           <h1 className="font-display text-3xl font-semibold">Family Visit Days</h1>

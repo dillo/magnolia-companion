@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Resident FAQ | Magnolia Companion",
@@ -211,6 +212,7 @@ const FAQ_SECTIONS: FaqSection[] = [
 export default function FaqPage() {
   return (
     <div className="mx-auto max-w-5xl">
+      <Breadcrumbs />
       <div className="max-w-3xl">
         <p className="font-semibold uppercase tracking-wide text-copper">Resident handbook</p>
         <h1 className="mt-1 font-display text-3xl font-semibold">Frequently Asked Questions</h1>
