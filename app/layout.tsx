@@ -27,11 +27,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="mx-auto max-w-6xl px-4 py-3">
             <div className="flex items-center justify-between gap-4">
               <MagnoliaLogo />
-              <div className="hidden items-center gap-4 sm:flex">
+              <div className="hidden items-center gap-4 lg:flex">
                 <NavLinks />
                 <VisitNotifications visitDays={visitDays} />
               </div>
-              <div className="flex items-center gap-2 sm:hidden">
+              <div className="flex items-center gap-2 lg:hidden">
                 <VisitNotifications visitDays={visitDays} />
                 <NavLinks />
               </div>

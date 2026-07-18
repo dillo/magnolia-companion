@@ -35,8 +35,8 @@ export default function NavLinks() {
   }, [open]);
 
   return (
-    <nav aria-label="Main" className="relative sm:mt-0">
-      <div ref={rootRef} className="sm:hidden">
+    <nav aria-label="Main" className="relative lg:mt-0">
+      <div ref={rootRef} className="lg:hidden">
         <button
           type="button"
           aria-expanded={open}
@@ -80,7 +80,7 @@ export default function NavLinks() {
         )}
       </div>
 
-      <div className="hidden items-center justify-end gap-2 sm:flex">
+      <div className="hidden items-center justify-end gap-2 lg:flex">
         {NAV.map((n) => (
           <NavLink key={n.href} href={n.href} label={n.label} active={pathname === n.href} />
         ))}
