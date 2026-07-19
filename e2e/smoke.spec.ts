@@ -69,3 +69,23 @@ test("menu: day tabs swap the meal cards", async ({ page }) => {
   await page.getByRole("tab", { name: "Monday, July 6, 2026" }).click();
   await expect(page.getByText("Breaded Catfish")).toBeVisible();
 });
+
+test("home: hero card and now marker are time-aware", async ({ page }) => {
+  await pinClock(page); // 3:00 PM — Wind Down Wednesday (15:00) is in progress
+  await page.goto("/");
+  const hero = page.getByLabel("Right now");
+  await expect(hero.getByText("Happening now")).toBeVisible();
+  await expect(hero.getByText("Wind Down Wednesday with Live Entertainment")).toBeVisible();
+  await expect(hero.getByText("Up next: Brain Teasers & Word Search at 5:00 PM")).toBeVisible();
+  await expect(page.getByText("Now · 3:00 PM")).toBeVisible();
+  await expect(page.getByText("Good afternoon")).toBeVisible();
+});
+
+test("home: lunch shows serving-now badge during its window", async ({ page }) => {
+  await page.clock.install({ time: new Date("2026-07-08T16:30:00Z") }); // 12:30 PM EDT
+  await page.goto("/");
+  await expect(page.getByText("Serving now")).toBeVisible();
+  const hero = page.getByLabel("Right now");
+  await expect(hero.getByText("Up next")).toBeVisible();
+  await expect(hero.getByText("Starts in 30 minutes")).toBeVisible();
+});
