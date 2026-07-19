@@ -126,7 +126,7 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
       <Breadcrumbs />
       <div className="md:flex md:items-start md:justify-between md:gap-5">
         <div className="flex items-center justify-between">
-          <h1 className="font-display text-3xl font-semibold">{monthTitle}</h1>
+          <h1 className="font-display text-title font-semibold">{monthTitle}</h1>
           <div className="flex gap-2 md:ml-4">
             <button aria-label="Previous month" disabled={idx === 0} onClick={() => moveMonth(-1)}
               className="rounded-full border border-hairline px-4 py-1.5 font-bold text-copper disabled:opacity-30">‹</button>

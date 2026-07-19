@@ -153,8 +153,8 @@ function Masthead({
   return (
     <>
       <p className="text-moss">{eyebrow}</p>
-      <h1 className="whitespace-nowrap font-display text-[clamp(1.25rem,7.3vw_-_2px,2.25rem)] font-semibold leading-tight">
-        {/* Year hides below md; fluid size fits the longest year-less date ("Wednesday, September 30") at any width. */}
+      <h1 className="whitespace-nowrap font-display text-title font-semibold">
+        {/* Year hides below md; the fluid text-title size fits the longest year-less date ("Wednesday, September 30") at any width. */}
         {main}
         <span className="hidden md:inline">, {year}</span>
       </h1>

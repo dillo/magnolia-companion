@@ -40,7 +40,7 @@ export default function VisitsClient({
         <Breadcrumbs />
         <div className="md:flex md:items-end md:justify-between md:gap-6">
           <div>
-            <h1 className="font-display text-3xl font-semibold">Holidays</h1>
+            <h1 className="font-display text-title font-semibold">Holidays</h1>
           </div>
           <div role="tablist" aria-label="Holiday type" className="mt-4 inline-grid w-fit grid-cols-3 rounded-full bg-hairline/60 p-1 md:mt-0">
             {FILTERS.map((item) => (

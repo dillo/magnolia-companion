@@ -8,6 +8,9 @@
   --color-hairline: #E3DCCB;
   --color-card: #FFFFFF;
   --font-display: var(--font-fraunces), "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  /* Page-title scale: fluid so long titles/dates fit one line on phones, full display size from ~sm up. */
+  --text-title: clamp(1.25rem, 7.3vw - 2px, 2.25rem);
+  --text-title--line-height: 1.25;
 }
 
 /* Reserve the scrollbar gutter so pages that scroll and pages that don't line up identically. */

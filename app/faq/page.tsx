@@ -215,7 +215,7 @@ export default function FaqPage() {
       <Breadcrumbs />
       <div className="max-w-3xl">
         <p className="font-semibold uppercase tracking-wide text-copper">Resident handbook</p>
-        <h1 className="mt-1 font-display text-3xl font-semibold">Frequently Asked Questions</h1>
+        <h1 className="mt-1 font-display text-title font-semibold">Frequently Asked Questions</h1>
         <p className="mt-3 text-moss">
           Quick answers from the Pegasus Senior Living Resident Handbook for Magnolia Place of Roswell. For anything
           urgent, health-related, or unclear, contact the Executive Director or Health & Wellness Director.

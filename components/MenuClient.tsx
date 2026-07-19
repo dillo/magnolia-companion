@@ -80,7 +80,7 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
           <button disabled={idx === 0} onClick={() => moveWeek(-1)}
             className="mt-1 whitespace-nowrap font-bold text-copper disabled:opacity-30">‹ Last</button>
           <div className="min-w-0 text-center">
-            <h1 className="whitespace-nowrap font-display text-3xl font-semibold">This Week</h1>
+            <h1 className="whitespace-nowrap font-display text-title font-semibold">This Week</h1>
             <p className="mt-1 truncate text-moss">{weekRange}</p>
           </div>
           <button disabled={idx < 0 || idx === menus.length - 1} onClick={() => moveWeek(1)}

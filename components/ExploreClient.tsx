@@ -73,7 +73,7 @@ export default function ExploreClient({ directory }: { directory: NearbyPlacesDi
     <div className="mx-auto max-w-6xl">
       <Breadcrumbs />
       <div className="mb-5 max-w-3xl">
-        <h1 className="font-display text-3xl font-semibold">Explore Nearby</h1>
+        <h1 className="font-display text-title font-semibold">Explore Nearby</h1>
         <p className="mt-2 text-moss">
           Restaurants, salons, shops, medical stops, parks, and easy outings around Magnolia Place of Roswell.
         </p>
