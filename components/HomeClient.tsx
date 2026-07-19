@@ -247,33 +247,40 @@ function MenuSummary({
   );
 }
 
-function DayHeading({ date, today, theme }: { date: string; today: string; theme: string | null }) {
-  const note = date === today ? "Today" : date === addDaysISO(today, 1) ? "Tomorrow" : null;
-  return (
-    <h2 className="mt-4 font-semibold">
-      {dayNameOfISO(date).slice(0, 3)} {Number(date.slice(8))}
-      {note && <span className="font-normal text-moss"> · {note}</span>}
-      {theme && <span className="font-display text-[15px] font-normal italic text-copper"> · {theme}</span>}
-    </h2>
-  );
-}
-
 function WeekActivities({ months, dates, today }: { months: ActivityMonth[]; dates: string[]; today: string }) {
   return (
-    <div className="divide-y divide-hairline border-y border-hairline">
+    <div className="space-y-3">
       {dates.map((date) => {
         const day = findActivityDay(months, date);
         const specials = day?.events.filter((e) => !e.routine) ?? [];
         const routineCount = (day?.events.length ?? 0) - specials.length;
         const isToday = date === today;
+        const isTomorrow = date === addDaysISO(today, 1);
         return (
-          <div key={date} className="pb-3">
-            <DayHeading date={date} today={today} theme={day?.theme ?? null} />
-            <div className={isToday ? "mt-2 rounded-lg border border-copper bg-copper/10 py-2" : ""}>
+          <section
+            key={date}
+            className={`rounded-xl border bg-card px-4 py-3 shadow-sm ${
+              isToday ? "border-copper ring-1 ring-copper" : "border-hairline"
+            }`}
+          >
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <h2 className="font-display text-xl font-semibold">
+                {dayNameOfISO(date).slice(0, 3)} {Number(date.slice(8))}
+              </h2>
+              {isToday && (
+                <span className="self-center rounded-full bg-copper px-2 py-0.5 text-[13px] font-bold text-petal">
+                  Today
+                </span>
+              )}
+              {isTomorrow && <span className="text-moss">· Tomorrow</span>}
+              {day?.theme && <span className="font-display italic text-copper">· {day.theme}</span>}
+            </div>
+            <div className="mt-2 space-y-1.5">
               {!day && <p className="text-moss">Not added yet.</p>}
+              {day && specials.length === 0 && <p className="text-moss">Daily routine only.</p>}
               {specials.map((e, i) => (
-                <div key={i} className="mb-1.5 flex items-baseline gap-2">
-                  <span className="w-20 shrink-0 text-right font-semibold tabular-nums text-copper">
+                <div key={i} className="flex items-baseline gap-3">
+                  <span className="w-20 shrink-0 whitespace-nowrap text-right font-semibold tabular-nums text-copper">
                     {e.start ? formatTime(e.start) : "All day"}
                   </span>
                   <span>
@@ -282,10 +289,10 @@ function WeekActivities({ months, dates, today }: { months: ActivityMonth[]; dat
                 </div>
               ))}
               {routineCount > 0 && (
-                <p className="ml-[5.5rem] text-[15px] text-moss">+ {routineCount} daily routine items</p>
+                <p className="ml-[5.75rem] text-[15px] text-moss">+ {routineCount} daily routine items</p>
               )}
             </div>
-          </div>
+          </section>
         );
       })}
     </div>
