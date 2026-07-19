@@ -56,7 +56,7 @@ function TimelineRow({
   const time = (
     <span
       className={`w-18 shrink-0 pt-0.5 text-right tabular-nums sm:w-20 ${
-        e.routine ? "text-moss" : "font-semibold text-copper"
+        e.routine ? "text-moss" : `font-semibold ${past ? "text-moss" : "text-copper"}`
       }`}
     >
       {e.start ? formatTime(e.start) : "All day"}
@@ -66,14 +66,14 @@ function TimelineRow({
   return (
     <motion.div
       initial={reduced ? false : { opacity: 0, y: 6 }}
-      animate={{ opacity: past ? 0.7 : 1, y: 0 }}
+      animate={{ opacity: past && e.routine ? 0.9 : 1, y: 0 }}
       transition={{ duration: 0.2, delay: Math.min(index * 0.04, 0.4), ease: "easeOut" }}
-      className={`relative py-1.5 ${past ? "opacity-70" : ""}`}
+      className="relative py-1.5"
     >
       <span
         aria-hidden="true"
         className={`absolute -left-[1.44rem] top-[0.95rem] h-2.5 w-2.5 rounded-full border-2 border-petal ${
-          e.routine ? "bg-hairline" : "bg-copper"
+          e.routine ? "bg-hairline" : past ? "bg-copper/40" : "bg-copper"
         }`}
       />
       {e.routine ? (
@@ -85,7 +85,7 @@ function TimelineRow({
         <div className="flex gap-3">
           {time}
           <div
-            className="min-w-0 flex-1 rounded-xl border border-hairline bg-card px-4 py-3 shadow-sm"
+            className={`min-w-0 flex-1 rounded-xl border border-hairline bg-card px-4 py-3 ${past ? "" : "shadow-sm"}`}
             style={
               e.dimension
                 ? { borderLeft: `3px solid ${DIMENSION_META[e.dimension].dot}` }
