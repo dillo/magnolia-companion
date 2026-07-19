@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotionConfig } from "framer-motion";
 import type { ActivityEvent } from "@/lib/schema";
 import { formatTime } from "@/lib/dates";
 import { timelineStatuses, type TimelineStatus } from "@/lib/now";
@@ -10,7 +10,7 @@ import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
 
 export default function Timeline({ events, now = null }: { events: ActivityEvent[]; now?: string | null }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionConfig();
   if (events.length === 0) return <EmptyState message="No activities listed for this day." />;
 
   const statuses: TimelineStatus[] = now
@@ -23,7 +23,13 @@ export default function Timeline({ events, now = null }: { events: ActivityEvent
       {events.map((e, i) => (
         <Fragment key={i}>
           {i === markerIndex && <NowMarker now={now!} />}
-          <TimelineRow event={e} index={i} past={now !== null && statuses[i] === "past"} reduced={!!reduced} />
+          <TimelineRow
+            event={e}
+            index={i}
+            past={now !== null && statuses[i] === "past"}
+            reduced={!!reduced}
+            elevated={i === markerIndex}
+          />
         </Fragment>
       ))}
     </div>
@@ -47,11 +53,13 @@ function TimelineRow({
   index,
   past,
   reduced,
+  elevated,
 }: {
   event: ActivityEvent;
   index: number;
   past: boolean;
   reduced: boolean;
+  elevated: boolean;
 }) {
   const time = (
     <span
@@ -85,7 +93,9 @@ function TimelineRow({
         <div className="flex gap-3">
           {time}
           <div
-            className={`min-w-0 flex-1 rounded-xl border border-hairline bg-card px-4 py-3 ${past ? "" : "shadow-sm"}`}
+            className={`min-w-0 flex-1 rounded-xl border border-hairline bg-card px-4 py-3 ${
+              past ? "" : elevated ? "shadow-md" : "shadow-sm"
+            }`}
             style={
               e.dimension
                 ? { borderLeft: `3px solid ${DIMENSION_META[e.dimension].dot}` }
