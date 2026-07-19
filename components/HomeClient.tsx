@@ -71,8 +71,9 @@ export default function HomeClient({
         {pick === "today" ? (
           <>
             <p className="text-moss">{now ? greetingFor(now) : " "}</p>
-            <h1 className="font-display text-4xl font-semibold">
-              {dayNameOfISO(date)}, {longDateOfISO(date)}
+            <h1 className="font-display text-4xl font-semibold leading-tight">
+              {/* Deliberate two-line masthead on phones: the full date can't fit one line at display size. */}
+              {dayNameOfISO(date)},<br className="sm:hidden" /> {longDateOfISO(date)}
             </h1>
             {day?.theme && (
               <p className="mt-1.5 flex items-center gap-2 font-display text-xl italic text-copper">

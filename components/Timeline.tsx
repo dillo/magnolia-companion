@@ -63,7 +63,7 @@ function TimelineRow({
 }) {
   const time = (
     <span
-      className={`w-18 shrink-0 pt-0.5 text-right tabular-nums sm:w-20 ${
+      className={`w-20 shrink-0 whitespace-nowrap pt-0.5 text-right tabular-nums ${
         e.routine ? "text-moss" : `font-semibold ${past ? "text-moss" : "text-copper"}`
       }`}
     >
