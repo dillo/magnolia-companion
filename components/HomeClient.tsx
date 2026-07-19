@@ -14,9 +14,10 @@ import EmptyState from "@/components/EmptyState";
 import { useToday } from "@/components/useToday";
 import { MEAL_HOURS } from "@/components/MealCards";
 import { VisitDaysSummary } from "@/components/VisitDays";
-import { greetingFor } from "@/lib/now";
+import { greetingFor, heroStateFor, tomorrowPreview } from "@/lib/now";
 import { useNow } from "@/components/useNow";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
+import HeroCard from "@/components/HeroCard";
 
 type DayPick = "today" | "tomorrow" | "week";
 
@@ -51,6 +52,7 @@ export default function HomeClient({
   const weekStart = mondayOfISO(today);
   const weekDates = Array.from({ length: 7 }, (_, i) => addDaysISO(weekStart, i));
   const day = findActivityDay(months, date);
+  const tomorrowDay = findActivityDay(months, addDaysISO(today, 1));
   const menuDate = pick === "tomorrow" ? date : today;
   const menuDay = findMenuDay(weeks, menuDate);
   const menuTitle = pick === "tomorrow" ? "Tomorrow's Menu" : "Today's Menu";
@@ -103,6 +105,16 @@ export default function HomeClient({
             ))}
           </div>
         </div>
+
+        {pick === "today" && now && day && (
+          <div className="mb-5">
+            <HeroCard
+              state={heroStateFor(day.events, now)}
+              tomorrow={tomorrowPreview(tomorrowDay)}
+              tomorrowMissing={tomorrowDay === null}
+            />
+          </div>
+        )}
 
         {pick === "week" ? (
           <WeekActivities months={months} dates={weekDates} today={today} />
