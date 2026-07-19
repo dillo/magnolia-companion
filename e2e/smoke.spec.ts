@@ -8,7 +8,7 @@ async function pinClock(page: Page) {
 test("home: day pills, menu sidebar, and week view", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Today's Activities" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Wednesday, July 8, 2026" })).toBeVisible();
   await expect(page.getByText("Nat'l Raspberry Day").first()).toBeVisible();
   // Today's menu renders in the sidebar (no Meals tab anymore).
   await expect(page.getByText("Roasted Turkey")).toBeVisible();
@@ -57,7 +57,7 @@ test("no hydration errors, including under reduced motion", async ({ page }) => 
   await page.emulateMedia({ reducedMotion: "reduce" });
   await pinClock(page);
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Today's Activities" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Wednesday, July 8, 2026" })).toBeVisible();
   expect(errors.filter((e) => e.toLowerCase().includes("hydrat"))).toEqual([]);
 });
 

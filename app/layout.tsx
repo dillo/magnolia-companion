@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
+import { Fraunces } from "next/font/google";
 import "./globals.css";
 import AccessibilityControl from "@/components/AccessibilityControl";
 import MagnoliaLogo from "@/components/MagnoliaLogo";
 import NavLinks from "@/components/NavLinks";
 import VisitNotifications from "@/components/VisitNotifications";
 import { loadVisitDays } from "@/lib/content";
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Magnolia Companion",
@@ -15,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const visitDays = loadVisitDays();
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={fraunces.variable}>
       <body className="min-h-screen bg-petal text-ink antialiased">
         <script
           // Restore saved display settings before first paint.

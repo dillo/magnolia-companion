@@ -14,6 +14,9 @@ import EmptyState from "@/components/EmptyState";
 import { useToday } from "@/components/useToday";
 import { MEAL_HOURS } from "@/components/MealCards";
 import { VisitDaysSummary } from "@/components/VisitDays";
+import { greetingFor } from "@/lib/now";
+import { useNow } from "@/components/useNow";
+import MagnoliaFlourish from "@/components/MagnoliaFlourish";
 
 type DayPick = "today" | "tomorrow" | "week";
 
@@ -39,6 +42,7 @@ export default function HomeClient({
   visitDays: VisitDay[];
 }) {
   const today = useToday();
+  const now = useNow();
   const [pick, setPick] = useState<DayPick>("today");
 
   if (!today) return null; // date is client-side by design; render after mount
@@ -62,13 +66,30 @@ export default function HomeClient({
       showMenuSummary ? "lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start" : ""
     }`}>
       <section className="min-w-0 lg:max-w-xl">
-        <h1 className="font-display text-3xl font-semibold">{pageTitle(pick)}</h1>
-        <p className="mt-1 text-moss">
-          {activeDateLabel}
-          {pick !== "week" && day?.theme && (
-            <span className="font-display italic text-copper"> · {day.theme}</span>
-          )}
-        </p>
+        {pick === "today" ? (
+          <>
+            <p className="text-moss">{now ? greetingFor(now) : " "}</p>
+            <h1 className="font-display text-4xl font-semibold">
+              {dayNameOfISO(date)}, {longDateOfISO(date)}
+            </h1>
+            {day?.theme && (
+              <p className="mt-1.5 flex items-center gap-2 font-display text-xl italic text-copper">
+                <MagnoliaFlourish className="h-5 w-5 shrink-0" />
+                {day.theme}
+              </p>
+            )}
+          </>
+        ) : (
+          <>
+            <h1 className="font-display text-3xl font-semibold">{pageTitle(pick)}</h1>
+            <p className="mt-1 text-moss">
+              {activeDateLabel}
+              {day?.theme && pick !== "week" && (
+                <span className="font-display italic text-copper"> · {day.theme}</span>
+              )}
+            </p>
+          </>
+        )}
 
         <div className="my-4 flex items-center gap-2 sm:gap-3">
           <div role="tablist" aria-label="Activity dates" className="grid w-full grid-cols-3 rounded-full bg-hairline/60 p-1 lg:flex lg:w-fit">

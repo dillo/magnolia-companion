@@ -7,7 +7,7 @@
   --color-copper: #A0501F;
   --color-hairline: #E3DCCB;
   --color-card: #FFFFFF;
-  --font-display: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  --font-display: var(--font-fraunces), "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
 }
 
 /* Reserve the scrollbar gutter so pages that scroll and pages that don't line up identically. */
