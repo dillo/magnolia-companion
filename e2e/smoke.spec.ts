@@ -1,34 +1,24 @@
 import { test, expect, type Page } from "@playwright/test";
 
-// Pin the browser clock inside the committed fixture week (Wed 2026-07-08, 3pm EDT).
+// Pin the browser clock inside the committed fixture data (Wed 2026-07-08, 3:00 PM EDT).
 async function pinClock(page: Page) {
   await page.clock.install({ time: new Date("2026-07-08T19:00:00Z") });
 }
 
-test("home: pills, tabs, and week view", async ({ page }) => {
+test("home: day pills, menu sidebar, and week view", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Wednesday" })).toBeVisible();
-  await expect(page.getByText("Nat'l Raspberry Day")).toBeVisible();
-
-  await page.getByRole("tab", { name: "Meals" }).click();
-  await expect(page.getByText("Fried catfish")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Today's Activities" })).toBeVisible();
+  await expect(page.getByText("Nat'l Raspberry Day").first()).toBeVisible();
+  // Today's menu renders in the sidebar (no Meals tab anymore).
+  await expect(page.getByText("Roasted Turkey")).toBeVisible();
 
   await page.getByRole("tab", { name: "Tomorrow" }).click();
-  await expect(page.getByRole("heading", { name: "Thursday" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Tomorrow's Activities" })).toBeVisible();
 
   await page.getByRole("tab", { name: "This Week" }).click();
-  await page.getByRole("tab", { name: "Activities" }).click();
   await expect(page.getByText("daily routine items").first()).toBeVisible();
   await expect(page.getByText("Therapy Dog Visit with Canine Assistants")).toBeVisible();
-});
-
-test("home: meals tab choice survives reload", async ({ page }) => {
-  await pinClock(page);
-  await page.goto("/");
-  await page.getByRole("tab", { name: "Meals" }).click();
-  await page.reload();
-  await expect(page.getByRole("tab", { name: "Meals" })).toHaveAttribute("aria-selected", "true");
 });
 
 test("calendar: grid, filter, day detail", async ({ page }) => {
@@ -41,9 +31,9 @@ test("calendar: grid, filter, day detail", async ({ page }) => {
   await filter.selectOption("emotional");
   await expect(filter).toHaveValue("emotional");
 
-  await page.getByRole("button", { name: /Classic Car Collection Day/ }).click();
+  await page.getByRole("button", { name: /Therapy Dog/ }).click();
   await expect(
-    page.getByLabel("Day detail").getByText("Therapy Dog Visit with Canine Assistants"),
+    page.getByRole("dialog").getByText("Therapy Dog Visit with Canine Assistants"),
   ).toBeVisible();
 });
 
@@ -51,12 +41,12 @@ test("nav: current page is marked active", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Main" });
-  await expect(nav.getByRole("link", { name: "Today" })).toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Activities" })).toHaveAttribute("aria-current", "page");
   await expect(nav.getByRole("link", { name: "Calendar" })).not.toHaveAttribute("aria-current", "page");
 
   await nav.getByRole("link", { name: "Calendar" }).click();
   await expect(nav.getByRole("link", { name: "Calendar" })).toHaveAttribute("aria-current", "page");
-  await expect(nav.getByRole("link", { name: "Today" })).not.toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Activities" })).not.toHaveAttribute("aria-current", "page");
 });
 
 test("no hydration errors, including under reduced motion", async ({ page }) => {
@@ -67,14 +57,15 @@ test("no hydration errors, including under reduced motion", async ({ page }) => 
   await page.emulateMedia({ reducedMotion: "reduce" });
   await pinClock(page);
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Wednesday" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Today's Activities" })).toBeVisible();
   expect(errors.filter((e) => e.toLowerCase().includes("hydrat"))).toEqual([]);
 });
 
 test("menu: day tabs swap the meal cards", async ({ page }) => {
   await pinClock(page);
   await page.goto("/menu");
-  await expect(page.getByText("Fried catfish")).toBeVisible();
-  await page.getByRole("tab", { name: /Mon\s*6/ }).click();
-  await expect(page.getByText("Buttermilk pancakes")).toBeVisible();
+  // Wednesday July 8 is selected by default (today).
+  await expect(page.getByText("Roasted Turkey")).toBeVisible();
+  await page.getByRole("tab", { name: "Monday, July 6, 2026" }).click();
+  await expect(page.getByText("Breaded Catfish")).toBeVisible();
 });
