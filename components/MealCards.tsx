@@ -1,11 +1,16 @@
+import { formatTime } from "@/lib/dates";
 import type { MenuDay } from "@/lib/schema";
 
 /** Serving hours are placeholders until the real printed menu is photographed (spec open item). */
-export const MEAL_HOURS = [
-  ["breakfast", "Breakfast", "7:30 AM – 9:00 AM"],
-  ["lunch", "Lunch", "11:30 AM – 1:00 PM"],
-  ["dinner", "Dinner", "5:00 PM – 6:30 PM"],
+export const MEALS = [
+  { key: "breakfast", label: "Breakfast", start: "07:30", end: "09:00" },
+  { key: "lunch", label: "Lunch", start: "11:30", end: "13:00" },
+  { key: "dinner", label: "Dinner", start: "17:00", end: "18:30" },
 ] as const;
+
+export function mealHours({ start, end }: { start: string; end: string }): string {
+  return `${formatTime(start)} – ${formatTime(end)}`;
+}
 
 function PlaceholderItems() {
   return (
@@ -23,13 +28,13 @@ function PlaceholderItems() {
 export default function MealCards({ day }: { day: MenuDay | null }) {
   return (
     <div className="divide-y divide-hairline border-y border-hairline">
-      {MEAL_HOURS.map(([key, label, hours]) => {
+      {MEALS.map(({ key, label, start, end }) => {
         const meal = day?.[key] ?? null;
         return (
           <section key={key} className="py-4">
             <div className="mb-2 flex items-baseline justify-between gap-4">
               <h2 className="font-display text-2xl font-semibold">{label}</h2>
-              <span className="shrink-0 tabular-nums text-moss">{hours}</span>
+              <span className="shrink-0 tabular-nums text-moss">{mealHours({ start, end })}</span>
             </div>
             {!meal ? (
               <PlaceholderItems />
