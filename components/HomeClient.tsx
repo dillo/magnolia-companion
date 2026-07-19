@@ -195,7 +195,7 @@ function MenuSummary({
                       <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-copper" />
                       <span className={item.kind === "dessert" ? "text-copper" : ""}>
                         {item.kind === "dessert" && (
-                          <span aria-hidden="true" className="mr-1 text-[11px] align-middle">◆</span>
+                          <span aria-hidden="true" className="mr-1 text-[13px] align-middle">◆</span>
                         )}
                         {item.name}
                       </span>
