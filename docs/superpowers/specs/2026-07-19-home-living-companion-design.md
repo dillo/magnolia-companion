@@ -50,7 +50,7 @@ One elevated card directly under the masthead, Today view only. It reports chron
 - A hairline vertical spine on the left with a copper dot per event, replacing the current divider list.
 - **Specials:** soft-shadowed white (`--color-card`) cards with a 3px dimension-tinted left edge, title, location, dimension chip.
 - **Routine events:** quiet one-line rows directly on the spine, as today.
-- **Past events** fade to ~55% opacity (must still meet AA contrast for the faded text in both palettes; adjust opacity or color rather than breaking contrast).
+- **Past events** are de-emphasized without breaking AA contrast (measured: no copper fade passes 4.5:1, so opacity alone can't express the fade): routine rows fade to 90% opacity (moss stays 4.69:1); past special cards keep full text opacity but drop their shadow, switch the time label from copper to moss, and dim their decorative spine dot to copper/40.
 - A thin copper "now" marker with the current time label sits on the spine between past and upcoming events; the next upcoming event's card gets slightly stronger elevation.
 - Entrance: rows fade-up with a gentle Framer Motion stagger; disabled entirely under either reduced-motion path.
 - Tomorrow and This Week views reuse the same spine styling but have no now-marker and no fading.
