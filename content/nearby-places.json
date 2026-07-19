@@ -1,0 +1,238 @@
+{
+  "center": {
+    "name": "Magnolia Place of Roswell",
+    "address": "655 Mansell Rd, Roswell, GA 30076",
+    "latitude": 34.0403,
+    "longitude": -84.3373
+  },
+  "places": [
+    {
+      "id": "bowlero-roswell",
+      "name": "Bowlero Roswell",
+      "category": "activity",
+      "address": "785 Old Roswell Rd, Roswell, GA 30076",
+      "phone": "(770) 998-9437",
+      "website": "https://www.bowlero.com/location/bowlero-roswell",
+      "latitude": 34.046,
+      "longitude": -84.335,
+      "distanceMiles": 0.7,
+      "summary": "Bowling, arcade games, billiards, food, and lounge seating close to Magnolia.",
+      "seniorFriendly": true,
+      "notes": [
+        "Very close drive for a short outing.",
+        "Website lists wheelchair accessibility.",
+        "Best for families who want an activity with seating nearby."
+      ],
+      "tags": ["Bowling", "Wheelchair accessible", "Family outing"]
+    },
+    {
+      "id": "olive-garden-roswell",
+      "name": "Olive Garden",
+      "category": "restaurant",
+      "address": "905 Holcomb Bridge Rd, Roswell, GA 30076",
+      "phone": "(770) 642-0395",
+      "website": "https://www.olivegarden.com/locations/ga/roswell/roswell-holcomb-bridge-road/1039",
+      "latitude": 34.026,
+      "longitude": -84.3351,
+      "distanceMiles": 1.2,
+      "summary": "Casual Italian restaurant with familiar menu items and table service.",
+      "seniorFriendly": true,
+      "notes": [
+        "Good option for a familiar sit-down meal.",
+        "Close enough for a simple lunch or dinner outing.",
+        "Call ahead for accessibility, wait times, and seating needs."
+      ],
+      "tags": ["Restaurant", "Table service", "Familiar menu"]
+    },
+    {
+      "id": "red-lobster-roswell",
+      "name": "Red Lobster",
+      "category": "restaurant",
+      "address": "1050 Holcomb Bridge Rd, Roswell, GA 30076",
+      "phone": null,
+      "website": "https://www.redlobster.com/",
+      "latitude": 34.03,
+      "longitude": -84.3261,
+      "distanceMiles": 1.5,
+      "summary": "Seafood chain restaurant near Holcomb Bridge Road.",
+      "seniorFriendly": true,
+      "notes": [
+        "Familiar casual dining choice.",
+        "Reasonable distance for family meals.",
+        "Confirm current hours and seating before going."
+      ],
+      "tags": ["Restaurant", "Seafood", "Casual"]
+    },
+    {
+      "id": "pappadeaux-alpharetta",
+      "name": "Pappadeaux Seafood Kitchen",
+      "category": "restaurant",
+      "address": "10795 Davis Dr, Alpharetta, GA 30009",
+      "phone": null,
+      "website": "https://pappadeaux.com/",
+      "latitude": 34.0415,
+      "longitude": -84.3139,
+      "distanceMiles": 1.9,
+      "summary": "Seafood restaurant for a more substantial family meal.",
+      "seniorFriendly": true,
+      "notes": [
+        "Good for a planned lunch or dinner.",
+        "Likely busier than quick casual options.",
+        "Call ahead if quieter seating or mobility accommodations are important."
+      ],
+      "tags": ["Restaurant", "Seafood", "Family meal"]
+    },
+    {
+      "id": "rasa-sayang",
+      "name": "Rasa Sayang",
+      "category": "restaurant",
+      "address": "1425 Market Blvd #1390, Roswell, GA 30076",
+      "phone": null,
+      "website": null,
+      "latitude": 34.0374,
+      "longitude": -84.3187,
+      "distanceMiles": 2.2,
+      "summary": "Nearby restaurant option in the Market Boulevard area.",
+      "seniorFriendly": false,
+      "notes": [
+        "Good candidate for family takeout or a dining outing.",
+        "Confirm hours, parking, and seating before visiting.",
+        "A little farther than the closest Holcomb Bridge restaurants."
+      ],
+      "tags": ["Restaurant", "Market Boulevard"]
+    },
+    {
+      "id": "buca-di-beppo",
+      "name": "Buca di Beppo",
+      "category": "restaurant",
+      "address": "2335 Mansell Rd, Alpharetta, GA 30022",
+      "phone": null,
+      "website": "https://www.bucadibeppo.com/",
+      "latitude": 34.046,
+      "longitude": -84.3068,
+      "distanceMiles": 2.2,
+      "summary": "Family-style Italian restaurant on Mansell Road.",
+      "seniorFriendly": true,
+      "notes": [
+        "Family-style portions work well for group visits.",
+        "Best for a planned outing rather than a quick stop.",
+        "Call ahead for seating and accessibility questions."
+      ],
+      "tags": ["Restaurant", "Italian", "Group meal"]
+    },
+    {
+      "id": "jasons-deli",
+      "name": "Jason's Deli",
+      "category": "restaurant",
+      "address": "7300 North Point Pkwy, Alpharetta, GA 30022",
+      "phone": null,
+      "website": "https://www.jasonsdeli.com/",
+      "latitude": 34.0419,
+      "longitude": -84.3002,
+      "distanceMiles": 2.4,
+      "summary": "Casual deli with soups, sandwiches, salads, and lighter meal options.",
+      "seniorFriendly": true,
+      "notes": [
+        "Good for a lower-key meal.",
+        "Menu usually includes lighter options.",
+        "Confirm current location details before visiting."
+      ],
+      "tags": ["Restaurant", "Casual", "Lighter meals"]
+    },
+    {
+      "id": "great-clips-centennial",
+      "name": "Great Clips Centennial Village",
+      "category": "hair_salon",
+      "address": "2300 Holcomb Bridge Rd, Ste 102, Roswell, GA 30076",
+      "phone": null,
+      "website": "https://salons.greatclips.com/us/ga/roswell/2300-holcomb-bridge-rd",
+      "latitude": 34.0015,
+      "longitude": -84.293,
+      "distanceMiles": 3.7,
+      "summary": "Hair salon with walk-in service and online check-in.",
+      "seniorFriendly": true,
+      "notes": [
+        "Great Clips advertises senior haircuts.",
+        "Online check-in can reduce lobby wait time.",
+        "Call or check online before going because wait times can vary."
+      ],
+      "tags": ["Hair salon", "Senior haircuts", "Online check-in"]
+    },
+    {
+      "id": "north-point-mall",
+      "name": "North Point Mall",
+      "category": "shop",
+      "address": "1000 North Point Cir, Alpharetta, GA 30022",
+      "phone": "(770) 740-8636",
+      "website": "https://alpharetta.com/north-point-mall/",
+      "latitude": 34.0475,
+      "longitude": -84.2947,
+      "distanceMiles": 3.0,
+      "summary": "Indoor mall with shopping, dining, and an AMC movie theater.",
+      "seniorFriendly": true,
+      "notes": [
+        "Indoor walking and seating can make visits easier in hot or rainy weather.",
+        "Multiple food and shopping options in one stop.",
+        "Individual store hours may differ from mall hours."
+      ],
+      "tags": ["Shopping", "Indoor", "Movie theater"]
+    },
+    {
+      "id": "wellstar-north-fulton",
+      "name": "Wellstar North Fulton Hospital",
+      "category": "medical",
+      "address": "3000 Hospital Blvd, Roswell, GA 30076",
+      "phone": null,
+      "website": "https://www.wellstar.org/locations/hospital/north-fulton-medical-center",
+      "latitude": 34.0617,
+      "longitude": -84.3205,
+      "distanceMiles": 2.1,
+      "summary": "Nearby hospital and medical campus.",
+      "seniorFriendly": true,
+      "notes": [
+        "Useful reference point for urgent or planned medical care.",
+        "Check department location before driving because hospital campuses can be spread out.",
+        "Keep emergency needs routed through appropriate medical channels."
+      ],
+      "tags": ["Medical", "Hospital", "Nearby care"]
+    },
+    {
+      "id": "chattahoochee-nature-center",
+      "name": "Chattahoochee Nature Center",
+      "category": "park",
+      "address": "9135 Willeo Rd, Roswell, GA 30075",
+      "phone": null,
+      "website": "https://www.chattnaturecenter.org/",
+      "latitude": 34.0005,
+      "longitude": -84.3832,
+      "distanceMiles": 3.4,
+      "summary": "Nature center with outdoor paths, programs, and river-area scenery.",
+      "seniorFriendly": true,
+      "notes": [
+        "Good for a calm family outing when weather is comfortable.",
+        "Check path conditions and accessibility before planning a visit.",
+        "Best for residents who enjoy nature and can handle some outdoor walking."
+      ],
+      "tags": ["Outdoor", "Nature", "Family outing"]
+    },
+    {
+      "id": "mansell-crossing",
+      "name": "Mansell Crossing Area",
+      "category": "shop",
+      "address": "Mansell Rd near North Point Pkwy, Alpharetta, GA 30022",
+      "phone": null,
+      "website": null,
+      "latitude": 34.041,
+      "longitude": -84.304,
+      "distanceMiles": 2.5,
+      "summary": "Nearby shopping and restaurant corridor along Mansell Road.",
+      "seniorFriendly": true,
+      "notes": [
+        "Useful for combining errands with a meal.",
+        "Parking and walking distances vary by storefront.",
+        "Pick a specific store before leaving to keep the outing simple."
+      ],
+      "tags": ["Shopping", "Restaurants", "Errands"]
+    }
+  ]
+}

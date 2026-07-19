@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { activityMonthSchema, menuWeekSchema, visitDaysSchema } from "@/lib/schema";
+import { activityMonthSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema } from "@/lib/schema";
 
 function readJSON(rel: string) {
   return JSON.parse(fs.readFileSync(path.join(process.cwd(), rel), "utf8"));
@@ -91,5 +91,40 @@ describe("visitDaysSchema", () => {
       note: "Family visit day.",
     }];
     expect(() => visitDaysSchema.parse(bad)).toThrow(/ends before it starts/);
+  });
+});
+
+describe("nearbyPlacesSchema", () => {
+  test("accepts the committed nearby places directory", () => {
+    const parsed = nearbyPlacesSchema.parse(readJSON("content/nearby-places.json"));
+    expect(parsed.center.name).toBe("Magnolia Place of Roswell");
+    expect(parsed.places.some((place) => place.category === "hair_salon")).toBe(true);
+    expect(parsed.places.some((place) => place.seniorFriendly)).toBe(true);
+  });
+  test("rejects duplicate nearby place ids", () => {
+    const place = {
+      id: "same",
+      name: "Place",
+      category: "shop",
+      address: "123 Main St",
+      phone: null,
+      website: null,
+      latitude: 34,
+      longitude: -84,
+      distanceMiles: 1,
+      summary: "A test place.",
+      seniorFriendly: true,
+      notes: ["Easy parking."],
+      tags: ["Test"],
+    };
+    expect(() => nearbyPlacesSchema.parse({
+      center: {
+        name: "Center",
+        address: "655 Mansell Rd",
+        latitude: 34,
+        longitude: -84,
+      },
+      places: [place, place],
+    })).toThrow(/duplicate nearby place/);
   });
 });

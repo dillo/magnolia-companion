@@ -116,3 +116,44 @@ export const visitDaysSchema = z.array(visitDaySchema).superRefine((days, ctx) =
     seen.add(key);
   }
 });
+
+export const NEARBY_PLACE_CATEGORIES = [
+  "hair_salon", "restaurant", "shop", "medical", "park", "activity",
+] as const;
+export type NearbyPlaceCategory = (typeof NEARBY_PLACE_CATEGORIES)[number];
+
+export const nearbyPlaceSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  category: z.enum(NEARBY_PLACE_CATEGORIES),
+  address: z.string().min(1),
+  phone: z.string().min(1).nullable(),
+  website: z.string().url().nullable(),
+  latitude: z.number(),
+  longitude: z.number(),
+  distanceMiles: z.number().nonnegative(),
+  summary: z.string().min(1),
+  seniorFriendly: z.boolean(),
+  notes: z.array(z.string().min(1)).min(1),
+  tags: z.array(z.string().min(1)),
+});
+export type NearbyPlace = z.infer<typeof nearbyPlaceSchema>;
+
+export const nearbyPlacesSchema = z.object({
+  center: z.object({
+    name: z.string().min(1),
+    address: z.string().min(1),
+    latitude: z.number(),
+    longitude: z.number(),
+  }),
+  places: z.array(nearbyPlaceSchema),
+}).superRefine((directory, ctx) => {
+  const seen = new Set<string>();
+  for (const place of directory.places) {
+    if (seen.has(place.id)) {
+      ctx.addIssue({ code: "custom", message: `duplicate nearby place ${place.id}` });
+    }
+    seen.add(place.id);
+  }
+});
+export type NearbyPlacesDirectory = z.infer<typeof nearbyPlacesSchema>;

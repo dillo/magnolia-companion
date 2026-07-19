@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import {
-  activityMonthSchema, menuWeekSchema, visitDaysSchema,
-  type ActivityMonth, type MenuWeek, type VisitDay,
+  activityMonthSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema,
+  type ActivityMonth, type MenuWeek, type NearbyPlacesDirectory, type VisitDay,
 } from "./schema";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
@@ -46,5 +46,25 @@ export function loadVisitDays(): VisitDay[] {
       .sort((a, b) => a.startDate.localeCompare(b.startDate) || a.title.localeCompare(b.title));
   } catch (err) {
     throw new Error(`content/visit-days.json: ${err instanceof Error ? err.message : err}`);
+  }
+}
+
+export function loadNearbyPlaces(): NearbyPlacesDirectory {
+  const file = path.join(CONTENT_DIR, "nearby-places.json");
+  if (!fs.existsSync(file)) {
+    return {
+      center: {
+        name: "Magnolia Place of Roswell",
+        address: "655 Mansell Rd, Roswell, GA 30076",
+        latitude: 34.0403,
+        longitude: -84.3373,
+      },
+      places: [],
+    };
+  }
+  try {
+    return nearbyPlacesSchema.parse(JSON.parse(fs.readFileSync(file, "utf8")));
+  } catch (err) {
+    throw new Error(`content/nearby-places.json: ${err instanceof Error ? err.message : err}`);
   }
 }

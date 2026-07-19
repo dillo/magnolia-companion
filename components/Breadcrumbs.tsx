@@ -7,6 +7,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "/": "Activities",
   "/menu": "Menu",
   "/calendar": "Calendar",
+  "/explore": "Explore",
   "/visits": "Holidays",
   "/faq": "FAQ",
 };
@@ -15,6 +16,7 @@ const ROUTE_WIDTHS: Record<string, string> = {
   "/": "max-w-5xl",
   "/menu": "max-w-5xl",
   "/calendar": "max-w-6xl",
+  "/explore": "max-w-6xl",
   "/visits": "max-w-4xl",
   "/faq": "max-w-5xl",
 };
