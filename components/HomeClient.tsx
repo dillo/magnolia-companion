@@ -55,6 +55,11 @@ export default function HomeClient({
     ? `${monthDayOfISO(weekStart)} – ${Number(weekEnd.slice(8))}`
     : `${monthDayOfISO(weekStart)} – ${monthDayOfISO(weekEnd)}`;
 
+  const weekSpecialCount = weekDates.reduce(
+    (n, d) => n + (findActivityDay(months, d)?.events.filter((e) => !e.routine).length ?? 0),
+    0,
+  );
+
   const showMenuSummary = pick !== "week";
   const upcomingVisits = upcomingVisitDays(visitDays, today, 3);
 
@@ -64,13 +69,20 @@ export default function HomeClient({
     }`}>
       <section className="min-w-0 lg:max-w-xl">
         {pick === "week" ? (
-          <Masthead eyebrow="This Week" main={weekRange} year={weekEnd.slice(0, 4)} theme={null} />
+          <Masthead
+            eyebrow="This Week"
+            main={weekRange}
+            year={weekEnd.slice(0, 4)}
+            accent={weekSpecialCount > 0
+              ? `${weekSpecialCount} special ${weekSpecialCount === 1 ? "activity" : "activities"}`
+              : null}
+          />
         ) : (
           <Masthead
             eyebrow={pick === "tomorrow" ? "Tomorrow" : now ? greetingFor(now) : " "}
             main={`${dayNameOfISO(date)}, ${monthDayOfISO(date)}`}
             year={date.slice(0, 4)}
-            theme={day?.theme ?? null}
+            accent={day?.theme ?? null}
           />
         )}
 
@@ -122,20 +134,21 @@ export default function HomeClient({
 }
 
 /**
- * Shared masthead skeleton for all three views: eyebrow, date h1, theme line.
- * Every line renders in every view (the theme line reserves its height when
- * empty) so the pills below never shift when switching tabs.
+ * Shared masthead skeleton for all three views: eyebrow, date h1, accent line
+ * (day theme or week summary). Every line renders in every view (the accent
+ * line reserves its height when empty) so the pills below never shift when
+ * switching tabs.
  */
 function Masthead({
   eyebrow,
   main,
   year,
-  theme,
+  accent,
 }: {
   eyebrow: string;
   main: string;
   year: string;
-  theme: string | null;
+  accent: string | null;
 }) {
   return (
     <>
@@ -146,10 +159,10 @@ function Masthead({
         <span className="hidden md:inline">, {year}</span>
       </h1>
       <p className="mt-1.5 flex items-center gap-2 font-display text-xl italic text-copper">
-        {theme ? (
+        {accent ? (
           <>
             <MagnoliaFlourish className="h-5 w-5 shrink-0" />
-            {theme}
+            {accent}
           </>
         ) : (
           " "
