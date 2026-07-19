@@ -39,7 +39,7 @@ One elevated card directly under the masthead, Today view only. It reports chron
 | Happening now | now within an event's window | "Happening now" label; event title large; location + dimension chip; time range; second line "Up next: {title} at {time}" when a later event exists today |
 | Up next | before the next event, after at least one prior event | "Up next" label; event; "starts in {n} minutes" under 60 minutes, otherwise "at {time}" |
 | First up today | before the day's first event | "First up today" label; first event; same starts-in phrasing |
-| Day complete | after the day's last event ends | "That's all for today"; then "Tomorrow: {first special's title}, {time}". If tomorrow's month isn't uploaded, "Tomorrow's calendar hasn't been added yet." |
+| Day complete | after the day's last event ends | "That's all for today"; then "Tomorrow: {first special's title}, {time}". If tomorrow has no special, the first timed event stands in. If tomorrow's month isn't uploaded, "Tomorrow's calendar hasn't been added yet." |
 
 - The card carries the featured event's dimension tint as a soft background wash (from `DIMENSION_META`); no tint when the event has no dimension or in the day-complete state.
 - If today has no events at all (missing month), the hero is not rendered; the existing `EmptyState` behavior stands.

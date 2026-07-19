@@ -13,7 +13,7 @@
 - Static site, no server runtime: time-dependent UI must render only after mount (`useToday()` / `useNow()` return `null` pre-mount). Never branch on time during SSR — that causes hydration mismatches, which the e2e suite checks for.
 - All colors flow through the CSS variables in `app/globals.css` `@theme` (`--color-petal/ink/moss/copper/hairline/card`) or `DIMENSION_META` — never new hard-coded palette values — so high-contrast mode keeps working.
 - Senior-readable floor: base text stays 17px (`:root` font-size 106.25%); don't shrink any text below Tailwind `text-[13px]`.
-- Motion must be disabled under both reduced-motion paths. The page-level `MotionConfig` in `app/template.tsx` handles the app setting; use framer-motion's `useReducedMotion()` in components (it reads that config plus the OS preference).
+- Motion must be disabled under both reduced-motion paths. The page-level `MotionConfig` in `app/template.tsx` handles the app setting, but framer-motion's `useReducedMotion()` reads only the OS preference and ignores `MotionConfig` entirely — use `useReducedMotionConfig()` in components instead, which merges the `MotionConfig` context with the OS preference.
 - The working tree carries unrelated in-flight work (Explore feature: `app/explore/`, `components/ExploreClient.tsx`, modified `NavLinks.tsx`, `MenuClient.tsx`, `lib/content.ts`, `lib/schema.ts`, etc.). **Stage only the files named in each task's commit step. Never `git add -A` or `git add .`**
 - Commands: unit tests `npm test`, e2e `npm run test:e2e`, lint `npm run lint`. The user often has `npm run dev` running on port 3000; Playwright's config manages its own server, and any manual screenshot scripts should target port 3000 if it is already serving.
 - The committed fixture data is July 2026. E2e tests pin the clock with `page.clock.install({ time: new Date("2026-07-08T19:00:00Z") })` = Wednesday July 8, 3:00 PM EDT ("Nat'l Raspberry Day"; "Wind Down Wednesday with Live Entertainment" runs 15:00 with no printed end).
@@ -878,7 +878,7 @@ function TimelineRow({
 ```
 
 Notes:
-- `useReducedMotion()` sits inside the `MotionConfig` from `app/template.tsx`, so it is `true` for both the OS preference and the app's own setting — `initial={false}` then skips the entrance animation entirely, satisfying the spec's "disabled under either path".
+- `useReducedMotion()` only reads the OS `prefers-reduced-motion` setting; it does not see the `MotionConfig` from `app/template.tsx`, so the app's own reduced-motion toggle would silently fail to disable this animation. Use `useReducedMotionConfig()` instead, which merges the `MotionConfig` context with the OS preference — `initial={false}` then skips the entrance animation entirely, satisfying the spec's "disabled under either path".
 - The marker is hidden when everything is past (`markerIndex === -1`) — the hero's "That's all for today" already covers that state.
 - `opacity-70` for past rows keeps moss/ink text above AA on both palettes (verify in Step 3; if a contrast checker disagrees, raise toward `opacity-80` rather than shipping a violation).
 
