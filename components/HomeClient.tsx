@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { ActivityMonth, MenuDay, MenuWeek, VisitDay } from "@/lib/schema";
 import {
   addDaysISO, mondayOfISO,
-  dayNameOfISO, longDateOfISO, monthNameOfISO, formatTime,
+  dayNameOfISO, longDateOfISO, monthDayOfISO, monthNameOfISO, formatTime,
 } from "@/lib/dates";
 import { findActivityDay, findMenuDay, upcomingVisitDays } from "@/lib/lookup";
 import Timeline from "@/components/Timeline";
@@ -71,9 +71,10 @@ export default function HomeClient({
         {pick === "today" ? (
           <>
             <p className="text-moss">{now ? greetingFor(now) : " "}</p>
-            <h1 className="whitespace-nowrap font-display text-[clamp(1rem,6vw_-_2px,2.25rem)] font-semibold leading-tight">
-              {/* Fluid size: sized so the longest date ("Wednesday, September 30, 2026") stays one line at any width. */}
-              {dayNameOfISO(date)}, {longDateOfISO(date)}
+            <h1 className="whitespace-nowrap font-display text-[clamp(1.25rem,7.3vw_-_2px,2.25rem)] font-semibold leading-tight">
+              {/* Year hides below md; fluid size fits the longest year-less date ("Wednesday, September 30") at any width. */}
+              {dayNameOfISO(date)}, {monthDayOfISO(date)}
+              <span className="hidden md:inline">, {date.slice(0, 4)}</span>
             </h1>
             {day?.theme && (
               <p className="mt-1.5 flex items-center gap-2 font-display text-xl italic text-copper">

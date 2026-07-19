@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
   todayISO, addDaysISO, mondayOfISO, sundayOfISO, monthOfISO,
-  dayNameOfISO, longDateOfISO, monthNameOfISO, formatTime,
+  dayNameOfISO, longDateOfISO, monthDayOfISO, monthNameOfISO, formatTime,
   msUntilNextLocalDate,
 } from "@/lib/dates";
 
@@ -59,6 +59,7 @@ describe("formatting", () => {
   test("monthOfISO", () => expect(monthOfISO("2026-07-08")).toBe("2026-07"));
   test("dayNameOfISO", () => expect(dayNameOfISO("2026-07-08")).toBe("Wednesday"));
   test("longDateOfISO", () => expect(longDateOfISO("2026-07-08")).toBe("July 8, 2026"));
+  test("monthDayOfISO", () => expect(monthDayOfISO("2026-07-08")).toBe("July 8"));
   test("monthNameOfISO", () => expect(monthNameOfISO("2026-08-01")).toBe("August"));
 });
 

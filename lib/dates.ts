@@ -58,6 +58,12 @@ export function longDateOfISO(iso: string): string {
   }).format(toUTCNoon(iso));
 }
 
+export function monthDayOfISO(iso: string): string {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC", month: "long", day: "numeric",
+  }).format(toUTCNoon(iso));
+}
+
 export function monthNameOfISO(iso: string): string {
   return new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "long" }).format(toUTCNoon(iso));
 }
