@@ -14,7 +14,7 @@ test("home: day pills, menu sidebar, and week view", async ({ page }) => {
   await expect(page.getByText("Roasted Turkey")).toBeVisible();
 
   await page.getByRole("tab", { name: "Tomorrow" }).click();
-  await expect(page.getByRole("heading", { name: "Tomorrow's Activities" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Thursday, July 9, 2026" })).toBeVisible();
 
   await page.getByRole("tab", { name: "This Week" }).click();
   await expect(page.getByText("daily routine items").first()).toBeVisible();

@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { ActivityMonth, MenuDay, MenuWeek, VisitDay } from "@/lib/schema";
 import {
   addDaysISO, mondayOfISO,
-  dayNameOfISO, longDateOfISO, monthDayOfISO, monthNameOfISO, formatTime,
+  dayNameOfISO, longDateOfISO, monthDayOfISO, monthNameOfISO, monthOfISO, formatTime,
 } from "@/lib/dates";
 import { findActivityDay, findMenuDay, upcomingVisitDays } from "@/lib/lookup";
 import Timeline from "@/components/Timeline";
@@ -26,12 +26,6 @@ const PICKS: { key: DayPick; label: string }[] = [
   { key: "tomorrow", label: "Tomorrow" },
   { key: "week", label: "This Week" },
 ];
-
-function pageTitle(pick: DayPick) {
-  if (pick === "today") return "Today's Activities";
-  if (pick === "tomorrow") return "Tomorrow's Activities";
-  return "This Week's Activities";
-}
 
 export default function HomeClient({
   months,
@@ -56,9 +50,10 @@ export default function HomeClient({
   const menuDate = pick === "tomorrow" ? date : today;
   const menuDay = findMenuDay(weeks, menuDate);
   const menuTitle = pick === "tomorrow" ? "Tomorrow's Menu" : "Today's Menu";
-  const activeDateLabel = pick === "week"
-    ? `${longDateOfISO(weekStart)} – ${longDateOfISO(addDaysISO(weekStart, 6))}`
-    : `${dayNameOfISO(date)}, ${longDateOfISO(date)}`;
+  const weekEnd = addDaysISO(weekStart, 6);
+  const weekRange = monthOfISO(weekStart) === monthOfISO(weekEnd)
+    ? `${monthDayOfISO(weekStart)} – ${Number(weekEnd.slice(8))}`
+    : `${monthDayOfISO(weekStart)} – ${monthDayOfISO(weekEnd)}`;
 
   const showMenuSummary = pick !== "week";
   const upcomingVisits = upcomingVisitDays(visitDays, today, 3);
@@ -68,31 +63,15 @@ export default function HomeClient({
       showMenuSummary ? "lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start" : ""
     }`}>
       <section className="min-w-0 lg:max-w-xl">
-        {pick === "today" ? (
-          <>
-            <p className="text-moss">{now ? greetingFor(now) : " "}</p>
-            <h1 className="whitespace-nowrap font-display text-[clamp(1.25rem,7.3vw_-_2px,2.25rem)] font-semibold leading-tight">
-              {/* Year hides below md; fluid size fits the longest year-less date ("Wednesday, September 30") at any width. */}
-              {dayNameOfISO(date)}, {monthDayOfISO(date)}
-              <span className="hidden md:inline">, {date.slice(0, 4)}</span>
-            </h1>
-            {day?.theme && (
-              <p className="mt-1.5 flex items-center gap-2 font-display text-xl italic text-copper">
-                <MagnoliaFlourish className="h-5 w-5 shrink-0" />
-                {day.theme}
-              </p>
-            )}
-          </>
+        {pick === "week" ? (
+          <Masthead eyebrow="This Week" main={weekRange} year={weekEnd.slice(0, 4)} theme={null} />
         ) : (
-          <>
-            <h1 className="font-display text-3xl font-semibold">{pageTitle(pick)}</h1>
-            <p className="mt-1 text-moss">
-              {activeDateLabel}
-              {day?.theme && pick !== "week" && (
-                <span className="font-display italic text-copper"> · {day.theme}</span>
-              )}
-            </p>
-          </>
+          <Masthead
+            eyebrow={pick === "tomorrow" ? "Tomorrow" : now ? greetingFor(now) : " "}
+            main={`${dayNameOfISO(date)}, ${monthDayOfISO(date)}`}
+            year={date.slice(0, 4)}
+            theme={day?.theme ?? null}
+          />
         )}
 
         <div className="my-4 flex items-center gap-2 sm:gap-3">
@@ -139,6 +118,44 @@ export default function HomeClient({
         </aside>
       )}
     </div>
+  );
+}
+
+/**
+ * Shared masthead skeleton for all three views: eyebrow, date h1, theme line.
+ * Every line renders in every view (the theme line reserves its height when
+ * empty) so the pills below never shift when switching tabs.
+ */
+function Masthead({
+  eyebrow,
+  main,
+  year,
+  theme,
+}: {
+  eyebrow: string;
+  main: string;
+  year: string;
+  theme: string | null;
+}) {
+  return (
+    <>
+      <p className="text-moss">{eyebrow}</p>
+      <h1 className="whitespace-nowrap font-display text-[clamp(1.25rem,7.3vw_-_2px,2.25rem)] font-semibold leading-tight">
+        {/* Year hides below md; fluid size fits the longest year-less date ("Wednesday, September 30") at any width. */}
+        {main}
+        <span className="hidden md:inline">, {year}</span>
+      </h1>
+      <p className="mt-1.5 flex items-center gap-2 font-display text-xl italic text-copper">
+        {theme ? (
+          <>
+            <MagnoliaFlourish className="h-5 w-5 shrink-0" />
+            {theme}
+          </>
+        ) : (
+          " "
+        )}
+      </p>
+    </>
   );
 }
 
@@ -203,7 +220,7 @@ function MenuSummary({
                       </span>
                     </li>
                   ))}
-                  </ul>
+                </ul>
               )}
             </section>
           );
