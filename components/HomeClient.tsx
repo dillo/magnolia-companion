@@ -120,7 +120,7 @@ export default function HomeClient({
           <WeekActivities months={months} dates={weekDates} today={today} />
         ) : (
           day
-            ? <Timeline events={day.events} />
+            ? <Timeline events={day.events} now={pick === "today" ? now : null} />
             : <EmptyState message={`${monthNameOfISO(date)}'s calendar hasn't been added yet.`} />
         )}
 
