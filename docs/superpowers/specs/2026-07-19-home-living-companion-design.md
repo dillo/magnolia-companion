@@ -32,7 +32,7 @@ The Today / Tomorrow / This Week pills are unchanged. Tomorrow and This Week vie
 
 ## 3. Hero card — "Happening now / Up next"
 
-One elevated card directly under the masthead, Today view only. It reports chronological truth (routine events included — if Evening News is what's on, that's what it says). States, evaluated against event start/end times (events without an `end` are treated as ending when the next event starts, or 60 minutes after start for the day's last event):
+One elevated card directly under the masthead, Today view only. It reports chronological truth (routine events included — if Evening News is what's on, that's what it says). States, evaluated against event start/end times (events without an `end` are treated as ending 60 minutes after start, capped at the next event's start so gaps between events still produce an "Up next" period):
 
 | State | Condition | Content |
 |---|---|---|
