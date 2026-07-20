@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import {
-  activityMonthSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema,
-  type ActivityMonth, type MenuWeek, type NearbyPlacesDirectory, type VisitDay,
+  activityMonthSchema, contactsSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema,
+  type ActivityMonth, type ContactsDirectory, type MenuWeek, type NearbyPlacesDirectory, type VisitDay,
 } from "./schema";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
@@ -66,5 +66,15 @@ export function loadNearbyPlaces(): NearbyPlacesDirectory {
     return nearbyPlacesSchema.parse(JSON.parse(fs.readFileSync(file, "utf8")));
   } catch (err) {
     throw new Error(`content/nearby-places.json: ${err instanceof Error ? err.message : err}`);
+  }
+}
+
+export function loadContacts(): ContactsDirectory {
+  const file = path.join(CONTENT_DIR, "contacts.json");
+  if (!fs.existsSync(file)) return { contacts: [] };
+  try {
+    return contactsSchema.parse(JSON.parse(fs.readFileSync(file, "utf8")));
+  } catch (err) {
+    throw new Error(`content/contacts.json: ${err instanceof Error ? err.message : err}`);
   }
 }

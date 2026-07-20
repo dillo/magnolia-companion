@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { activityMonthSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema } from "@/lib/schema";
+import { activityMonthSchema, contactsSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema } from "@/lib/schema";
 
 function readJSON(rel: string) {
   return JSON.parse(fs.readFileSync(path.join(process.cwd(), rel), "utf8"));
@@ -126,5 +126,38 @@ describe("nearbyPlacesSchema", () => {
       },
       places: [place, place],
     })).toThrow(/duplicate nearby place/);
+  });
+});
+
+describe("contactsSchema", () => {
+  test("accepts the committed empty contacts fixture", () => {
+    const parsed = contactsSchema.parse(readJSON("content/contacts.json"));
+    expect(parsed.contacts).toEqual([]);
+  });
+  test("accepts a fully populated contact", () => {
+    const parsed = contactsSchema.parse({
+      contacts: [
+        {
+          id: "jane-smith",
+          name: "Jane Smith",
+          role: "Executive Director",
+          department: "Administration",
+          phone: "(770) 555-0100",
+          email: "jane.smith@example.com",
+        },
+      ],
+    });
+    expect(parsed.contacts[0].name).toBe("Jane Smith");
+  });
+  test("rejects duplicate contact ids", () => {
+    const contact = {
+      id: "same",
+      name: "Jane Smith",
+      role: "Executive Director",
+      department: "Administration",
+      phone: null,
+      email: null,
+    };
+    expect(() => contactsSchema.parse({ contacts: [contact, contact] })).toThrow(/duplicate contact/);
   });
 });

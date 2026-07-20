@@ -157,3 +157,26 @@ export const nearbyPlacesSchema = z.object({
   }
 });
 export type NearbyPlacesDirectory = z.infer<typeof nearbyPlacesSchema>;
+
+export const contactSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  role: z.string().min(1),
+  department: z.string().min(1),
+  phone: z.string().min(1).nullable(),
+  email: z.string().email().nullable(),
+});
+export type Contact = z.infer<typeof contactSchema>;
+
+export const contactsSchema = z
+  .object({ contacts: z.array(contactSchema) })
+  .superRefine((directory, ctx) => {
+    const seen = new Set<string>();
+    for (const contact of directory.contacts) {
+      if (seen.has(contact.id)) {
+        ctx.addIssue({ code: "custom", message: `duplicate contact ${contact.id}` });
+      }
+      seen.add(contact.id);
+    }
+  });
+export type ContactsDirectory = z.infer<typeof contactsSchema>;

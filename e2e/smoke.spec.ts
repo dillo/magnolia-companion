@@ -123,6 +123,17 @@ test("disclaimer: identifies the app as independent and unofficial", async ({ pa
   );
 });
 
+test("contacts: staff directory shows the coming-soon empty state", async ({ page }) => {
+  await pinClock(page);
+  await page.goto("/");
+  const nav = page.getByRole("navigation", { name: "Main" });
+  await nav.getByRole("link", { name: "Directory" }).click();
+
+  await expect(page).toHaveTitle("Staff Directory | Magnolia Companion");
+  await expect(page.getByRole("heading", { name: "Staff Directory" })).toBeVisible();
+  await expect(page.getByText("Staff directory is coming soon.")).toBeVisible();
+});
+
 test("mobile: footer clears the fixed navigation without excess space", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");

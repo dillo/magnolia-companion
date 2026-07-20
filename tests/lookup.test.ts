@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { loadActivityMonths, loadMenuWeeks, loadVisitDays } from "@/lib/content";
+import { loadActivityMonths, loadContacts, loadMenuWeeks, loadVisitDays } from "@/lib/content";
 import {
   findActivityDay, findMenuDay, menuWeekFor, publishedMenuWeeks, scansForDate,
   upcomingVisitDays, visitDaysInRange,
@@ -8,12 +8,17 @@ import {
 const months = loadActivityMonths();
 const weeks = loadMenuWeeks();
 const visitDays = loadVisitDays();
+const contacts = loadContacts();
 
 describe("loaders", () => {
   test("loads and validates committed fixtures", () => {
     expect(months.length).toBeGreaterThanOrEqual(1);
     expect(months[0].month).toBe("2026-07");
     expect(weeks[0].weekOf).toBe("2026-07-05");
+  });
+
+  test("loadContacts returns the committed (currently empty) directory", () => {
+    expect(contacts.contacts).toEqual([]);
   });
 });
 
