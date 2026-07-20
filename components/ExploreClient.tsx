@@ -68,14 +68,14 @@ function StarIcon() {
 
 const CATEGORY_META: Record<
   NearbyPlaceCategory,
-  { label: string; className: string; Icon: () => React.ReactElement }
+  { label: string; className: string; dotClass: string; Icon: () => React.ReactElement }
 > = {
-  hair_salon: { label: "Hair Salons", className: "bg-[#8B3E66] text-white", Icon: ScissorsIcon },
-  restaurant: { label: "Restaurants", className: "bg-copper text-petal", Icon: ForkKnifeIcon },
-  shop: { label: "Shops", className: "bg-[#556B3F] text-petal", Icon: BagIcon },
-  medical: { label: "Medical", className: "bg-[#246A73] text-white", Icon: CrossIcon },
-  park: { label: "Parks", className: "bg-[#3D7D52] text-white", Icon: TreeIcon },
-  activity: { label: "Activities", className: "bg-ink text-petal", Icon: StarIcon },
+  hair_salon: { label: "Hair Salons", className: "bg-[#8B3E66] text-white", dotClass: "bg-[#8B3E66]", Icon: ScissorsIcon },
+  restaurant: { label: "Restaurants", className: "bg-copper text-petal", dotClass: "bg-copper", Icon: ForkKnifeIcon },
+  shop: { label: "Shops", className: "bg-[#556B3F] text-petal", dotClass: "bg-[#556B3F]", Icon: BagIcon },
+  medical: { label: "Medical", className: "bg-[#246A73] text-white", dotClass: "bg-[#246A73]", Icon: CrossIcon },
+  park: { label: "Parks", className: "bg-[#3D7D52] text-white", dotClass: "bg-[#3D7D52]", Icon: TreeIcon },
+  activity: { label: "Activities", className: "bg-ink text-petal", dotClass: "bg-ink", Icon: StarIcon },
 };
 
 const CATEGORY_ORDER: NearbyPlaceCategory[] = [
@@ -125,42 +125,34 @@ export default function ExploreClient({ directory }: { directory: NearbyPlacesDi
         </p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start">
-        <aside className="space-y-5 lg:sticky lg:top-24">
-          <section>
-            <h2 className="mb-2 font-semibold">Categories</h2>
-            <div className="flex flex-wrap gap-2 lg:block lg:space-y-2">
-              <FilterButton active={category === "all"} onClick={() => setCategory("all")}>
-                All
-              </FilterButton>
-              {CATEGORY_ORDER.map((key) => (
-                <FilterButton key={key} active={category === key} onClick={() => setCategory(key)}>
-                  {CATEGORY_META[key].label}
-                </FilterButton>
-              ))}
-            </div>
-          </section>
+      <div role="group" aria-label="Filter places" className="mb-2 flex flex-wrap items-center gap-2">
+        <Chip active={category === "all"} onClick={() => setCategory("all")}>
+          All
+          <ChipCount value={countFor(directory, "all", seniorOnly)} />
+        </Chip>
+        {CATEGORY_ORDER.map((key) => (
+          <Chip key={key} active={category === key} onClick={() => setCategory(key)}>
+            <span aria-hidden="true" className={`h-2.5 w-2.5 rounded-full ${CATEGORY_META[key].dotClass}`} />
+            {CATEGORY_META[key].label}
+            <ChipCount value={countFor(directory, key, seniorOnly)} />
+          </Chip>
+        ))}
+        <span aria-hidden="true" className="mx-1 hidden h-6 w-px bg-hairline sm:block" />
+        <Chip active={seniorOnly} onClick={() => setSeniorOnly((value) => !value)}>
+          {seniorOnly && (
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
+              <path d="m5 13 5 5L19 7" {...STROKE} strokeWidth={3} />
+            </svg>
+          )}
+          Senior-friendly
+        </Chip>
+      </div>
+      <p className="mb-6 text-sm text-moss">
+        Drive times are estimates at relaxed suburban speeds. &ldquo;Senior-friendly&rdquo; shows
+        places with comfort notes. Confirm current hours, access, and seating before leaving.
+      </p>
 
-          <label className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-hairline bg-card px-3 py-2">
-            <span>
-              <span className="block font-semibold">Senior-friendly</span>
-              <span className="block text-sm text-moss">Show places with comfort notes.</span>
-            </span>
-            <input
-              type="checkbox"
-              checked={seniorOnly}
-              onChange={(event) => setSeniorOnly(event.target.checked)}
-              className="h-6 w-6 accent-copper"
-            />
-          </label>
-
-          <p className="text-sm text-moss">
-            Drive times are estimates at relaxed suburban speeds. Confirm current hours, access, and
-            seating before leaving.
-          </p>
-        </aside>
-
-        <section className="min-w-0 space-y-6">
+      <div className="space-y-6">
           {bands.map((band) => (
             <section key={band.label}>
               <div className="flex items-baseline justify-between gap-3 rounded-lg bg-sand px-4 py-2">
@@ -208,7 +200,6 @@ export default function ExploreClient({ directory }: { directory: NearbyPlacesDi
           ))}
 
           {total === 0 && <EmptyState message="No nearby places match these filters." />}
-        </section>
       </div>
 
       {selected && <PlaceModal place={selected} onClose={() => setSelectedId(null)} />}
@@ -216,7 +207,23 @@ export default function ExploreClient({ directory }: { directory: NearbyPlacesDi
   );
 }
 
-function FilterButton({
+function countFor(
+  directory: NearbyPlacesDirectory,
+  category: NearbyPlaceCategory | "all",
+  seniorOnly: boolean,
+): number {
+  return directory.places.filter(
+    (place) =>
+      (category === "all" || place.category === category)
+      && (!seniorOnly || place.seniorFriendly),
+  ).length;
+}
+
+function ChipCount({ value }: { value: number }) {
+  return <span className="text-[13px] font-bold tabular-nums opacity-70">{value}</span>;
+}
+
+function Chip({
   active,
   children,
   onClick,
@@ -230,8 +237,10 @@ function FilterButton({
       type="button"
       aria-pressed={active}
       onClick={onClick}
-      className={`rounded-full px-3 py-2 font-semibold lg:w-full lg:text-left ${
-        active ? "bg-copper text-petal" : "bg-card text-moss ring-1 ring-inset ring-hairline"
+      className={`flex min-h-10 items-center gap-1.5 rounded-full px-3.5 py-1.5 font-semibold transition-colors ${
+        active
+          ? "bg-copper text-petal"
+          : "bg-card text-moss ring-1 ring-inset ring-hairline hover:ring-copper/40 hover:text-ink"
       }`}
     >
       {children}

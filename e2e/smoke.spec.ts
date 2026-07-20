@@ -86,7 +86,7 @@ test("explore: drive-time bands, no auto-opened dialog, category filter", async 
   await page.goto("/explore");
   await expect(page.getByText("Under 5 minutes")).toBeVisible();
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  await page.getByRole("button", { name: "Parks", exact: true }).click();
+  await page.getByRole("button", { name: /^Parks/ }).click();
   await expect(page.getByText("Chattahoochee Nature Center")).toBeVisible();
   await expect(page.getByText("Bowlero Roswell")).not.toBeVisible();
 });
