@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const ROUTE_LABELS: Record<string, string> = {
   "/": "Activities",
-  "/menu": "Menu",
+  "/menu": "Meals",
   "/calendar": "Calendar",
   "/explore": "Explore",
   "/visits": "Holidays",

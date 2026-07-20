@@ -62,10 +62,10 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
     <div ref={rootRef} className="relative">
       <button type="button" aria-label="Show holiday notifications" aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border ${
+        className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
           prominent
-            ? "border-copper bg-copper text-petal hover:bg-copper/90"
-            : "border-hairline text-moss hover:bg-hairline hover:text-copper"
+            ? "bg-copper text-petal hover:bg-copper/90"
+            : "bg-hairline/60 text-ink hover:bg-hairline hover:text-copper"
         }`}>
         <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
           <path d="M18 16v-5a6 6 0 0 0-12 0v5l-2 2h16l-2-2Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />

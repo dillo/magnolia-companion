@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces } from "next/font/google";
 import "./globals.css";
 import AccessibilityControl from "@/components/AccessibilityControl";
-import MagnoliaLogo from "@/components/MagnoliaLogo";
-import NavLinks from "@/components/NavLinks";
-import VisitNotifications from "@/components/VisitNotifications";
+import SiteHeader from "@/components/SiteHeader";
 import { loadVisitDays } from "@/lib/content";
 
 const fraunces = Fraunces({
@@ -32,21 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `try{var d=document.documentElement,s=localStorage.getItem("mc-textsize"),c=localStorage.getItem("mc-contrast"),m=localStorage.getItem("mc-reduced-motion");if(s)d.dataset.textsize=s;if(c)d.dataset.contrast=c;if(m)d.dataset.reducedMotion=m}catch(e){}`,
           }}
         />
-        <header className="border-b border-hairline">
-          <div className="mx-auto max-w-6xl px-4 py-3">
-            <div className="flex items-center justify-between gap-4">
-              <MagnoliaLogo />
-              <div className="hidden items-center gap-4 lg:flex">
-                <NavLinks />
-                <VisitNotifications visitDays={visitDays} />
-              </div>
-              <div className="flex items-center gap-2 lg:hidden">
-                <VisitNotifications visitDays={visitDays} />
-                <NavLinks />
-              </div>
-            </div>
-          </div>
-        </header>
+        <SiteHeader visitDays={visitDays} />
         <main className="mx-auto max-w-6xl px-4 py-6 pb-16">
           {children}
         </main>
