@@ -104,7 +104,7 @@ export default function AccessibilityControl() {
   }
 
   return (
-    <div ref={rootRef} className="fixed right-4 bottom-4 z-50 flex flex-col items-end print:hidden">
+    <div ref={rootRef} className="fixed right-4 bottom-24 z-50 flex flex-col items-end print:hidden lg:bottom-4">
       {open ? (
         <div
           role="dialog"

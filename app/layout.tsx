@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces } from "next/font/google";
 import "./globals.css";
 import AccessibilityControl from "@/components/AccessibilityControl";
+import BottomNav from "@/components/BottomNav";
 import SiteHeader from "@/components/SiteHeader";
 import { loadVisitDays } from "@/lib/content";
 
@@ -31,9 +32,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <SiteHeader visitDays={visitDays} />
-        <main className="mx-auto max-w-6xl px-4 py-6 pb-16">
+        <main className="mx-auto max-w-6xl px-4 py-6 pb-28 lg:pb-16">
           {children}
         </main>
+        <BottomNav />
         <AccessibilityControl />
       </body>
     </html>
