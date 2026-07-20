@@ -33,7 +33,7 @@ function ActivityFilterSelect({
           id="calendar-filter"
           value={value}
           onChange={(event) => onChange(event.target.value as Dimension | "all")}
-          className="w-full appearance-none rounded-lg border border-hairline bg-card px-4 py-3 pr-11 font-semibold text-ink shadow-sm"
+          className="w-full appearance-none rounded-full border border-hairline bg-card px-5 py-2.5 pr-11 font-semibold text-ink shadow-sm hover:border-copper/40"
         >
           <option value="all">All activities</option>
           {DIMENSIONS.map((d) => (
@@ -126,10 +126,14 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
       </div>
 
       {/* Month grid: tablet & desktop */}
-      <div className="hidden grid-cols-7 gap-1 md:mt-6 md:grid" role="grid" aria-label={monthTitle}>
-        {DOWS.map((d) => (
-          <div key={d} className="py-1 text-center text-[13px] font-bold uppercase tracking-wider text-moss">{d}</div>
-        ))}
+      <div className="mt-6 hidden rounded-lg bg-sand md:block">
+        <div className="grid grid-cols-7 gap-1">
+          {DOWS.map((d) => (
+            <div key={d} className="py-1.5 text-center text-[13px] font-bold uppercase tracking-wider text-moss">{d}</div>
+          ))}
+        </div>
+      </div>
+      <div className="hidden grid-cols-7 gap-1 md:mt-1.5 md:grid" role="grid" aria-label={monthTitle}>
         {Array.from({ length: firstDow }, (_, i) => <div key={`b${i}`} />)}
         {Array.from({ length: daysInMonth }, (_, i) => {
           const date = dateOf(i + 1);
@@ -139,8 +143,10 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
           const isToday = date === today;
           return (
             <button key={date} onClick={() => setSelected(date)}
-              className={`min-h-24 rounded-lg border p-1.5 text-left align-top text-[13px] ${
-                isToday ? "border-2 border-copper bg-copper/10" : "border-hairline bg-card"
+              className={`min-h-24 rounded-lg border p-1.5 text-left align-top text-[13px] transition-colors ${
+                isToday
+                  ? "border-2 border-copper bg-copper/10 hover:bg-copper/15"
+                  : "border-hairline bg-card hover:border-copper/40 hover:bg-hairline/20"
               }`}>
               <div className={`font-semibold tabular-nums ${isToday ? "text-copper" : "text-moss"}`}>{i + 1}</div>
               {day?.theme && (
