@@ -68,6 +68,21 @@ export function monthNameOfISO(iso: string): string {
   return new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "long" }).format(toUTCNoon(iso));
 }
 
+/** Whole calendar days from one ISO date to another (negative when `to` is past). */
+export function daysUntil(fromISO: string, toISO: string): number {
+  return Math.round((toUTCNoon(toISO).getTime() - toUTCNoon(fromISO).getTime()) / DAY_MS);
+}
+
+export function relativeDayLabel(days: number): string {
+  if (days <= 0) return "Today";
+  if (days === 1) return "Tomorrow";
+  return `In ${days} days`;
+}
+
+export function shortMonthOfISO(iso: string): string {
+  return new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short" }).format(toUTCNoon(iso));
+}
+
 export function formatTime(hhmm: string): string {
   const [h, m] = hhmm.split(":").map(Number);
   const h12 = h % 12 === 0 ? 12 : h % 12;

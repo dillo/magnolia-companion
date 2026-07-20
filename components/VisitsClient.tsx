@@ -54,8 +54,8 @@ export default function VisitsClient({
           </div>
         </div>
 
-        <div className="mt-6 divide-y divide-hairline border-y border-hairline">
-          {filtered.map((day) => <VisitDayCard key={`${day.startDate}-${day.title}`} day={day} />)}
+        <div className="mt-6 space-y-3">
+          {filtered.map((day) => <VisitDayCard key={`${day.startDate}-${day.title}`} day={day} today={today} />)}
         </div>
 
         {filtered.length === 0 && <EmptyState message="No upcoming holidays match this filter." />}

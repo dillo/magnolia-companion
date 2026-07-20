@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 import {
   todayISO, addDaysISO, mondayOfISO, sundayOfISO, monthOfISO,
   dayNameOfISO, longDateOfISO, monthDayOfISO, monthNameOfISO, formatTime,
+  daysUntil, relativeDayLabel, shortMonthOfISO,
   msUntilNextLocalDate,
 } from "@/lib/dates";
 
@@ -61,6 +62,26 @@ describe("formatting", () => {
   test("longDateOfISO", () => expect(longDateOfISO("2026-07-08")).toBe("July 8, 2026"));
   test("monthDayOfISO", () => expect(monthDayOfISO("2026-07-08")).toBe("July 8"));
   test("monthNameOfISO", () => expect(monthNameOfISO("2026-08-01")).toBe("August"));
+});
+
+describe("holiday countdown helpers", () => {
+  test("daysUntil counts calendar days", () => {
+    expect(daysUntil("2026-07-19", "2026-09-07")).toBe(50);
+    expect(daysUntil("2026-07-19", "2026-07-20")).toBe(1);
+    expect(daysUntil("2026-07-19", "2026-07-19")).toBe(0);
+    expect(daysUntil("2026-07-19", "2026-07-17")).toBe(-2);
+  });
+  test("daysUntil is DST-safe across the November boundary", () => {
+    expect(daysUntil("2026-10-31", "2026-11-02")).toBe(2);
+  });
+  test("relativeDayLabel", () => {
+    expect(relativeDayLabel(0)).toBe("Today");
+    expect(relativeDayLabel(1)).toBe("Tomorrow");
+    expect(relativeDayLabel(18)).toBe("In 18 days");
+  });
+  test("shortMonthOfISO", () => {
+    expect(shortMonthOfISO("2026-09-07")).toBe("Sep");
+  });
 });
 
 describe("formatTime", () => {

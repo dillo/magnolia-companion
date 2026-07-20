@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { VisitDay, VisitDayType } from "@/lib/schema";
-import { dayNameOfISO, longDateOfISO } from "@/lib/dates";
+import {
+  dayNameOfISO, daysUntil, longDateOfISO, relativeDayLabel, shortMonthOfISO,
+} from "@/lib/dates";
 
 const TYPE_LABELS: Record<VisitDayType, string> = {
   federal: "Federal",
@@ -31,16 +33,62 @@ export function visitDateLabel(day: VisitDay): string {
   return `${longDateOfISO(day.startDate)} - ${longDateOfISO(day.endDate)}`;
 }
 
-export function VisitDayCard({ day, compact = false }: { day: VisitDay; compact?: boolean }) {
+export function VisitDayCard({
+  day,
+  today = null,
+  compact = false,
+}: {
+  day: VisitDay;
+  today?: string | null;
+  compact?: boolean;
+}) {
+  if (compact) {
+    return (
+      <article className="border-t border-hairline py-3 first:border-t-0 first:pt-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="font-display text-xl font-semibold text-ink">{day.title}</h3>
+          <VisitTypePill type={day.type} />
+        </div>
+        <p className="mt-1 font-semibold text-copper">{visitDateLabel(day)}</p>
+        {day.timing && <p className="mt-1 text-moss">{day.timing}</p>}
+        <p className="mt-2 leading-snug text-moss">{day.note}</p>
+      </article>
+    );
+  }
+
+  const inDays = today ? daysUntil(today, day.startDate) : null;
+  const ongoing = inDays !== null && inDays < 0; // multi-day holiday already underway
+  const soon = inDays !== null && inDays <= 30;
   return (
-    <article className={compact ? "border-t border-hairline py-3 first:border-t-0 first:pt-0" : "py-4"}>
-      <div className="flex flex-wrap items-center gap-2">
-        <h3 className="font-display text-xl font-semibold text-ink">{day.title}</h3>
-        <VisitTypePill type={day.type} />
+    <article className="rounded-xl border border-hairline bg-card px-4 py-3 shadow-sm">
+      <div className="grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3">
+        <div
+          className={`flex h-16 flex-col items-center justify-center rounded-lg text-center ${
+            soon ? "bg-copper text-petal" : "border border-hairline bg-sand text-moss"
+          }`}
+        >
+          <span className="text-[13px] font-bold uppercase leading-none">{shortMonthOfISO(day.startDate)}</span>
+          <span className="mt-1 text-2xl font-semibold leading-none tabular-nums">{Number(day.startDate.slice(8))}</span>
+        </div>
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="min-w-0 font-display text-xl font-semibold text-ink">{day.title}</h3>
+            <VisitTypePill type={day.type} />
+            {inDays !== null && (
+              <span
+                className={`ml-auto shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[13px] font-bold ${
+                  soon ? "bg-copper text-petal" : "bg-hairline/60 text-moss"
+                }`}
+              >
+                {ongoing ? "Ongoing" : relativeDayLabel(inDays)}
+              </span>
+            )}
+          </div>
+          <p className="mt-1 font-semibold text-copper">{visitDateLabel(day)}</p>
+          {day.timing && <p className="mt-1 text-moss">{day.timing}</p>}
+          <p className="mt-2 leading-snug text-moss">{day.note}</p>
+        </div>
       </div>
-      <p className="mt-1 font-semibold text-copper">{visitDateLabel(day)}</p>
-      {day.timing && <p className="mt-1 text-moss">{day.timing}</p>}
-      <p className="mt-2 leading-snug text-moss">{day.note}</p>
     </article>
   );
 }

@@ -3,25 +3,9 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { VisitDay } from "@/lib/schema";
+import { daysUntil, relativeDayLabel, shortMonthOfISO } from "@/lib/dates";
 import { upcomingVisitDays } from "@/lib/lookup";
 import { useToday } from "@/components/useToday";
-
-function daysUntil(from: string, to: string): number {
-  const fromMs = new Date(`${from}T12:00:00Z`).getTime();
-  const toMs = new Date(`${to}T12:00:00Z`).getTime();
-  return Math.ceil((toMs - fromMs) / 86_400_000);
-}
-
-function relativeLabel(days: number): string {
-  if (days <= 0) return "Today";
-  if (days === 1) return "Tomorrow";
-  return `In ${days} days`;
-}
-
-function shortMonth(iso: string): string {
-  return new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short" })
-    .format(new Date(`${iso}T12:00:00Z`));
-}
 
 function startDateLabel(iso: string): string {
   return new Intl.DateTimeFormat("en-US", {
@@ -99,7 +83,7 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
                     <div className={`flex h-16 flex-col items-center justify-center rounded-lg text-center ${
                       soon ? "bg-copper text-petal" : "border border-hairline bg-sand text-moss"
                     }`}>
-                      <span className="text-[13px] font-bold uppercase leading-none">{shortMonth(day.startDate)}</span>
+                      <span className="text-[13px] font-bold uppercase leading-none">{shortMonthOfISO(day.startDate)}</span>
                       <span className="mt-1 text-2xl font-semibold leading-none tabular-nums">{Number(day.startDate.slice(8))}</span>
                     </div>
                     <div className="min-w-0">
@@ -108,7 +92,7 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
                         <span className={`shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[13px] font-bold ${
                           soon ? "bg-copper text-petal" : "bg-hairline/60 text-moss"
                         }`}>
-                        {relativeLabel(inDays)}
+                        {relativeDayLabel(inDays)}
                         </span>
                       </div>
                       <p className="mt-1 leading-snug text-moss">{startDateLabel(day.startDate)}</p>
