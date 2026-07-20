@@ -10,6 +10,7 @@ import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
 import TodayActivitiesSummary from "@/components/TodayActivitiesSummary";
 import { useToday } from "@/components/useToday";
+import { useNow } from "@/components/useNow";
 
 function weekRangeLabel(start: string): string {
   const end = addDaysISO(start, 6);
@@ -32,6 +33,7 @@ function weekRangeLabel(start: string): string {
 
 export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; months: ActivityMonth[] }) {
   const today = useToday();
+  const now = useNow();
   const menus = useMemo(() => publishedMenuWeeks(weeks), [weeks]);
   const [idx, setIdx] = useState(0);
   const [date, setDate] = useState<string | null>(null);
@@ -117,7 +119,7 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
           </p>
         )}
 
-        <MealCards day={day} />
+        <MealCards day={day} now={activeDate === today ? now : null} />
 
         <ScanLightbox scans={week?.sourceScan ? [week.sourceScan] : []} label="View the printed menu" />
       </section>

@@ -12,9 +12,9 @@ import Timeline from "@/components/Timeline";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
 import { useToday } from "@/components/useToday";
-import { MEALS, mealHours } from "@/components/MealCards";
+import { MEALS, MealCard } from "@/components/MealCards";
 import { VisitDaysSummary } from "@/components/VisitDays";
-import { greetingFor, heroStateFor, servingNow, tomorrowPreview } from "@/lib/now";
+import { greetingFor, heroStateFor, tomorrowPreview } from "@/lib/now";
 import { useNow } from "@/components/useNow";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
 import HeroCard from "@/components/HeroCard";
@@ -195,49 +195,9 @@ function MenuSummary({
       {!day && <p className="mb-3">The menu for this date hasn&apos;t been added yet.</p>}
 
       <div className="space-y-3">
-        {MEALS.map((meal) => {
-          const items = day?.[meal.key].items ?? null;
-          return (
-            <section key={meal.key} className="rounded-xl border border-hairline bg-card px-4 py-3 shadow-sm">
-              <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-                <h3 className="text-[15px] font-bold uppercase tracking-wider text-ink">{meal.label}</h3>
-                {servingNow(meal, now) ? (
-                  <span className="rounded-full bg-copper px-2.5 py-0.5 text-[13px] font-bold text-petal">
-                    Serving now
-                  </span>
-                ) : (
-                  <span className="tabular-nums text-moss">{mealHours(meal)}</span>
-                )}
-              </div>
-              {items === null ? (
-                <ul className="space-y-1" aria-label="Menu pending">
-                  {Array.from({ length: 3 }, (_, index) => (
-                    <li key={index} className="flex gap-2 leading-snug text-moss">
-                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-copper/50" />
-                      <span className="tracking-widest">...</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : items.length === 0 ? (
-                <p className="text-moss">Not listed</p>
-              ) : (
-                <ul className="space-y-1">
-                  {items.map((item, index) => (
-                    <li key={index} className="flex gap-2 leading-snug">
-                      <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-copper" />
-                      <span className={item.kind === "dessert" ? "text-copper" : ""}>
-                        {item.kind === "dessert" && (
-                          <span aria-hidden="true" className="mr-1 text-[13px] align-middle">◆</span>
-                        )}
-                        {item.name}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-          );
-        })}
+        {MEALS.map((meal) => (
+          <MealCard key={meal.key} meal={meal} items={day?.[meal.key].items ?? null} now={now} />
+        ))}
       </div>
 
       <Link href="/menu" className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
