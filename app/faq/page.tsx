@@ -1,19 +1,10 @@
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import FaqClient, { type FaqSection } from "@/components/FaqClient";
 
 export const metadata: Metadata = {
   title: "Resident FAQ | Magnolia Companion",
   description: "Common resident handbook questions for Magnolia Place of Roswell.",
-};
-
-type FaqItem = {
-  question: string;
-  answer: string;
-};
-
-type FaqSection = {
-  title: string;
-  items: FaqItem[];
 };
 
 const FAQ_SECTIONS: FaqSection[] = [
@@ -217,58 +208,10 @@ export default function FaqPage() {
         <p className="font-semibold uppercase tracking-wide text-copper">Resident handbook</p>
         <h1 className="mt-1 font-display text-title font-semibold">Frequently Asked Questions</h1>
         <p className="mt-3 text-moss">
-          Quick answers from the Pegasus Senior Living Resident Handbook for Magnolia Place of Roswell. For anything
-          urgent, health-related, or unclear, contact the Executive Director or Health & Wellness Director.
+          Quick answers from the Pegasus Senior Living Resident Handbook for Magnolia Place of Roswell.
         </p>
       </div>
-
-      <div className="mt-6 grid gap-5 lg:grid-cols-[14rem_minmax(0,1fr)] lg:items-start">
-        <aside className="lg:sticky lg:top-6">
-          <h2 className="font-display text-2xl font-semibold">Topics</h2>
-          <nav aria-label="FAQ topics" className="mt-3 divide-y divide-hairline border-y border-hairline text-moss">
-            {FAQ_SECTIONS.map((section) => (
-              <a
-                key={section.title}
-                href={`#${sectionId(section.title)}`}
-                className="flex items-center justify-between gap-3 py-3 font-semibold text-copper hover:text-ink"
-              >
-                <span>{section.title}</span>
-                <span aria-hidden="true" className="text-xl leading-none text-copper">
-                  ›
-                </span>
-              </a>
-            ))}
-          </nav>
-        </aside>
-
-        <div className="space-y-6">
-          {FAQ_SECTIONS.map((section) => (
-            <section key={section.title} id={sectionId(section.title)} className="scroll-mt-6">
-              <h2 className="font-display text-2xl font-semibold">{section.title}</h2>
-              <div className="mt-3 divide-y divide-hairline border-y border-hairline bg-card">
-                {section.items.map((item) => (
-                  <details key={item.question} className="group">
-                    <summary className="flex cursor-pointer list-none items-start justify-between gap-4 px-4 py-4 font-semibold text-ink marker:hidden">
-                      <span>{item.question}</span>
-                      <span aria-hidden="true" className="shrink-0 text-copper group-open:hidden">
-                        +
-                      </span>
-                      <span aria-hidden="true" className="hidden shrink-0 text-copper group-open:inline">
-                        -
-                      </span>
-                    </summary>
-                    <p className="px-4 pb-4 leading-relaxed text-moss">{item.answer}</p>
-                  </details>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      </div>
+      <FaqClient sections={FAQ_SECTIONS} />
     </div>
   );
-}
-
-function sectionId(title: string) {
-  return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }

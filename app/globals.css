@@ -20,6 +20,12 @@ html { scrollbar-gutter: stable; }
 /* Keep anchor-jump targets clear of the sticky header. */
 html { scroll-padding-top: 5rem; }
 
+/* Gentle reveal for FAQ answers (killed by the reduced-motion rules below). */
+details[open] > .faq-answer { animation: faq-fade 0.18s ease-out; }
+@keyframes faq-fade {
+  from { opacity: 0; transform: translateY(-2px); }
+}
+
 :root { font-size: 106.25%; } /* 17px base — senior-readable floor */
 :root[data-textsize="lg"] { font-size: 118.75%; } /* 19px */
 :root[data-textsize="xl"] { font-size: 131.25%; } /* 21px */

@@ -81,6 +81,16 @@ test("home: hero card and now marker are time-aware", async ({ page }) => {
   await expect(page.getByText("Good afternoon")).toBeVisible();
 });
 
+test("faq: search filters questions live", async ({ page }) => {
+  await pinClock(page);
+  await page.goto("/faq");
+  await expect(page.getByText("What about keys?")).toBeVisible();
+  await page.getByRole("searchbox", { name: "Search the handbook" }).fill("billing");
+  await expect(page.getByText("How does billing work?")).toBeVisible();
+  await expect(page.getByText("What about keys?")).not.toBeVisible();
+  await expect(page.getByText(/answers? match/)).toBeVisible();
+});
+
 test("home: lunch shows serving-now badge during its window", async ({ page }) => {
   await page.clock.install({ time: new Date("2026-07-08T16:30:00Z") }); // 12:30 PM EDT
   await page.goto("/");
