@@ -14,6 +14,7 @@ const TABS = [
 const MORE = [
   { href: "/explore", label: "Explore" },
   { href: "/faq", label: "FAQ" },
+  { href: "/disclaimer", label: "About & Disclaimer" },
 ];
 
 /** Fixed, always-visible mobile tab bar; hidden on desktop where the header nav takes over. */

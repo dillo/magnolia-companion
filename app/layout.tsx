@@ -3,6 +3,7 @@ import { Fraunces } from "next/font/google";
 import "./globals.css";
 import AccessibilityControl from "@/components/AccessibilityControl";
 import BottomNav from "@/components/BottomNav";
+import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { loadVisitDays } from "@/lib/content";
 
@@ -16,7 +17,8 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   title: "Magnolia Companion",
-  description: "Today's activities and meals at Magnolia Place of Roswell.",
+  description:
+    "An independent, unofficial companion for residents and families at Magnolia Place of Roswell.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -32,9 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <SiteHeader visitDays={visitDays} />
-        <main className="mx-auto max-w-6xl px-4 py-6 pb-28 lg:pb-16">
+        <main className="mx-auto max-w-6xl px-4 py-6 pb-12 lg:pb-16">
           {children}
         </main>
+        <SiteFooter />
         <BottomNav />
         <AccessibilityControl />
       </body>

@@ -109,3 +109,34 @@ test("home: lunch shows serving-now badge during its window", async ({ page }) =
   await expect(hero.getByText("Up next")).toBeVisible();
   await expect(hero.getByText("Starts in 30 minutes")).toBeVisible();
 });
+
+test("disclaimer: identifies the app as independent and unofficial", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "About & Disclaimer" }).click();
+
+  await expect(page).toHaveTitle("Disclaimer | Magnolia Companion");
+  await expect(page.getByRole("heading", { name: "Disclaimer" })).toBeVisible();
+  await expect(page.getByText(/not operated by, affiliated with, endorsed by, or sponsored by/)).toBeVisible();
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    "content",
+    /independent, unofficial relationship/,
+  );
+});
+
+test("mobile: footer clears the fixed navigation without excess space", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const disclaimerLink = page.getByRole("link", { name: "About & Disclaimer" });
+  const bottomNav = page.locator('nav[aria-label="Main"]:visible');
+  await disclaimerLink.scrollIntoViewIfNeeded();
+  await expect(disclaimerLink).toBeVisible();
+
+  const linkBox = await disclaimerLink.boundingBox();
+  const navBox = await bottomNav.boundingBox();
+  expect(linkBox).not.toBeNull();
+  expect(navBox).not.toBeNull();
+  const gap = navBox!.y - (linkBox!.y + linkBox!.height);
+  expect(gap).toBeGreaterThanOrEqual(0);
+  expect(gap).toBeLessThan(24);
+});
