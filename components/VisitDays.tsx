@@ -71,12 +71,12 @@ export function VisitDayCard({
           <span className="mt-1 text-2xl font-semibold leading-none tabular-nums">{Number(day.startDate.slice(8))}</span>
         </div>
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="min-w-0 font-display text-xl font-semibold text-ink">{day.title}</h3>
+          <h3 className="font-display text-xl font-semibold leading-snug text-ink">{day.title}</h3>
+          <div className="mt-1 flex flex-wrap items-center gap-1.5">
             <VisitTypePill type={day.type} />
             {inDays !== null && (
               <span
-                className={`ml-auto shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[13px] font-bold ${
+                className={`whitespace-nowrap rounded-full px-2 py-0.5 text-[13px] font-bold ${
                   soon ? "bg-copper text-petal" : "bg-hairline/60 text-moss"
                 }`}
               >
