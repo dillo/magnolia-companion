@@ -41,70 +41,79 @@ export default function BottomNav() {
   }, [moreOpen]);
 
   return (
-    <nav
-      ref={rootRef}
-      aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-sand/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
-    >
+    <>
       {moreOpen && (
         <div
-          id="bottom-more-menu"
-          className="absolute inset-x-0 bottom-full border-t border-hairline bg-card shadow-[0_-16px_32px_rgba(42,46,34,0.16)]"
-        >
-          {MORE.map((m) => {
-            const active = pathname === m.href;
+          aria-hidden="true"
+          onClick={() => setMoreOpen(false)}
+          className="fixed inset-0 z-[35] bg-ink/55 lg:hidden"
+        />
+      )}
+      <nav
+        ref={rootRef}
+        aria-label="Main"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-sand/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+      >
+        {moreOpen && (
+          <div
+            id="bottom-more-menu"
+            className="absolute inset-x-0 bottom-full border-t border-hairline bg-card shadow-[0_-16px_32px_rgba(42,46,34,0.16)]"
+          >
+            {MORE.map((m) => {
+              const active = pathname === m.href;
+              return (
+                <Link
+                  key={m.href}
+                  href={m.href}
+                  aria-current={active ? "page" : undefined}
+                  onClick={() => setMoreOpen(false)}
+                  className={`flex items-center justify-between border-b border-hairline px-6 py-4 text-lg font-semibold last:border-b-0 ${
+                    active ? "bg-copper text-petal" : "text-ink hover:bg-hairline/60"
+                  }`}
+                >
+                  <span>{m.label}</span>
+                  <span aria-hidden="true" className={active ? "text-petal" : "text-copper"}>
+                    ›
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="grid grid-cols-5">
+          {TABS.map(({ href, label, icon: Icon }) => {
+            const active = pathname === href;
             return (
               <Link
-                key={m.href}
-                href={m.href}
+                key={href}
+                href={href}
                 aria-current={active ? "page" : undefined}
                 onClick={() => setMoreOpen(false)}
-                className={`flex items-center justify-between border-b border-hairline px-6 py-4 text-lg font-semibold last:border-b-0 ${
-                  active ? "bg-copper text-petal" : "text-ink hover:bg-hairline/60"
+                className={`flex flex-col items-center gap-0.5 pb-2 pt-2.5 text-[13px] ${
+                  active ? "font-bold text-copper" : "font-semibold text-moss"
                 }`}
               >
-                <span>{m.label}</span>
-                <span aria-hidden="true" className={active ? "text-petal" : "text-copper"}>
-                  ›
-                </span>
+                <Icon />
+                {label}
               </Link>
             );
           })}
+          <button
+            type="button"
+            aria-expanded={moreOpen}
+            aria-controls="bottom-more-menu"
+            onClick={() => setMoreOpen((value) => !value)}
+            className={`flex flex-col items-center gap-0.5 pb-2 pt-2.5 text-[13px] ${
+              moreActive || moreOpen ? "font-bold text-copper" : "font-semibold text-moss"
+            }`}
+          >
+            <MoreIcon />
+            More
+          </button>
         </div>
-      )}
-
-      <div className="grid grid-cols-5">
-        {TABS.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href;
-          return (
-            <Link
-              key={href}
-              href={href}
-              aria-current={active ? "page" : undefined}
-              onClick={() => setMoreOpen(false)}
-              className={`flex flex-col items-center gap-0.5 pb-2 pt-2.5 text-[13px] ${
-                active ? "font-bold text-copper" : "font-semibold text-moss"
-              }`}
-            >
-              <Icon />
-              {label}
-            </Link>
-          );
-        })}
-        <button
-          type="button"
-          aria-expanded={moreOpen}
-          aria-controls="bottom-more-menu"
-          onClick={() => setMoreOpen((value) => !value)}
-          className={`flex flex-col items-center gap-0.5 pb-2 pt-2.5 text-[13px] ${
-            moreActive || moreOpen ? "font-bold text-copper" : "font-semibold text-moss"
-          }`}
-        >
-          <MoreIcon />
-          More
-        </button>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }
 
