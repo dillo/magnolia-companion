@@ -44,7 +44,7 @@ export default function BottomNav() {
     <nav
       ref={rootRef}
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-petal/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-sand/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
     >
       {moreOpen && (
         <div

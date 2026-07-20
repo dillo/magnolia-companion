@@ -7,6 +7,7 @@
   --color-copper: #A0501F;
   --color-hairline: #E3DCCB;
   --color-card: #FFFFFF;
+  --color-sand: #EEE9DC; /* chrome band: petal mixed halfway to hairline; AA-checked for moss/copper text */
   --font-display: var(--font-fraunces), "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
   /* Page-title scale: fluid so long titles/dates fit one line on phones, full display size from ~sm up. */
   --text-title: clamp(1.25rem, 7.3vw - 2px, 2.25rem);
@@ -29,6 +30,7 @@ html { scroll-padding-top: 5rem; }
   --color-copper: #78320C;
   --color-hairline: #6C6F62;
   --color-card: #FFFFFF;
+  --color-sand: #F2EFE6;
 }
 
 body { background: var(--color-petal); color: var(--color-ink); }

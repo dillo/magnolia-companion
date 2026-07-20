@@ -32,7 +32,7 @@ export default function SiteHeader({ visitDays }: { visitDays: VisitDay[] }) {
 
   return (
     <header
-      className={`sticky top-0 z-30 border-b border-hairline bg-petal/90 backdrop-blur ${
+      className={`sticky top-0 z-30 border-b border-hairline bg-sand/90 backdrop-blur ${
         scrolled ? "shadow-[0_10px_24px_rgba(42,46,34,0.08)]" : ""
       }`}
     >
