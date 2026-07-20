@@ -14,6 +14,7 @@ const NAV = [
   { href: "/explore", label: "Explore" },
   { href: "/visits", label: "Holidays" },
   { href: "/faq", label: "FAQ" },
+  { href: "/contacts", label: "Directory" },
 ];
 
 /** Sticky site header: wordmark + desktop nav + holiday bell. Mobile navigation lives in BottomNav. */

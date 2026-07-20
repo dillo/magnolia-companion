@@ -10,6 +10,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "/explore": "Explore",
   "/visits": "Holidays",
   "/faq": "FAQ",
+  "/contacts": "Directory",
   "/disclaimer": "Disclaimer",
 };
 
@@ -20,6 +21,7 @@ const ROUTE_WIDTHS: Record<string, string> = {
   "/explore": "max-w-6xl",
   "/visits": "max-w-4xl",
   "/faq": "max-w-5xl",
+  "/contacts": "max-w-3xl",
   "/disclaimer": "max-w-3xl",
 };
 
