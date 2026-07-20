@@ -7,6 +7,7 @@ import { DIMENSION_META } from "@/lib/dimensions";
 import { formatTime, dayNameOfISO, longDateOfISO } from "@/lib/dates";
 import { visitDaysInRange } from "@/lib/lookup";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import DimensionChip from "@/components/DimensionChip";
 import Timeline from "@/components/Timeline";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
@@ -14,21 +15,6 @@ import { useToday } from "@/components/useToday";
 import { VisitDayCard } from "@/components/VisitDays";
 
 const DOWS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-function ordinalDay(iso: string): string {
-  const day = Number(iso.slice(8));
-  const mod100 = day % 100;
-  const suffix = mod100 >= 11 && mod100 <= 13
-    ? "th"
-    : day % 10 === 1
-      ? "st"
-      : day % 10 === 2
-        ? "nd"
-        : day % 10 === 3
-          ? "rd"
-          : "th";
-  return `${day}${suffix}`;
-}
 
 function ActivityFilterSelect({
   value,
@@ -198,8 +184,8 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
         </div>
       </section>
 
-      {/* Agenda list: phones */}
-      <div className="divide-y divide-hairline border-y border-hairline md:hidden">
+      {/* Agenda list: phones — same day-card language as the home This Week view */}
+      <div className="space-y-3 md:hidden">
         {month.days.map((day) => {
           const specials = day.events.filter(
             (e) => !e.routine && (filter === "all" || e.dimension === filter),
@@ -208,36 +194,50 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
           if (specials.length === 0 && visits.length === 0) return null;
           const isToday = day.date === today;
           return (
-            <div key={day.date}
-              className={`px-3 py-3 ${
-                isToday ? "rounded-lg border border-copper bg-copper/10" : ""
-              }`}>
-              <div className="mb-1 flex items-start justify-between gap-3">
-                <div>
-                  <div className="font-semibold">
-                    {dayNameOfISO(day.date).slice(0, 3)} {ordinalDay(day.date)}
-                    {isToday && <span className="font-normal text-moss"> · Today</span>}
-                  </div>
-                  {day.theme && <div className="font-display text-[15px] italic text-copper">{day.theme}</div>}
-                  {visits.map((visit) => (
-                    <div key={visit.title} className="mt-1 font-semibold text-copper">{visit.title}</div>
-                  ))}
-                </div>
+            <section
+              key={day.date}
+              className={`rounded-xl border bg-card px-4 py-3 shadow-sm ${
+                isToday ? "border-copper ring-1 ring-copper" : "border-hairline"
+              }`}
+            >
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                <h2 className="font-display text-xl font-semibold">
+                  {dayNameOfISO(day.date).slice(0, 3)} {Number(day.date.slice(8))}
+                </h2>
+                {isToday && (
+                  <span className="self-center rounded-full bg-copper px-2 py-0.5 text-[13px] font-bold text-petal">
+                    Today
+                  </span>
+                )}
+                {day.theme && <span className="font-display italic text-copper">· {day.theme}</span>}
                 <button type="button" onClick={() => setSelected(day.date)}
                   aria-label={`Show details for ${dayNameOfISO(day.date)}, ${longDateOfISO(day.date)}`}
-                  className="shrink-0 font-semibold text-copper underline-offset-4 hover:underline">
+                  className="ml-auto shrink-0 self-center font-semibold text-copper underline-offset-4 hover:underline">
                   <span>Details</span>
                 </button>
               </div>
-              {specials.map((e, i) => (
-                <div key={i} className="flex items-baseline gap-2">
-                  <span className="w-20 shrink-0 text-right font-semibold tabular-nums text-copper">
-                    {e.start ? formatTime(e.start) : "All day"}
-                  </span>
-                  <span>{e.title}</span>
+              {visits.length > 0 && (
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {visits.map((visit) => (
+                    <span key={visit.title} className="rounded-full border border-copper/30 bg-copper/10 px-2.5 py-0.5 text-[13px] font-semibold text-copper">
+                      {visit.title}
+                    </span>
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+              <div className="mt-2 space-y-1.5">
+                {specials.map((e, i) => (
+                  <div key={i} className="flex items-baseline gap-3">
+                    <span className="w-20 shrink-0 whitespace-nowrap text-right font-semibold tabular-nums text-copper">
+                      {e.start ? formatTime(e.start) : "All day"}
+                    </span>
+                    <span>
+                      {e.title} {e.dimension && <DimensionChip dimension={e.dimension} />}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
           );
         })}
       </div>
