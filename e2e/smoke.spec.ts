@@ -81,6 +81,16 @@ test("home: hero card and now marker are time-aware", async ({ page }) => {
   await expect(page.getByText("Good afternoon")).toBeVisible();
 });
 
+test("explore: drive-time bands, no auto-opened dialog, category filter", async ({ page }) => {
+  await pinClock(page);
+  await page.goto("/explore");
+  await expect(page.getByText("Under 5 minutes")).toBeVisible();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.getByRole("button", { name: "Parks", exact: true }).click();
+  await expect(page.getByText("Chattahoochee Nature Center")).toBeVisible();
+  await expect(page.getByText("Bowlero Roswell")).not.toBeVisible();
+});
+
 test("faq: search filters questions live", async ({ page }) => {
   await pinClock(page);
   await page.goto("/faq");

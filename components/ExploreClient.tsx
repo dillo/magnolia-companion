@@ -5,69 +5,114 @@ import type { NearbyPlace, NearbyPlaceCategory, NearbyPlacesDirectory } from "@/
 import Breadcrumbs from "@/components/Breadcrumbs";
 import EmptyState from "@/components/EmptyState";
 
-const CATEGORY_META: Record<NearbyPlaceCategory, { label: string; pin: string; className: string }> = {
-  hair_salon: { label: "Hair Salons", pin: "H", className: "bg-[#8B3E66] text-white" },
-  restaurant: { label: "Restaurants", pin: "R", className: "bg-copper text-petal" },
-  shop: { label: "Shops", pin: "S", className: "bg-[#556B3F] text-petal" },
-  medical: { label: "Medical", pin: "M", className: "bg-[#246A73] text-white" },
-  park: { label: "Parks", pin: "P", className: "bg-[#3D7D52] text-white" },
-  activity: { label: "Activities", pin: "A", className: "bg-ink text-petal" },
+const STROKE = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+} as const;
+
+function ScissorsIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+      <circle cx="6" cy="6" r="2.5" {...STROKE} />
+      <circle cx="6" cy="18" r="2.5" {...STROKE} />
+      <path d="M8.2 7.6 20 19M8.2 16.4 20 5" {...STROKE} />
+    </svg>
+  );
+}
+
+function ForkKnifeIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+      <path d="M7 3v18M4.5 3v5a2.5 2.5 0 0 0 5 0V3" {...STROKE} />
+      <path d="M17 3c-1.7 1.5-2.5 3.5-2.5 6 0 2 1 3 2.5 3v9" {...STROKE} />
+    </svg>
+  );
+}
+
+function BagIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+      <path d="M5 8h14l-1 13H6L5 8Z" {...STROKE} />
+      <path d="M9 10V6a3 3 0 0 1 6 0v4" {...STROKE} />
+    </svg>
+  );
+}
+
+function CrossIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+      <path d="M9 4h6v5h5v6h-5v5H9v-5H4V9h5V4Z" {...STROKE} />
+    </svg>
+  );
+}
+
+function TreeIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+      <path d="M12 3 6.5 11h3L5 17h14l-4.5-6h3L12 3Z" {...STROKE} />
+      <path d="M12 17v4" {...STROKE} />
+    </svg>
+  );
+}
+
+function StarIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+      <path d="m12 3.5 2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.9l-5.3 2.7 1-5.8L3.5 9.7l5.9-.9L12 3.5Z" {...STROKE} />
+    </svg>
+  );
+}
+
+const CATEGORY_META: Record<
+  NearbyPlaceCategory,
+  { label: string; className: string; Icon: () => React.ReactElement }
+> = {
+  hair_salon: { label: "Hair Salons", className: "bg-[#8B3E66] text-white", Icon: ScissorsIcon },
+  restaurant: { label: "Restaurants", className: "bg-copper text-petal", Icon: ForkKnifeIcon },
+  shop: { label: "Shops", className: "bg-[#556B3F] text-petal", Icon: BagIcon },
+  medical: { label: "Medical", className: "bg-[#246A73] text-white", Icon: CrossIcon },
+  park: { label: "Parks", className: "bg-[#3D7D52] text-white", Icon: TreeIcon },
+  activity: { label: "Activities", className: "bg-ink text-petal", Icon: StarIcon },
 };
 
-const CATEGORY_ORDER: NearbyPlaceCategory[] = ["hair_salon", "restaurant", "shop", "medical", "park", "activity"];
-const RADIUS_OPTIONS = [1, 2, 3, 5];
+const CATEGORY_ORDER: NearbyPlaceCategory[] = [
+  "restaurant", "park", "activity", "shop", "medical", "hair_salon",
+];
+
+/** Drive bands at relaxed suburban speeds — the question families actually ask. */
+const BANDS = [
+  { label: "Under 5 minutes", max: 1.5 },
+  { label: "5–10 minutes", max: 3 },
+  { label: "10–15 minutes", max: Infinity },
+];
 
 function mapsUrl(address: string) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-function positionForPlace(place: NearbyPlace, bounds: Bounds) {
-  const x = ((place.longitude - bounds.west) / (bounds.east - bounds.west)) * 100;
-  const y = ((bounds.north - place.latitude) / (bounds.north - bounds.south)) * 100;
-  return {
-    left: `${Math.min(94, Math.max(6, x))}%`,
-    top: `${Math.min(92, Math.max(8, y))}%`,
-  };
-}
-
-type Bounds = {
-  north: number;
-  south: number;
-  east: number;
-  west: number;
-};
-
-function mapBounds(directory: NearbyPlacesDirectory): Bounds {
-  const latitudes = [directory.center.latitude, ...directory.places.map((place) => place.latitude)];
-  const longitudes = [directory.center.longitude, ...directory.places.map((place) => place.longitude)];
-  return {
-    north: Math.max(...latitudes) + 0.008,
-    south: Math.min(...latitudes) - 0.008,
-    east: Math.max(...longitudes) + 0.01,
-    west: Math.min(...longitudes) - 0.01,
-  };
-}
-
 export default function ExploreClient({ directory }: { directory: NearbyPlacesDirectory }) {
   const [category, setCategory] = useState<NearbyPlaceCategory | "all">("all");
-  const [radius, setRadius] = useState(5);
   const [seniorOnly, setSeniorOnly] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(directory.places[0]?.id ?? null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const bounds = useMemo(() => mapBounds(directory), [directory]);
-  const filteredPlaces = useMemo(() => {
-    return directory.places.filter((place) => (
-      (category === "all" || place.category === category)
-      && place.distanceMiles <= radius
-      && (!seniorOnly || place.seniorFriendly)
-    ));
-  }, [category, directory.places, radius, seniorOnly]);
+  const bands = useMemo(() => {
+    const filtered = directory.places
+      .filter((place) =>
+        (category === "all" || place.category === category)
+        && (!seniorOnly || place.seniorFriendly))
+      .sort((a, b) => a.distanceMiles - b.distanceMiles);
+    const buckets = BANDS.map((band) => ({ ...band, places: [] as NearbyPlace[] }));
+    for (const place of filtered) {
+      buckets[BANDS.findIndex((band) => place.distanceMiles <= band.max)].places.push(place);
+    }
+    return buckets.filter((band) => band.places.length > 0);
+  }, [category, directory.places, seniorOnly]);
 
+  const total = bands.reduce((n, band) => n + band.places.length, 0);
   const selected = directory.places.find((place) => place.id === selectedId) ?? null;
-
-  function selectPlace(place: NearbyPlace) {
-    setSelectedId(place.id);
-  }
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -75,12 +120,13 @@ export default function ExploreClient({ directory }: { directory: NearbyPlacesDi
       <div className="mb-5 max-w-3xl">
         <h1 className="font-display text-title font-semibold">Explore Nearby</h1>
         <p className="mt-2 text-moss">
-          Restaurants, salons, shops, medical stops, parks, and easy outings around Magnolia Place of Roswell.
+          Restaurants, parks, shops, and easy outings around Magnolia Place of Roswell, grouped by
+          how long the drive takes.
         </p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start">
-        <aside className="space-y-5 lg:sticky lg:top-6">
+        <aside className="space-y-5 lg:sticky lg:top-24">
           <section>
             <h2 className="mb-2 font-semibold">Categories</h2>
             <div className="flex flex-wrap gap-2 lg:block lg:space-y-2">
@@ -95,28 +141,7 @@ export default function ExploreClient({ directory }: { directory: NearbyPlacesDi
             </div>
           </section>
 
-          <section>
-            <h2 className="mb-2 font-semibold">Radius</h2>
-            <div className="grid grid-cols-4 gap-2 lg:grid-cols-2">
-              {RADIUS_OPTIONS.map((miles) => (
-                <button
-                  key={miles}
-                  type="button"
-                  aria-pressed={radius === miles}
-                  onClick={() => setRadius(miles)}
-                  className={`rounded-lg border px-3 py-2 font-semibold ${
-                    radius === miles
-                      ? "border-copper bg-copper text-petal"
-                      : "border-hairline bg-card text-moss"
-                  }`}
-                >
-                  {miles} mi
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <label className="flex min-h-14 items-center justify-between gap-3 rounded-lg border border-hairline bg-card px-3 py-2">
+          <label className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-hairline bg-card px-3 py-2">
             <span>
               <span className="block font-semibold">Senior-friendly</span>
               <span className="block text-sm text-moss">Show places with comfort notes.</span>
@@ -130,109 +155,65 @@ export default function ExploreClient({ directory }: { directory: NearbyPlacesDi
           </label>
 
           <p className="text-sm text-moss">
-            Distances and notes are a curated planning aid. Confirm current hours, access, and seating before leaving.
+            Drive times are estimates at relaxed suburban speeds. Confirm current hours, access, and
+            seating before leaving.
           </p>
         </aside>
 
-        <section className="min-w-0">
-          <div className="overflow-hidden rounded-lg border border-hairline bg-card">
-            <div className="relative aspect-[4/3] min-h-[26rem] bg-petal sm:aspect-[16/10]">
-              <MapTexture />
-              <div className="absolute inset-8 rounded-full border border-copper/25" />
-              <div className="absolute inset-16 rounded-full border border-copper/15" />
-              <button
-                type="button"
-                className="absolute z-20 grid h-12 w-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-4 border-petal bg-copper font-bold text-petal shadow-lg"
-                style={{
-                  left: positionForCenter(directory, bounds).left,
-                  top: positionForCenter(directory, bounds).top,
-                }}
-                aria-label={directory.center.name}
-              >
-                M
-              </button>
-              {filteredPlaces.map((place) => {
-                const pos = positionForPlace(place, bounds);
-                const meta = CATEGORY_META[place.category];
-                const active = selectedId === place.id;
-                return (
-                  <button
-                    key={place.id}
-                    type="button"
-                    onClick={() => selectPlace(place)}
-                    aria-label={place.name}
-                    className={`absolute z-10 grid h-10 w-10 -translate-x-1/2 -translate-y-full place-items-center rounded-full border-2 border-petal text-sm font-bold shadow-md transition hover:scale-110 ${meta.className} ${
-                      active ? "ring-4 ring-copper/30" : ""
-                    }`}
-                    style={pos}
-                  >
-                    {meta.pin}
-                    <span aria-hidden="true" className="absolute -bottom-1 h-3 w-3 rotate-45 bg-inherit" />
-                  </button>
-                );
-              })}
-              <div className="absolute left-4 top-4 rounded-lg border border-hairline bg-card/95 px-3 py-2 shadow-sm">
-                <div className="font-semibold text-ink">{directory.center.name}</div>
-                <div className="text-sm text-moss">Map center</div>
+        <section className="min-w-0 space-y-6">
+          {bands.map((band) => (
+            <section key={band.label}>
+              <div className="flex items-baseline justify-between gap-3 rounded-lg bg-sand px-4 py-2">
+                <h2 className="font-display text-xl font-semibold">{band.label}</h2>
+                <span className="text-[15px] text-moss">
+                  {band.places.length} {band.places.length === 1 ? "place" : "places"}
+                </span>
               </div>
-            </div>
-          </div>
+              <div className="mt-3 grid gap-3 md:grid-cols-2">
+                {band.places.map((place) => {
+                  const meta = CATEGORY_META[place.category];
+                  return (
+                    <button
+                      key={place.id}
+                      type="button"
+                      onClick={() => setSelectedId(place.id)}
+                      className={`rounded-xl border bg-card p-4 text-left shadow-sm transition-colors hover:border-copper/40 ${
+                        selectedId === place.id ? "border-copper ring-2 ring-copper/20" : "border-hairline"
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${meta.className}`}>
+                          <meta.Icon />
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start justify-between gap-3">
+                            <h3 className="font-display text-xl font-semibold leading-snug">{place.name}</h3>
+                            {place.seniorFriendly && (
+                              <span className="mt-0.5 shrink-0 rounded-full bg-copper/10 px-2 py-1 text-[13px] font-semibold text-copper">
+                                Easy outing
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-0.5 text-sm font-semibold text-copper">
+                            {meta.label} · {place.distanceMiles.toFixed(1)} mi
+                          </p>
+                          <p className="mt-1.5 leading-snug text-moss">{place.summary}</p>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
 
-          <div className="mt-5 grid gap-3 md:grid-cols-2">
-            {filteredPlaces.map((place) => (
-              <button
-                key={place.id}
-                type="button"
-                onClick={() => selectPlace(place)}
-                className={`rounded-lg border bg-card p-4 text-left shadow-sm ${
-                  selectedId === place.id ? "border-copper ring-2 ring-copper/20" : "border-hairline"
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h2 className="font-display text-xl font-semibold">{place.name}</h2>
-                    <p className="mt-1 text-sm font-semibold text-copper">
-                      {CATEGORY_META[place.category].label} · {place.distanceMiles.toFixed(1)} mi
-                    </p>
-                  </div>
-                  {place.seniorFriendly && (
-                    <span className="shrink-0 rounded-full bg-copper/10 px-2 py-1 text-[13px] font-semibold text-copper">
-                      Easy outing
-                    </span>
-                  )}
-                </div>
-                <p className="mt-2 leading-snug text-moss">{place.summary}</p>
-              </button>
-            ))}
-          </div>
-
-          {filteredPlaces.length === 0 && (
-            <EmptyState message="No nearby places match these filters." />
-          )}
+          {total === 0 && <EmptyState message="No nearby places match these filters." />}
         </section>
       </div>
 
       {selected && <PlaceModal place={selected} onClose={() => setSelectedId(null)} />}
     </div>
   );
-}
-
-function positionForCenter(directory: NearbyPlacesDirectory, bounds: Bounds) {
-  return positionForPlace({
-    id: "center",
-    name: directory.center.name,
-    category: "activity",
-    address: directory.center.address,
-    phone: null,
-    website: null,
-    latitude: directory.center.latitude,
-    longitude: directory.center.longitude,
-    distanceMiles: 0,
-    summary: "",
-    seniorFriendly: true,
-    notes: [""],
-    tags: [],
-  }, bounds);
 }
 
 function FilterButton({
@@ -258,21 +239,6 @@ function FilterButton({
   );
 }
 
-function MapTexture() {
-  return (
-    <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(160,80,31,0.12),transparent_18rem),linear-gradient(135deg,rgba(227,220,203,0.7)_0_1px,transparent_1px_44px),linear-gradient(45deg,rgba(227,220,203,0.5)_0_1px,transparent_1px_52px)]" />
-      <div className="absolute left-[10%] top-[42%] h-4 w-[85%] rotate-[-12deg] rounded-full bg-hairline/80" />
-      <div className="absolute left-[2%] top-[58%] h-3 w-[90%] rotate-[9deg] rounded-full bg-hairline/70" />
-      <div className="absolute left-[47%] top-[-10%] h-[115%] w-3 rotate-[14deg] rounded-full bg-hairline/70" />
-      <div className="absolute left-[68%] top-[8%] h-[95%] w-2 rotate-[-28deg] rounded-full bg-hairline/60" />
-      <div className="absolute bottom-3 right-4 rounded-full bg-card/85 px-3 py-1 text-xs font-semibold text-moss">
-        Curated local area map
-      </div>
-    </div>
-  );
-}
-
 function PlaceModal({ place, onClose }: { place: NearbyPlace; onClose: () => void }) {
   const meta = CATEGORY_META[place.category];
   return (
@@ -284,7 +250,7 @@ function PlaceModal({ place, onClose }: { place: NearbyPlace; onClose: () => voi
       onClick={onClose}
     >
       <section
-        className="max-h-[85vh] w-full max-w-xl overflow-auto rounded-lg bg-card p-5 shadow-xl"
+        className="max-h-[85vh] w-full max-w-xl overflow-auto rounded-xl bg-card p-5 shadow-xl"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="mb-4 flex items-start justify-between gap-4">

@@ -23,7 +23,11 @@
         "Website lists wheelchair accessibility.",
         "Best for families who want an activity with seating nearby."
       ],
-      "tags": ["Bowling", "Wheelchair accessible", "Family outing"]
+      "tags": [
+        "Bowling",
+        "Wheelchair accessible",
+        "Family outing"
+      ]
     },
     {
       "id": "olive-garden-roswell",
@@ -42,7 +46,11 @@
         "Close enough for a simple lunch or dinner outing.",
         "Call ahead for accessibility, wait times, and seating needs."
       ],
-      "tags": ["Restaurant", "Table service", "Familiar menu"]
+      "tags": [
+        "Restaurant",
+        "Table service",
+        "Familiar menu"
+      ]
     },
     {
       "id": "red-lobster-roswell",
@@ -61,7 +69,11 @@
         "Reasonable distance for family meals.",
         "Confirm current hours and seating before going."
       ],
-      "tags": ["Restaurant", "Seafood", "Casual"]
+      "tags": [
+        "Restaurant",
+        "Seafood",
+        "Casual"
+      ]
     },
     {
       "id": "pappadeaux-alpharetta",
@@ -80,7 +92,11 @@
         "Likely busier than quick casual options.",
         "Call ahead if quieter seating or mobility accommodations are important."
       ],
-      "tags": ["Restaurant", "Seafood", "Family meal"]
+      "tags": [
+        "Restaurant",
+        "Seafood",
+        "Family meal"
+      ]
     },
     {
       "id": "rasa-sayang",
@@ -99,7 +115,10 @@
         "Confirm hours, parking, and seating before visiting.",
         "A little farther than the closest Holcomb Bridge restaurants."
       ],
-      "tags": ["Restaurant", "Market Boulevard"]
+      "tags": [
+        "Restaurant",
+        "Market Boulevard"
+      ]
     },
     {
       "id": "buca-di-beppo",
@@ -118,7 +137,11 @@
         "Best for a planned outing rather than a quick stop.",
         "Call ahead for seating and accessibility questions."
       ],
-      "tags": ["Restaurant", "Italian", "Group meal"]
+      "tags": [
+        "Restaurant",
+        "Italian",
+        "Group meal"
+      ]
     },
     {
       "id": "jasons-deli",
@@ -137,7 +160,11 @@
         "Menu usually includes lighter options.",
         "Confirm current location details before visiting."
       ],
-      "tags": ["Restaurant", "Casual", "Lighter meals"]
+      "tags": [
+        "Restaurant",
+        "Casual",
+        "Lighter meals"
+      ]
     },
     {
       "id": "great-clips-centennial",
@@ -156,7 +183,11 @@
         "Online check-in can reduce lobby wait time.",
         "Call or check online before going because wait times can vary."
       ],
-      "tags": ["Hair salon", "Senior haircuts", "Online check-in"]
+      "tags": [
+        "Hair salon",
+        "Senior haircuts",
+        "Online check-in"
+      ]
     },
     {
       "id": "north-point-mall",
@@ -175,7 +206,11 @@
         "Multiple food and shopping options in one stop.",
         "Individual store hours may differ from mall hours."
       ],
-      "tags": ["Shopping", "Indoor", "Movie theater"]
+      "tags": [
+        "Shopping",
+        "Indoor",
+        "Movie theater"
+      ]
     },
     {
       "id": "wellstar-north-fulton",
@@ -194,7 +229,11 @@
         "Check department location before driving because hospital campuses can be spread out.",
         "Keep emergency needs routed through appropriate medical channels."
       ],
-      "tags": ["Medical", "Hospital", "Nearby care"]
+      "tags": [
+        "Medical",
+        "Hospital",
+        "Nearby care"
+      ]
     },
     {
       "id": "chattahoochee-nature-center",
@@ -213,7 +252,11 @@
         "Check path conditions and accessibility before planning a visit.",
         "Best for residents who enjoy nature and can handle some outdoor walking."
       ],
-      "tags": ["Outdoor", "Nature", "Family outing"]
+      "tags": [
+        "Outdoor",
+        "Nature",
+        "Family outing"
+      ]
     },
     {
       "id": "mansell-crossing",
@@ -232,7 +275,172 @@
         "Parking and walking distances vary by storefront.",
         "Pick a specific store before leaving to keep the outing simple."
       ],
-      "tags": ["Shopping", "Restaurants", "Errands"]
+      "tags": [
+        "Shopping",
+        "Restaurants",
+        "Errands"
+      ]
+    },
+    {
+      "id": "big-creek-greenway",
+      "name": "Big Creek Greenway",
+      "category": "park",
+      "address": "North Point Pkwy at Haynes Bridge Rd, Alpharetta, GA 30022",
+      "phone": null,
+      "website": null,
+      "latitude": 34.062,
+      "longitude": -84.278,
+      "distanceMiles": 2.3,
+      "summary": "Flat, paved creekside trail with boardwalk stretches, benches, and shade \u2014 good for a gentle stroll or wheelchair outing.",
+      "seniorFriendly": true,
+      "notes": [
+        "Paved and mostly level; benches appear regularly.",
+        "Morning visits are cooler and quieter.",
+        "Park at the North Point Parkway trailhead for the flattest section."
+      ],
+      "tags": [
+        "Outdoor",
+        "Paved trail",
+        "Wheelchair accessible"
+      ]
+    },
+    {
+      "id": "canton-street-roswell",
+      "name": "Canton Street (Historic Roswell)",
+      "category": "activity",
+      "address": "Canton St, Roswell, GA 30075",
+      "phone": null,
+      "website": null,
+      "latitude": 34.026,
+      "longitude": -84.362,
+      "distanceMiles": 4.4,
+      "summary": "Historic main street of shops, galleries, porches, and restaurants \u2014 a classic slow afternoon with visiting family.",
+      "seniorFriendly": true,
+      "notes": [
+        "Sidewalks are good but some shops have a step at the door.",
+        "Street parking fills on weekends; lots sit one block off Canton.",
+        "Plenty of restaurants for a sit-down lunch mid-stroll."
+      ],
+      "tags": [
+        "Strolling",
+        "Restaurants",
+        "Family outing"
+      ]
+    },
+    {
+      "id": "bulloch-hall",
+      "name": "Bulloch Hall",
+      "category": "activity",
+      "address": "180 Bulloch Ave, Roswell, GA 30075",
+      "phone": null,
+      "website": "https://www.bullochhall.org",
+      "latitude": 34.021,
+      "longitude": -84.366,
+      "distanceMiles": 4.8,
+      "summary": "1839 antebellum home with docent-led tours, gardens, and quiet grounds \u2014 an unhurried history outing.",
+      "seniorFriendly": true,
+      "notes": [
+        "Tours are guided and paced gently; call ahead for accessibility details.",
+        "Grounds and gardens are enjoyable even without the house tour.",
+        "Pairs well with lunch on nearby Canton Street."
+      ],
+      "tags": [
+        "History",
+        "Tours",
+        "Gardens"
+      ]
+    },
+    {
+      "id": "roswell-area-park",
+      "name": "Roswell Area Park",
+      "category": "park",
+      "address": "10495 Woodstock Rd, Roswell, GA 30075",
+      "phone": null,
+      "website": null,
+      "latitude": 34.043,
+      "longitude": -84.388,
+      "distanceMiles": 4.9,
+      "summary": "Large city park with a flat walking loop, shade trees, gardens, and plenty of benches near parking.",
+      "seniorFriendly": true,
+      "notes": [
+        "The main loop near the community center is paved and level.",
+        "Restrooms are close to the parking lots.",
+        "Good spot for grandkids to burn energy while others sit in the shade."
+      ],
+      "tags": [
+        "Outdoor",
+        "Walking loop",
+        "Family outing"
+      ]
+    },
+    {
+      "id": "roswell-library",
+      "name": "Roswell Library",
+      "category": "activity",
+      "address": "115 Norcross St, Roswell, GA 30075",
+      "phone": null,
+      "website": null,
+      "latitude": 34.028,
+      "longitude": -84.358,
+      "distanceMiles": 4.3,
+      "summary": "Fulton County branch with large-print collections, comfortable seating, and regular daytime programs.",
+      "seniorFriendly": true,
+      "notes": [
+        "Accessible entrance and parking by the front door.",
+        "Ask at the desk about large-print and audiobook sections.",
+        "A calm, air-conditioned outing for a hot afternoon."
+      ],
+      "tags": [
+        "Quiet",
+        "Large print",
+        "Indoor"
+      ]
+    },
+    {
+      "id": "vickery-creek-mill",
+      "name": "Roswell Mill & Vickery Creek Falls",
+      "category": "park",
+      "address": "95 Mill St, Roswell, GA 30075",
+      "phone": null,
+      "website": null,
+      "latitude": 34.018,
+      "longitude": -84.357,
+      "distanceMiles": 5.1,
+      "summary": "Historic mill ruins and a covered bridge overlooking the waterfall \u2014 beautiful, but the paths are steep in places.",
+      "seniorFriendly": false,
+      "notes": [
+        "Trails include stairs and steep grades; best for mobile visitors.",
+        "The covered bridge and falls overlook are the shortest walk from parking.",
+        "Great photo stop for visiting family."
+      ],
+      "tags": [
+        "Waterfall",
+        "History",
+        "Steep paths"
+      ]
+    },
+    {
+      "id": "avalon-alpharetta",
+      "name": "Avalon",
+      "category": "shop",
+      "address": "400 Avalon Blvd, Alpharetta, GA 30009",
+      "phone": null,
+      "website": "https://www.experienceavalon.com",
+      "latitude": 34.07,
+      "longitude": -84.276,
+      "distanceMiles": 4.6,
+      "summary": "Upscale open-air shopping and dining district with wide flat walkways, fountains, and abundant seating.",
+      "seniorFriendly": true,
+      "notes": [
+        "Flat, wide sidewalks and plenty of benches throughout.",
+        "Valet and garage parking keep walking distances short.",
+        "Many restaurants take reservations \u2014 helpful for larger family groups."
+      ],
+      "tags": [
+        "Shopping",
+        "Restaurants",
+        "Flat walkways"
+      ]
     }
   ]
 }
