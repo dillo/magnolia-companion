@@ -33,3 +33,9 @@ Menu files are named by the first visible date on the printed weekly menu.
 
 `ANTHROPIC_API_KEY` lives only in the local `.env` (git-ignored) and is only needed for photo ingest.
 Vercel has **no** environment variables; the deployed site makes no API calls.
+
+## License
+
+Licensed under the [PolyForm Strict License 1.0.0](LICENSE.md). This is a
+source-available license, not an open-source license. Modification and
+redistribution are not permitted.
