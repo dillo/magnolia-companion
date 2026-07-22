@@ -8,8 +8,8 @@ import MagnoliaLogo from "@/components/MagnoliaLogo";
 import VisitNotifications from "@/components/VisitNotifications";
 
 const NAV = [
-  { href: "/", label: "Activities" },
-  { href: "/menu", label: "Meals" },
+  { href: "/", label: "Home" },
+  { href: "/menu", label: "Full menu" },
   { href: "/calendar", label: "Calendar" },
   { href: "/explore", label: "Explore" },
   { href: "/visits", label: "Holidays" },

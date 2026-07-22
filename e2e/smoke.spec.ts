@@ -5,18 +5,27 @@ async function pinClock(page: Page) {
   await page.clock.install({ time: new Date("2026-07-08T19:00:00Z") });
 }
 
-test("home: day pills, menu sidebar, and week view", async ({ page }) => {
+test("home: activities and meals are first-class views", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Wednesday, July 8, 2026" })).toBeVisible();
   await expect(page.getByText("Nat'l Raspberry Day").first()).toBeVisible();
-  // Today's menu renders in the sidebar (no Meals tab anymore).
+  await expect(page.getByText("Roasted Turkey")).not.toBeVisible();
+
+  await page.getByRole("tab", { name: "Meals" }).click();
+  await expect(page.getByText("Today’s meals")).toBeVisible();
   await expect(page.getByText("Roasted Turkey")).toBeVisible();
 
-  await page.getByRole("tab", { name: "Tomorrow" }).click();
-  await expect(page.getByRole("heading", { name: "Thursday, July 9, 2026" })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("tab", { name: "Meals" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByText("Roasted Turkey")).toBeVisible();
 
-  await page.getByRole("tab", { name: "This Week" }).click();
+  await page.getByRole("button", { name: "Tomorrow", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Thursday, July 9, 2026" })).toBeVisible();
+  await expect(page.getByText("BBQ Pork Ribs")).toBeVisible();
+
+  await page.getByRole("tab", { name: "Activities" }).click();
+  await page.getByRole("button", { name: "This Week", exact: true }).click();
   await expect(page.getByText("daily routine items").first()).toBeVisible();
   await expect(page.getByText("Therapy Dog Visit with Canine Assistants")).toBeVisible();
 });
@@ -41,12 +50,12 @@ test("nav: current page is marked active", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Main" });
-  await expect(nav.getByRole("link", { name: "Activities" })).toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
   await expect(nav.getByRole("link", { name: "Calendar" })).not.toHaveAttribute("aria-current", "page");
 
   await nav.getByRole("link", { name: "Calendar" }).click();
   await expect(nav.getByRole("link", { name: "Calendar" })).toHaveAttribute("aria-current", "page");
-  await expect(nav.getByRole("link", { name: "Activities" })).not.toHaveAttribute("aria-current", "page");
+  await expect(nav.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current", "page");
 });
 
 test("no hydration errors, including under reduced motion", async ({ page }) => {
@@ -104,7 +113,9 @@ test("faq: search filters questions live", async ({ page }) => {
 test("home: lunch shows serving-now badge during its window", async ({ page }) => {
   await page.clock.install({ time: new Date("2026-07-08T16:30:00Z") }); // 12:30 PM EDT
   await page.goto("/");
+  await page.getByRole("tab", { name: "Meals" }).click();
   await expect(page.getByText("Serving now")).toBeVisible();
+  await page.getByRole("tab", { name: "Activities" }).click();
   const hero = page.getByLabel("Right now");
   await expect(hero.getByText("Up next")).toBeVisible();
   await expect(hero.getByText("Starts in 30 minutes")).toBeVisible();
@@ -123,7 +134,7 @@ test("disclaimer: identifies the app as independent and unofficial", async ({ pa
   );
 });
 
-test("contacts: staff directory shows the coming-soon empty state", async ({ page }) => {
+test("contacts: staff directory groups the published contacts", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Main" });
@@ -131,7 +142,9 @@ test("contacts: staff directory shows the coming-soon empty state", async ({ pag
 
   await expect(page).toHaveTitle("Staff Directory | Magnolia Companion");
   await expect(page.getByRole("heading", { name: "Staff Directory" })).toBeVisible();
-  await expect(page.getByText("Staff directory is coming soon.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Fire Department" })).toBeVisible();
+  await expect(page.getByText("Roswell Fire Station 24")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Police Department" })).toBeVisible();
 });
 
 test("mobile: footer clears the fixed navigation without excess space", async ({ page }) => {

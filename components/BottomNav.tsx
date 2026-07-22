@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const TABS = [
-  { href: "/", label: "Activities", icon: SunIcon },
-  { href: "/menu", label: "Meals", icon: MealIcon },
+  { href: "/", label: "Home", icon: SunIcon },
+  { href: "/menu", label: "Full menu", icon: MealIcon },
   { href: "/calendar", label: "Calendar", icon: CalendarIcon },
   { href: "/visits", label: "Holidays", icon: FlagIcon },
 ];

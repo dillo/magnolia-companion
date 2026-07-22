@@ -1,31 +1,64 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import type { ActivityMonth, MenuDay, MenuWeek, VisitDay } from "@/lib/schema";
+import { useState, useSyncExternalStore } from "react";
+import type { ActivityMonth, MenuWeek, VisitDay } from "@/lib/schema";
 import {
   addDaysISO, mondayOfISO,
-  dayNameOfISO, longDateOfISO, monthDayOfISO, monthNameOfISO, monthOfISO, formatTime,
+  dayNameOfISO, monthDayOfISO, monthNameOfISO, monthOfISO, formatTime,
 } from "@/lib/dates";
 import { findActivityDay, findMenuDay, upcomingVisitDays } from "@/lib/lookup";
 import Timeline from "@/components/Timeline";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
 import { useToday } from "@/components/useToday";
-import { MEALS, MealCard } from "@/components/MealCards";
+import MealCards from "@/components/MealCards";
 import { VisitDaysSummary } from "@/components/VisitDays";
 import { greetingFor, heroStateFor, tomorrowPreview } from "@/lib/now";
 import { useNow } from "@/components/useNow";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
 import HeroCard from "@/components/HeroCard";
 
-type DayPick = "today" | "tomorrow" | "week";
+type HomeSection = "activities" | "meals";
+type ActivityPick = "today" | "tomorrow" | "week";
+type MealPick = "today" | "tomorrow";
 
-const PICKS: { key: DayPick; label: string }[] = [
+const HOME_SECTIONS: { key: HomeSection; label: string; description: string }[] = [
+  { key: "activities", label: "Activities", description: "What’s happening" },
+  { key: "meals", label: "Meals", description: "What’s being served" },
+];
+
+const ACTIVITY_PICKS: { key: ActivityPick; label: string }[] = [
   { key: "today", label: "Today" },
   { key: "tomorrow", label: "Tomorrow" },
   { key: "week", label: "This Week" },
 ];
+
+const MEAL_PICKS: { key: MealPick; label: string }[] = [
+  { key: "today", label: "Today" },
+  { key: "tomorrow", label: "Tomorrow" },
+];
+
+const HOME_SECTION_STORAGE_KEY = "magnolia-home-section";
+const HOME_SECTION_EVENT = "magnolia-home-section-change";
+
+function readStoredSection(): HomeSection {
+  try {
+    const saved = window.localStorage.getItem(HOME_SECTION_STORAGE_KEY);
+    return saved === "meals" ? "meals" : "activities";
+  } catch {
+    return "activities";
+  }
+}
+
+function subscribeToStoredSection(onChange: () => void) {
+  window.addEventListener("storage", onChange);
+  window.addEventListener(HOME_SECTION_EVENT, onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener(HOME_SECTION_EVENT, onChange);
+  };
+}
 
 export default function HomeClient({
   months,
@@ -38,18 +71,32 @@ export default function HomeClient({
 }) {
   const today = useToday();
   const now = useNow();
-  const [pick, setPick] = useState<DayPick>("today");
+  const storedSection = useSyncExternalStore(subscribeToStoredSection, readStoredSection, () => "activities");
+  const [volatileSection, setVolatileSection] = useState<HomeSection | null>(null);
+  const section = volatileSection ?? storedSection;
+  const [activityPick, setActivityPick] = useState<ActivityPick>("today");
+  const [mealPick, setMealPick] = useState<MealPick>("today");
+
+  function selectSection(next: HomeSection) {
+    try {
+      window.localStorage.setItem(HOME_SECTION_STORAGE_KEY, next);
+      setVolatileSection(null);
+      window.dispatchEvent(new Event(HOME_SECTION_EVENT));
+    } catch {
+      // Storage can be unavailable in privacy-focused browsing modes.
+      setVolatileSection(next);
+    }
+  }
 
   if (!today) return null; // date is client-side by design; render after mount
 
-  const date = pick === "tomorrow" ? addDaysISO(today, 1) : today;
+  const activityDate = activityPick === "tomorrow" ? addDaysISO(today, 1) : today;
+  const mealDate = mealPick === "tomorrow" ? addDaysISO(today, 1) : today;
   const weekStart = mondayOfISO(today);
   const weekDates = Array.from({ length: 7 }, (_, i) => addDaysISO(weekStart, i));
-  const day = findActivityDay(months, date);
+  const day = findActivityDay(months, activityDate);
   const tomorrowDay = findActivityDay(months, addDaysISO(today, 1));
-  const menuDate = pick === "tomorrow" ? date : today;
-  const menuDay = findMenuDay(weeks, menuDate);
-  const menuTitle = pick === "tomorrow" ? "Tomorrow's Menu" : "Today's Menu";
+  const menuDay = findMenuDay(weeks, mealDate);
   const weekEnd = addDaysISO(weekStart, 6);
   const weekRange = monthOfISO(weekStart) === monthOfISO(weekEnd)
     ? `${monthDayOfISO(weekStart)} – ${Number(weekEnd.slice(8))}`
@@ -60,82 +107,230 @@ export default function HomeClient({
     0,
   );
 
-  const showMenuSummary = pick !== "week";
+  const showVisitSummary = activityPick !== "week";
   const upcomingVisits = upcomingVisitDays(visitDays, today, 3);
 
   return (
-    <div className={`mx-auto grid max-w-5xl gap-8 ${
-      showMenuSummary ? "lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start" : ""
-    }`}>
-      <section className="min-w-0 lg:max-w-xl">
-        {pick === "week" ? (
-          <Masthead
-            eyebrow="This Week"
-            main={weekRange}
-            year={weekEnd.slice(0, 4)}
-            accent={weekSpecialCount > 0
-              ? `${weekSpecialCount} special ${weekSpecialCount === 1 ? "activity" : "activities"}`
-              : null}
-          />
-        ) : (
-          <Masthead
-            eyebrow={pick === "tomorrow" ? "Tomorrow" : now ? greetingFor(now) : " "}
-            main={`${dayNameOfISO(date)}, ${monthDayOfISO(date)}`}
-            year={date.slice(0, 4)}
-            accent={day?.theme ?? null}
-          />
-        )}
+    <div className="mx-auto max-w-5xl">
+      <div
+        role="tablist"
+        aria-label="Home sections"
+        aria-orientation="horizontal"
+        className="grid grid-cols-2 border-b-2 border-hairline"
+      >
+        {HOME_SECTIONS.map((item, index) => {
+          const selected = section === item.key;
+          return (
+            <button
+              key={item.key}
+              id={`home-tab-${item.key}`}
+              type="button"
+              role="tab"
+              aria-label={item.label}
+              aria-selected={selected}
+              aria-controls={`home-panel-${item.key}`}
+              tabIndex={selected ? 0 : -1}
+              onClick={() => selectSection(item.key)}
+              onKeyDown={(event) => {
+                let nextIndex: number | null = null;
+                if (event.key === "ArrowRight") nextIndex = (index + 1) % HOME_SECTIONS.length;
+                if (event.key === "ArrowLeft") nextIndex = (index - 1 + HOME_SECTIONS.length) % HOME_SECTIONS.length;
+                if (event.key === "Home") nextIndex = 0;
+                if (event.key === "End") nextIndex = HOME_SECTIONS.length - 1;
+                if (nextIndex === null) return;
+                event.preventDefault();
+                const next = HOME_SECTIONS[nextIndex];
+                selectSection(next.key);
+                document.getElementById(`home-tab-${next.key}`)?.focus();
+              }}
+              className={`group relative min-h-20 px-3 py-3 text-left transition-colors sm:px-5 ${
+                index === 1 ? "border-l border-hairline" : ""
+              } ${selected ? "bg-card/55 text-ink" : "text-moss hover:bg-sand/60 hover:text-ink"}`}
+            >
+              <span className="flex items-center gap-3">
+                <span
+                  aria-hidden="true"
+                  className={`grid h-10 w-10 shrink-0 place-items-center rounded-full transition-colors ${
+                    selected ? "bg-copper text-petal" : "bg-sand text-moss group-hover:text-ink"
+                  }`}
+                >
+                  <HomeSectionIcon section={item.key} />
+                </span>
+                <span className="min-w-0">
+                  <span className={`block font-display text-xl font-semibold ${selected ? "text-copper" : ""}`}>
+                    {item.label}
+                  </span>
+                  <span className="mt-0.5 block text-[14px] leading-snug">{item.description}</span>
+                </span>
+              </span>
+              <span
+                aria-hidden="true"
+                className={`absolute inset-x-3 -bottom-0.5 h-[3px] rounded-full bg-copper transition-opacity sm:inset-x-5 ${
+                  selected ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            </button>
+          );
+        })}
+      </div>
 
-        <div className="my-4 flex items-center gap-2 sm:gap-3">
-          <div role="tablist" aria-label="Activity dates" className="grid w-full grid-cols-3 rounded-full bg-hairline/60 p-1 lg:flex lg:w-fit">
-            {PICKS.map((p) => (
-              <button key={p.key} role="tab" aria-selected={pick === p.key} onClick={() => setPick(p.key)}
-                className={`whitespace-nowrap rounded-full px-2 py-2 text-center font-semibold sm:px-4 ${
-                  pick === p.key ? "bg-copper text-petal" : "text-moss"
-                }`}>
-                {p.label}
-              </button>
-            ))}
-          </div>
+      <div
+        id="home-panel-activities"
+        role="tabpanel"
+        aria-labelledby="home-tab-activities"
+        hidden={section !== "activities"}
+        className={`gap-8 pt-6 ${
+          section !== "activities"
+            ? "hidden"
+            : showVisitSummary
+              ? "grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start"
+              : "grid"
+        }`}
+      >
+        <section className="min-w-0 lg:max-w-xl">
+          {activityPick === "week" ? (
+            <Masthead
+              eyebrow="This Week"
+              main={weekRange}
+              year={weekEnd.slice(0, 4)}
+              accent={weekSpecialCount > 0
+                ? `${weekSpecialCount} special ${weekSpecialCount === 1 ? "activity" : "activities"}`
+                : null}
+            />
+          ) : (
+            <Masthead
+              eyebrow={activityPick === "tomorrow" ? "Tomorrow" : now ? greetingFor(now) : " "}
+              main={`${dayNameOfISO(activityDate)}, ${monthDayOfISO(activityDate)}`}
+              year={activityDate.slice(0, 4)}
+              accent={day?.theme ?? null}
+            />
+          )}
+
+          <DateTabs
+            label="Activity dates"
+            picks={ACTIVITY_PICKS}
+            selected={activityPick}
+            onSelect={setActivityPick}
+          />
+
+          {activityPick === "today" && now && day && (
+            <div className="mb-5">
+              <HeroCard
+                state={heroStateFor(day.events, now)}
+                tomorrow={tomorrowPreview(tomorrowDay)}
+                tomorrowMissing={tomorrowDay === null}
+              />
+            </div>
+          )}
+
+          {activityPick === "week" ? (
+            <WeekActivities months={months} dates={weekDates} today={today} />
+          ) : (
+            day
+              ? <Timeline events={day.events} now={activityPick === "today" ? now : null} />
+              : <EmptyState message={`${monthNameOfISO(activityDate)}'s calendar hasn't been added yet.`} />
+          )}
+
+          <Link href="/calendar"
+            className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
+            View all activities
+          </Link>
+        </section>
+
+        {showVisitSummary && (
+          <aside className="pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
+            <VisitDaysSummary
+              days={upcomingVisits}
+              className="border-t border-hairline pt-5 lg:border-t-0 lg:pt-0"
+            />
+          </aside>
+        )}
+      </div>
+
+      <section
+        id="home-panel-meals"
+        role="tabpanel"
+        aria-labelledby="home-tab-meals"
+        hidden={section !== "meals"}
+        className={section === "meals" ? "pt-6" : "hidden"}
+      >
+        <div className="max-w-xl">
+          <Masthead
+            eyebrow={mealPick === "tomorrow" ? "Tomorrow’s meals" : "Today’s meals"}
+            main={`${dayNameOfISO(mealDate)}, ${monthDayOfISO(mealDate)}`}
+            year={mealDate.slice(0, 4)}
+            accent="Breakfast, lunch & dinner"
+            flourish={false}
+          />
+
+          <DateTabs
+            label="Meal dates"
+            picks={MEAL_PICKS}
+            selected={mealPick}
+            onSelect={setMealPick}
+          />
+
+          {!menuDay && (
+            <p className="mb-3 text-moss">The menu for this date hasn&apos;t been added yet.</p>
+          )}
         </div>
 
-        {pick === "today" && now && day && (
-          <div className="mb-5">
-            <HeroCard
-              state={heroStateFor(day.events, now)}
-              tomorrow={tomorrowPreview(tomorrowDay)}
-              tomorrowMissing={tomorrowDay === null}
-            />
-          </div>
-        )}
+        <MealCards
+          day={menuDay}
+          now={mealPick === "today" ? now : null}
+          className="grid gap-3 md:grid-cols-3"
+        />
 
-        {pick === "week" ? (
-          <WeekActivities months={months} dates={weekDates} today={today} />
-        ) : (
-          day
-            ? <Timeline events={day.events} now={pick === "today" ? now : null} />
-            : <EmptyState message={`${monthNameOfISO(date)}'s calendar hasn't been added yet.`} />
-        )}
-
-        <Link href="/calendar"
+        <Link href="/menu"
           className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
-          View all activities
+          View the full menu
         </Link>
       </section>
+    </div>
+  );
+}
 
-      {showMenuSummary && (
-        <aside className="space-y-5 pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
-          <MenuSummary day={menuDay} date={menuDate} title={menuTitle} now={pick === "today" ? now : null} />
-          <VisitDaysSummary days={upcomingVisits} />
-        </aside>
-      )}
+function DateTabs<T extends string>({
+  label,
+  picks,
+  selected,
+  onSelect,
+}: {
+  label: string;
+  picks: readonly { key: T; label: string }[];
+  selected: T;
+  onSelect: (pick: T) => void;
+}) {
+  return (
+    <div className="my-4 flex items-center gap-2 sm:gap-3">
+      <div
+        role="group"
+        aria-label={label}
+        className={`grid w-full rounded-full bg-hairline/60 p-1 lg:w-fit ${
+          picks.length === 2 ? "grid-cols-2 lg:grid" : "grid-cols-3 lg:flex"
+        }`}
+      >
+        {picks.map((pick) => (
+          <button
+            key={pick.key}
+            type="button"
+            aria-pressed={selected === pick.key}
+            onClick={() => onSelect(pick.key)}
+            className={`whitespace-nowrap rounded-full px-3 py-2 text-center font-semibold transition-colors sm:px-4 ${
+              selected === pick.key ? "bg-copper text-petal" : "text-moss hover:bg-card/70 hover:text-ink"
+            }`}
+          >
+            {pick.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
 
 /**
- * Shared masthead skeleton for all three views: eyebrow, date h1, accent line
- * (day theme or week summary). Every line renders in every view (the accent
+ * Shared masthead skeleton: eyebrow, date h1, and accent line. Every line
+ * renders in every view (the accent
  * line reserves its height when empty) so the pills below never shift when
  * switching tabs.
  */
@@ -144,11 +339,13 @@ function Masthead({
   main,
   year,
   accent,
+  flourish = true,
 }: {
   eyebrow: string;
   main: string;
   year: string;
   accent: string | null;
+  flourish?: boolean;
 }) {
   return (
     <>
@@ -161,7 +358,7 @@ function Masthead({
       <p className="mt-1.5 flex items-center gap-2 font-display text-xl italic text-copper">
         {accent ? (
           <>
-            <MagnoliaFlourish className="h-5 w-5 shrink-0" />
+            {flourish && <MagnoliaFlourish className="h-5 w-5 shrink-0" />}
             {accent}
           </>
         ) : (
@@ -172,38 +369,29 @@ function Masthead({
   );
 }
 
-function MenuSummary({
-  day,
-  date,
-  title,
-  now,
-}: {
-  day: MenuDay | null;
-  date: string;
-  title: string;
-  now: string | null;
-}) {
+function HomeSectionIcon({ section }: { section: HomeSection }) {
+  const stroke = {
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+
+  if (section === "meals") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-5 w-5">
+        <path d="M4 13.5h16M6 13.5a6 6 0 0 1 12 0M3.5 17h17" {...stroke} />
+        <path d="M12 6V4.5" {...stroke} />
+      </svg>
+    );
+  }
+
   return (
-    <section>
-      <div className="mb-3">
-        <h2 className="font-display text-xl font-semibold text-ink">{title}</h2>
-        <p className="mt-1 text-moss">
-          {dayNameOfISO(date)}, {longDateOfISO(date)}
-        </p>
-      </div>
-
-      {!day && <p className="mb-3">The menu for this date hasn&apos;t been added yet.</p>}
-
-      <div className="space-y-3">
-        {MEALS.map((meal) => (
-          <MealCard key={meal.key} meal={meal} items={day?.[meal.key].items ?? null} now={now} />
-        ))}
-      </div>
-
-      <Link href="/menu" className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
-        Full menu
-      </Link>
-    </section>
+    <svg viewBox="0 0 24 24" className="h-5 w-5">
+      <circle cx="12" cy="12" r="3.5" {...stroke} />
+      <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" {...stroke} />
+    </svg>
   );
 }
 

@@ -93,9 +93,15 @@ export function VisitDayCard({
   );
 }
 
-export function VisitDaysSummary({ days }: { days: VisitDay[] }) {
+export function VisitDaysSummary({
+  days,
+  className = "border-t border-hairline pt-5",
+}: {
+  days: VisitDay[];
+  className?: string;
+}) {
   return (
-    <section className="border-t border-hairline pt-5">
+    <section className={className}>
       <div className="mb-3">
         <h2 className="font-display text-xl font-semibold text-ink">Upcoming Holidays</h2>
         <p className="mt-1 text-moss">Upcoming holidays families may want to plan around.</p>

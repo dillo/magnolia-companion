@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const ROUTE_LABELS: Record<string, string> = {
-  "/": "Activities",
-  "/menu": "Meals",
+  "/": "Home",
+  "/menu": "Full menu",
   "/calendar": "Calendar",
   "/explore": "Explore",
   "/visits": "Holidays",

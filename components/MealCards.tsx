@@ -71,9 +71,17 @@ export function MealCard({
   );
 }
 
-export default function MealCards({ day, now = null }: { day: MenuDay | null; now?: string | null }) {
+export default function MealCards({
+  day,
+  now = null,
+  className = "space-y-3",
+}: {
+  day: MenuDay | null;
+  now?: string | null;
+  className?: string;
+}) {
   return (
-    <div className="space-y-3">
+    <div className={className}>
       {MEALS.map((meal) => (
         <MealCard key={meal.key} meal={meal} items={day?.[meal.key].items ?? null} now={now} />
       ))}
