@@ -130,9 +130,10 @@ describe("nearbyPlacesSchema", () => {
 });
 
 describe("contactsSchema", () => {
-  test("accepts the committed empty contacts fixture", () => {
+  test("accepts the committed contacts fixture", () => {
     const parsed = contactsSchema.parse(readJSON("content/contacts.json"));
-    expect(parsed.contacts).toEqual([]);
+    expect(parsed.contacts).toHaveLength(2);
+    expect(parsed.contacts[0].name).toBe("Roswell Fire Station 24");
   });
   test("accepts a fully populated contact", () => {
     const parsed = contactsSchema.parse({

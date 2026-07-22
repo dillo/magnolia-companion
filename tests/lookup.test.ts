@@ -17,8 +17,9 @@ describe("loaders", () => {
     expect(weeks[0].weekOf).toBe("2026-07-05");
   });
 
-  test("loadContacts returns the committed (currently empty) directory", () => {
-    expect(contacts.contacts).toEqual([]);
+  test("loadContacts returns the committed directory", () => {
+    expect(contacts.contacts).toHaveLength(2);
+    expect(contacts.contacts[0].name).toBe("Roswell Fire Station 24");
   });
 });
 

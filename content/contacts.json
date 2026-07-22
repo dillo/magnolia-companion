@@ -1,3 +1,20 @@
 {
-  "contacts": []
+  "contacts": [
+    {
+      "id": "roswell-fire-station-24",
+      "name": "Roswell Fire Station 24",
+      "role": "Fire and Rescue",
+      "department": "Fire Department",
+      "phone": "(770) 641-3730",
+      "email": "firecustomerserviceteam@roswellgov.com"
+    },
+    {
+      "id": "roswell-public-safety-headquarters",
+      "name": "Roswell Public Safety Headquarters",
+      "role": "Police",
+      "department": "Police Department",
+      "phone": "(770) 640-4160",
+      "email": "policerecords@roswellgov.com"
+    }
+  ]
 }
