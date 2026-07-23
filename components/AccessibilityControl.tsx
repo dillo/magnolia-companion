@@ -112,13 +112,16 @@ export default function AccessibilityControl() {
           className="fixed inset-0 z-[49] bg-ink/55 print:hidden"
         />
       )}
-      <div ref={rootRef} className="fixed right-4 bottom-24 z-50 flex flex-col items-end print:hidden lg:bottom-4">
+      <div
+        ref={rootRef}
+        className="pointer-events-none fixed right-4 bottom-24 z-50 flex flex-col items-end print:hidden lg:bottom-4"
+      >
         {open ? (
           <div
             role="dialog"
             aria-modal="false"
             aria-labelledby={titleId}
-            className="relative mb-3 w-[min(calc(100vw-2rem),22rem)] rounded-lg border border-hairline bg-card p-4 text-ink shadow-2xl"
+            className="pointer-events-auto relative mb-3 w-[min(calc(100vw-2rem),22rem)] rounded-lg border border-hairline bg-card p-4 text-ink shadow-2xl"
           >
             <span
               aria-hidden="true"
@@ -208,7 +211,7 @@ export default function AccessibilityControl() {
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-label="Accessibility settings"
-          className="grid h-14 w-14 place-items-center rounded-full border-[3px] border-petal bg-copper text-petal shadow-xl ring-4 ring-copper/25"
+          className="pointer-events-auto grid h-14 w-14 place-items-center rounded-full border-[3px] border-petal bg-copper text-petal shadow-xl ring-4 ring-copper/25"
         >
           <svg aria-hidden="true" viewBox="0 0 32 32" className="h-9 w-9" fill="none">
             <circle cx="16" cy="7" r="3.25" fill="currentColor" />

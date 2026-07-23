@@ -185,3 +185,22 @@ test("mobile: footer clears the fixed navigation without excess space", async ({
   expect(gap).toBeGreaterThanOrEqual(0);
   expect(gap).toBeLessThan(24);
 });
+
+test("mobile: accessibility dialog closes from the blank space above navigation", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const trigger = page.getByRole("button", { name: "Accessibility settings", exact: true });
+  await trigger.click();
+
+  const dialog = page.getByRole("dialog", { name: "Accessibility" });
+  await expect(dialog).toBeVisible();
+
+  const dialogBox = await dialog.boundingBox();
+  const triggerBox = await trigger.boundingBox();
+  expect(dialogBox).not.toBeNull();
+  expect(triggerBox).not.toBeNull();
+
+  await page.mouse.click(dialogBox!.x + 8, triggerBox!.y + triggerBox!.height / 2);
+  await expect(dialog).not.toBeVisible();
+});
