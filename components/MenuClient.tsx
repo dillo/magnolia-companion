@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { ActivityMonth, MenuWeek } from "@/lib/schema";
+import type { FeaturedFaq } from "@/lib/faqs";
+import type { Contact, MenuWeek } from "@/lib/schema";
 import { addDaysISO, dayNameOfISO, longDateOfISO, sundayOfISO } from "@/lib/dates";
-import { findActivityDay, menuWeekFor, publishedMenuWeeks } from "@/lib/lookup";
+import { menuWeekFor, publishedMenuWeeks } from "@/lib/lookup";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import MealCards from "@/components/MealCards";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
-import TodayActivitiesSummary from "@/components/TodayActivitiesSummary";
+import HelpfulToday from "@/components/HelpfulToday";
 import { useToday } from "@/components/useToday";
 import { useNow } from "@/components/useNow";
 
@@ -31,7 +32,15 @@ function weekRangeLabel(start: string): string {
   return `${fullDate.format(startDate)} - ${fullDate.format(endDate)}`;
 }
 
-export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; months: ActivityMonth[] }) {
+export default function MenuClient({
+  weeks,
+  featuredFaqs,
+  contacts,
+}: {
+  weeks: MenuWeek[];
+  featuredFaqs: FeaturedFaq[];
+  contacts: Contact[];
+}) {
   const today = useToday();
   const now = useNow();
   const menus = useMemo(() => publishedMenuWeeks(weeks), [weeks]);
@@ -65,7 +74,6 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
   const weekDates = Array.from({ length: 7 }, (_, i) => addDaysISO(weekStart, i));
   const activeDate = weekDates.includes(date) ? date : weekStart;
   const day = week?.days.find((d) => d.date === activeDate) ?? null;
-  const todayActivities = findActivityDay(months, today);
   const weekRange = weekRangeLabel(weekStart);
 
   function moveWeek(delta: number) {
@@ -75,7 +83,7 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
   }
 
   return (
-    <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+    <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
       <section className="max-w-xl">
         <Breadcrumbs />
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-2">
@@ -124,7 +132,9 @@ export default function MenuClient({ weeks, months }: { weeks: MenuWeek[]; month
         <ScanLightbox scans={week?.sourceScan ? [week.sourceScan] : []} label="View the printed menu" />
       </section>
 
-      <TodayActivitiesSummary day={todayActivities} today={today} />
+      <aside className="pt-1 lg:sticky lg:top-24">
+        <HelpfulToday today={today} faqs={featuredFaqs} contacts={contacts} />
+      </aside>
     </div>
   );
 }

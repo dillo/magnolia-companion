@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { ActivityMonth, VisitDay, VisitDayType } from "@/lib/schema";
-import { findActivityDay, upcomingVisitDays } from "@/lib/lookup";
+import type { FeaturedFaq } from "@/lib/faqs";
+import type { Contact, VisitDay, VisitDayType } from "@/lib/schema";
+import { upcomingVisitDays } from "@/lib/lookup";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import TodayActivitiesSummary from "@/components/TodayActivitiesSummary";
+import HelpfulToday from "@/components/HelpfulToday";
 import { useToday } from "@/components/useToday";
 import { VisitDayCard } from "@/components/VisitDays";
 import EmptyState from "@/components/EmptyState";
@@ -16,11 +17,13 @@ const FILTERS: { key: VisitDayType | "all"; label: string }[] = [
 ];
 
 export default function VisitsClient({
-  months,
   visitDays,
+  featuredFaqs,
+  contacts,
 }: {
-  months: ActivityMonth[];
   visitDays: VisitDay[];
+  featuredFaqs: FeaturedFaq[];
+  contacts: Contact[];
 }) {
   const today = useToday();
   const [filter, setFilter] = useState<VisitDayType | "all">("all");
@@ -32,10 +35,8 @@ export default function VisitsClient({
 
   if (!today) return null;
 
-  const todayActivities = findActivityDay(months, today);
-
   return (
-    <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+    <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
       <section className="min-w-0">
         <Breadcrumbs />
         <div className="md:flex md:items-end md:justify-between md:gap-6">
@@ -61,7 +62,9 @@ export default function VisitsClient({
         {filtered.length === 0 && <EmptyState message="No upcoming holidays match this filter." />}
       </section>
 
-      <TodayActivitiesSummary day={todayActivities} today={today} />
+      <aside className="pt-1 lg:sticky lg:top-24">
+        <HelpfulToday today={today} faqs={featuredFaqs} contacts={contacts} />
+      </aside>
     </div>
   );
 }

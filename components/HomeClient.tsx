@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import type { ActivityMonth, MenuWeek, VisitDay } from "@/lib/schema";
+import type { FeaturedFaq } from "@/lib/faqs";
+import type { ActivityMonth, Contact, MenuWeek } from "@/lib/schema";
 import {
   addDaysISO, mondayOfISO,
   dayNameOfISO, monthDayOfISO, monthNameOfISO, monthOfISO, formatTime,
 } from "@/lib/dates";
-import { findActivityDay, findMenuDay, upcomingVisitDays } from "@/lib/lookup";
+import { findActivityDay, findMenuDay } from "@/lib/lookup";
 import Timeline from "@/components/Timeline";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
 import { useToday } from "@/components/useToday";
 import MealCards from "@/components/MealCards";
-import { VisitDaysSummary } from "@/components/VisitDays";
+import HelpfulToday from "@/components/HelpfulToday";
 import { greetingFor, heroStateFor, tomorrowPreview } from "@/lib/now";
 import { useNow } from "@/components/useNow";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
@@ -43,11 +44,13 @@ const MEAL_PICKS: { key: MealPick; label: string }[] = [
 export default function HomeClient({
   months,
   weeks,
-  visitDays,
+  featuredFaqs,
+  contacts,
 }: {
   months: ActivityMonth[];
   weeks: MenuWeek[];
-  visitDays: VisitDay[];
+  featuredFaqs: FeaturedFaq[];
+  contacts: Contact[];
 }) {
   const today = useToday();
   const now = useNow();
@@ -78,9 +81,6 @@ export default function HomeClient({
     (n, d) => n + (findActivityDay(months, d)?.events.filter((e) => !e.routine).length ?? 0),
     0,
   );
-
-  const showVisitSummary = activityPick !== "week";
-  const upcomingVisits = upcomingVisitDays(visitDays, today, 3);
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -151,13 +151,9 @@ export default function HomeClient({
         role="tabpanel"
         aria-labelledby="home-tab-activities"
         hidden={section !== "activities"}
-        className={`gap-8 pt-6 ${
-          section !== "activities"
-            ? "hidden"
-            : showVisitSummary
-              ? "grid lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start"
-              : "grid"
-        }`}
+        className={section === "activities"
+          ? "grid gap-8 pt-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start"
+          : "hidden"}
       >
         <section className="min-w-0 lg:max-w-xl">
           {activityPick === "week" ? (
@@ -209,14 +205,9 @@ export default function HomeClient({
           </Link>
         </section>
 
-        {showVisitSummary && (
-          <aside className="pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
-            <VisitDaysSummary
-              days={upcomingVisits}
-              className="border-t border-hairline pt-5 lg:border-t-0 lg:pt-0"
-            />
-          </aside>
-        )}
+        <aside className="pt-1 lg:sticky lg:top-24">
+          <HelpfulToday today={today} faqs={featuredFaqs} contacts={contacts} />
+        </aside>
       </div>
 
       <section
@@ -225,7 +216,7 @@ export default function HomeClient({
         aria-labelledby="home-tab-meals"
         hidden={section !== "meals"}
         className={section === "meals"
-          ? "grid gap-8 pt-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start"
+          ? "grid gap-8 pt-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start"
           : "hidden"}
       >
         <div className="min-w-0">
@@ -262,11 +253,8 @@ export default function HomeClient({
           </Link>
         </div>
 
-        <aside className="pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
-          <VisitDaysSummary
-            days={upcomingVisits}
-            className="border-t border-hairline pt-5 lg:border-t-0 lg:pt-0"
-          />
+        <aside className="pt-1 lg:sticky lg:top-24">
+          <HelpfulToday today={today} faqs={featuredFaqs} contacts={contacts} />
         </aside>
       </section>
     </div>

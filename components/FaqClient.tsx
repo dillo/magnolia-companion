@@ -2,13 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
-
-export type FaqItem = { question: string; answer: string };
-export type FaqSection = { title: string; items: FaqItem[] };
-
-function sectionId(title: string) {
-  return title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
+import { faqSectionId, type FaqSection } from "@/lib/faqs";
 
 export default function FaqClient({ sections }: { sections: FaqSection[] }) {
   const [query, setQuery] = useState("");
@@ -41,7 +35,7 @@ export default function FaqClient({ sections }: { sections: FaqSection[] }) {
   useEffect(() => {
     if (searching) return;
     const headings = sections
-      .map((section) => document.getElementById(sectionId(section.title)))
+      .map((section) => document.getElementById(faqSectionId(section.title)))
       .filter((el): el is HTMLElement => el !== null);
     const observer = new IntersectionObserver(
       (entries) => {
@@ -82,7 +76,7 @@ export default function FaqClient({ sections }: { sections: FaqSection[] }) {
       {!searching && (
         <nav aria-label="FAQ topics" className="mt-5 flex flex-wrap gap-2 lg:hidden">
           {sections.map((section) => {
-            const id = sectionId(section.title);
+            const id = faqSectionId(section.title);
             const active = activeId === id;
             return (
               <a key={id} href={`#${id}`}
@@ -101,7 +95,7 @@ export default function FaqClient({ sections }: { sections: FaqSection[] }) {
           <h2 className="font-display text-2xl font-semibold">Topics</h2>
           <nav aria-label="FAQ topics" className="mt-3 space-y-1">
             {sections.map((section) => {
-              const id = sectionId(section.title);
+              const id = faqSectionId(section.title);
               const count = searching ? countOf(section) : section.items.length;
               const active = !searching && activeId === id;
               const empty = searching && count === 0;
@@ -124,7 +118,7 @@ export default function FaqClient({ sections }: { sections: FaqSection[] }) {
 
         <div className="min-w-0 space-y-6">
           {visible.map((section) => (
-            <section key={section.title} id={sectionId(section.title)} className="scroll-mt-24">
+            <section key={section.title} id={faqSectionId(section.title)} className="scroll-mt-24">
               <div className="flex items-baseline justify-between gap-3">
                 <h2 className="font-display text-2xl font-semibold">{section.title}</h2>
                 <span className="text-[15px] text-moss">
