@@ -98,6 +98,9 @@ test("no hydration errors, including under reduced motion", async ({ page }) => 
 test("menu: day tabs swap the meal cards", async ({ page }) => {
   await pinClock(page);
   await page.goto("/menu");
+  for (const meal of ["Breakfast", "Lunch", "Dinner"]) {
+    await expect(page.getByRole("heading", { name: meal }).locator("svg")).toBeVisible();
+  }
   // Wednesday July 8 is selected by default (today).
   await expect(page.getByText("Roasted Turkey")).toBeVisible();
   await page.getByRole("tab", { name: "Monday, July 6, 2026" }).click();
@@ -135,11 +138,14 @@ test("faq: search filters questions live", async ({ page }) => {
   await expect(page.getByText(/answers? match/)).toBeVisible();
 });
 
-test("home: lunch shows serving-now badge during its window", async ({ page }) => {
+test("home: lunch card is highlighted during its serving window", async ({ page }) => {
   await page.clock.install({ time: new Date("2026-07-08T16:30:00Z") }); // 12:30 PM EDT
   await page.goto("/");
   await page.getByRole("tab", { name: "Meals" }).click();
-  await expect(page.getByText("Serving now")).toBeVisible();
+  const lunchCard = page.getByRole("region", { name: "Lunch, serving now" });
+  await expect(lunchCard).toHaveClass(/bg-copper\/10/);
+  await expect(lunchCard.getByText("11:30 AM – 1:00 PM")).toBeVisible();
+  await expect(page.getByText("Serving now")).toHaveCount(0);
   await page.getByRole("tab", { name: "Activities" }).click();
   await page.getByRole("button", { name: "Today", exact: true }).click();
   const hero = page.getByLabel("Right now");

@@ -15,10 +15,43 @@ export function mealHours({ start, end }: { start: string; end: string }): strin
   return `${formatTime(start)} – ${formatTime(end)}`;
 }
 
+function MealHeadingIcon({ meal }: { meal: MealInfo["key"] }) {
+  const iconClass = "h-5 w-5 shrink-0 -translate-y-[3px] text-copper";
+  const stroke = {
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.7,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+
+  if (meal === "breakfast") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 22" className={iconClass}>
+        <path d="M4 20h16M6.5 20a5.5 5.5 0 0 1 11 0M12 7v3M5.2 12.2l2.1 2.1M18.8 12.2l-2.1 2.1" {...stroke} />
+      </svg>
+    );
+  }
+
+  if (meal === "lunch") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 22" className={iconClass}>
+        <path d="M5 12h14c-.5 4.1-3.1 6.5-7 6.5S5.5 16.1 5 12ZM8 20h8M9 9c-1-1.2 1-2.1 0-3.3M13 9c-1-1.2 1-2.1 0-3.3" {...stroke} />
+      </svg>
+    );
+  }
+
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 22" className={iconClass}>
+      <path d="M4 20h16M6 17.5a6 6 0 0 1 12 0H6ZM12 11.5V9M10.5 9h3" {...stroke} />
+    </svg>
+  );
+}
+
 /**
  * One meal as a card — the shared surface used by the home sidebar and /menu.
  * `items` null renders the pending-menu skeleton; `now` non-null enables the
- * "Serving now" badge (pass it only when the card shows today's menu).
+ * serving-now highlight (pass it only when the card shows today's menu).
  */
 export function MealCard({
   meal,
@@ -29,17 +62,25 @@ export function MealCard({
   items: MealItem[] | null;
   now?: string | null;
 }) {
+  const isServing = servingNow(meal, now);
+
   return (
-    <section className="rounded-xl border border-hairline bg-card px-4 py-3 shadow-sm">
+    <section
+      aria-label={`${meal.label}${isServing ? ", serving now" : ""}`}
+      className={`rounded-xl border px-4 py-3 ${
+        isServing
+          ? "border-copper bg-copper/10 shadow-md ring-1 ring-copper/20"
+          : "border-hairline bg-card shadow-sm"
+      }`}
+    >
       <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-        <h3 className="text-[15px] font-bold uppercase tracking-wider text-ink">{meal.label}</h3>
-        {servingNow(meal, now) ? (
-          <span className="rounded-full bg-copper px-2.5 py-0.5 text-[13px] font-bold text-petal">
-            Serving now
-          </span>
-        ) : (
-          <span className="tabular-nums text-moss">{mealHours(meal)}</span>
-        )}
+        <h3 className="flex items-end gap-2 text-[15px] font-bold uppercase leading-5 tracking-wider text-ink">
+          {meal.label}
+          <MealHeadingIcon meal={meal.key} />
+        </h3>
+        <span className={`tabular-nums ${isServing ? "font-semibold text-copper" : "text-moss"}`}>
+          {mealHours(meal)}
+        </span>
       </div>
       {items === null ? (
         <ul className="space-y-1" aria-label="Menu pending">
