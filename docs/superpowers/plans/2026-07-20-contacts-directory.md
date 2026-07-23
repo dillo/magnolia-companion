@@ -39,13 +39,13 @@ import { contactsSchema } from "@/lib/schema";
 Add this import to the existing top-of-file import from `@/lib/schema` instead of a new line — change:
 
 ```ts
-import { activityMonthSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema } from "@/lib/schema";
+import { activityMonthSchema, holidaysSchema, menuWeekSchema, nearbyPlacesSchema } from "@/lib/schema";
 ```
 
 to:
 
 ```ts
-import { activityMonthSchema, contactsSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema } from "@/lib/schema";
+import { activityMonthSchema, contactsSchema, holidaysSchema, menuWeekSchema, nearbyPlacesSchema } from "@/lib/schema";
 ```
 
 Then append at the end of the file:
@@ -158,16 +158,16 @@ git commit -m "feat: add contact schema and empty contacts fixture"
 In `tests/lookup.test.ts`, change the import line:
 
 ```ts
-import { loadActivityMonths, loadMenuWeeks, loadVisitDays } from "@/lib/content";
+import { loadActivityMonths, loadHolidays, loadMenuWeeks } from "@/lib/content";
 ```
 
 to:
 
 ```ts
-import { loadActivityMonths, loadContacts, loadMenuWeeks, loadVisitDays } from "@/lib/content";
+import { loadActivityMonths, loadContacts, loadHolidays, loadMenuWeeks } from "@/lib/content";
 ```
 
-Then add, near the top-level `const visitDays = loadVisitDays();` line, a new constant:
+Then add, near the top-level `const holidays = loadHolidays();` line, a new constant:
 
 ```ts
 const contacts = loadContacts();
@@ -194,8 +194,8 @@ Change:
 
 ```ts
 import {
-  activityMonthSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema,
-  type ActivityMonth, type MenuWeek, type NearbyPlacesDirectory, type VisitDay,
+  activityMonthSchema, holidaysSchema, menuWeekSchema, nearbyPlacesSchema,
+  type ActivityMonth, type Holiday, type MenuWeek, type NearbyPlacesDirectory,
 } from "./schema";
 ```
 
@@ -203,8 +203,8 @@ to:
 
 ```ts
 import {
-  activityMonthSchema, contactsSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema,
-  type ActivityMonth, type ContactsDirectory, type MenuWeek, type NearbyPlacesDirectory, type VisitDay,
+  activityMonthSchema, contactsSchema, holidaysSchema, menuWeekSchema, nearbyPlacesSchema,
+  type ActivityMonth, type ContactsDirectory, type Holiday, type MenuWeek, type NearbyPlacesDirectory,
 } from "./schema";
 ```
 
@@ -306,7 +306,7 @@ const NAV = [
   { href: "/menu", label: "Meals" },
   { href: "/calendar", label: "Calendar" },
   { href: "/explore", label: "Explore" },
-  { href: "/visits", label: "Holidays" },
+  { href: "/holidays", label: "Holidays" },
   { href: "/faq", label: "FAQ" },
 ];
 ```
@@ -319,7 +319,7 @@ const NAV = [
   { href: "/menu", label: "Meals" },
   { href: "/calendar", label: "Calendar" },
   { href: "/explore", label: "Explore" },
-  { href: "/visits", label: "Holidays" },
+  { href: "/holidays", label: "Holidays" },
   { href: "/faq", label: "FAQ" },
   { href: "/contacts", label: "Directory" },
 ];
@@ -333,7 +333,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "/menu": "Meals",
   "/calendar": "Calendar",
   "/explore": "Explore",
-  "/visits": "Holidays",
+  "/holidays": "Holidays",
   "/faq": "FAQ",
   "/disclaimer": "Disclaimer",
 };
@@ -347,7 +347,7 @@ const ROUTE_LABELS: Record<string, string> = {
   "/menu": "Meals",
   "/calendar": "Calendar",
   "/explore": "Explore",
-  "/visits": "Holidays",
+  "/holidays": "Holidays",
   "/faq": "FAQ",
   "/contacts": "Directory",
   "/disclaimer": "Disclaimer",
@@ -362,7 +362,7 @@ const ROUTE_WIDTHS: Record<string, string> = {
   "/menu": "max-w-5xl",
   "/calendar": "max-w-6xl",
   "/explore": "max-w-6xl",
-  "/visits": "max-w-4xl",
+  "/holidays": "max-w-4xl",
   "/faq": "max-w-5xl",
   "/disclaimer": "max-w-3xl",
 };
@@ -376,7 +376,7 @@ const ROUTE_WIDTHS: Record<string, string> = {
   "/menu": "max-w-5xl",
   "/calendar": "max-w-6xl",
   "/explore": "max-w-6xl",
-  "/visits": "max-w-4xl",
+  "/holidays": "max-w-4xl",
   "/faq": "max-w-5xl",
   "/contacts": "max-w-3xl",
   "/disclaimer": "max-w-3xl",

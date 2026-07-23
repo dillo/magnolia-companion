@@ -6,7 +6,7 @@ import BottomNav from "@/components/BottomNav";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import { HomeNavigationProvider } from "@/components/HomeNavigationContext";
-import { loadVisitDays } from "@/lib/content";
+import { loadHolidays } from "@/lib/content";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const visitDays = loadVisitDays();
+  const holidays = loadHolidays();
 
   return (
     <html lang="en" suppressHydrationWarning className={fraunces.variable}>
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <HomeNavigationProvider>
-          <SiteHeader visitDays={visitDays} />
+          <SiteHeader holidays={holidays} />
           <main className="mx-auto max-w-6xl px-4 py-6 pb-12 lg:pb-16">
             {children}
           </main>

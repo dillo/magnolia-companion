@@ -2,36 +2,36 @@
 
 import { useMemo, useState } from "react";
 import type { FeaturedFaq } from "@/lib/faqs";
-import type { Contact, VisitDay, VisitDayType } from "@/lib/schema";
-import { upcomingVisitDays } from "@/lib/lookup";
+import type { Contact, Holiday, HolidayType } from "@/lib/schema";
+import { upcomingHolidays } from "@/lib/lookup";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import HelpfulToday from "@/components/HelpfulToday";
 import { useToday } from "@/components/useToday";
-import { VisitDayCard } from "@/components/VisitDays";
+import { HolidayCard } from "@/components/Holidays";
 import EmptyState from "@/components/EmptyState";
 
-const FILTERS: { key: VisitDayType | "all"; label: string }[] = [
+const FILTERS: { key: HolidayType | "all"; label: string }[] = [
   { key: "all", label: "All" },
   { key: "family", label: "Family" },
   { key: "federal", label: "Federal" },
 ];
 
-export default function VisitsClient({
-  visitDays,
+export default function HolidaysClient({
+  holidays,
   featuredFaqs,
   contacts,
 }: {
-  visitDays: VisitDay[];
+  holidays: Holiday[];
   featuredFaqs: FeaturedFaq[];
   contacts: Contact[];
 }) {
   const today = useToday();
-  const [filter, setFilter] = useState<VisitDayType | "all">("all");
+  const [filter, setFilter] = useState<HolidayType | "all">("all");
 
   const filtered = useMemo(() => {
-    const days = today ? upcomingVisitDays(visitDays, today) : visitDays;
-    return filter === "all" ? days : days.filter((day) => day.type === filter);
-  }, [filter, today, visitDays]);
+    const upcoming = today ? upcomingHolidays(holidays, today) : holidays;
+    return filter === "all" ? upcoming : upcoming.filter((holiday) => holiday.type === filter);
+  }, [filter, holidays, today]);
 
   if (!today) return null;
 
@@ -56,7 +56,13 @@ export default function VisitsClient({
         </div>
 
         <div className="mt-6 space-y-3">
-          {filtered.map((day) => <VisitDayCard key={`${day.startDate}-${day.title}`} day={day} today={today} />)}
+          {filtered.map((holiday) => (
+            <HolidayCard
+              key={`${holiday.startDate}-${holiday.title}`}
+              holiday={holiday}
+              today={today}
+            />
+          ))}
         </div>
 
         {filtered.length === 0 && <EmptyState message="No upcoming holidays match this filter." />}

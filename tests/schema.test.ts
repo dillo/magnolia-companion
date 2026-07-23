@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { activityMonthSchema, contactsSchema, menuWeekSchema, nearbyPlacesSchema, visitDaysSchema } from "@/lib/schema";
+import { activityMonthSchema, contactsSchema, holidaysSchema, menuWeekSchema, nearbyPlacesSchema } from "@/lib/schema";
 
 function readJSON(rel: string) {
   return JSON.parse(fs.readFileSync(path.join(process.cwd(), rel), "utf8"));
@@ -75,13 +75,13 @@ describe("menuWeekSchema", () => {
   });
 });
 
-describe("visitDaysSchema", () => {
-  test("accepts the committed visit day fixture", () => {
-    const parsed = visitDaysSchema.parse(readJSON("content/visit-days.json"));
+describe("holidaysSchema", () => {
+  test("accepts the committed holiday fixture", () => {
+    const parsed = holidaysSchema.parse(readJSON("content/holidays.json"));
     expect(parsed.some((day) => day.title === "Hanukkah" && day.type === "jewish")).toBe(true);
     expect(parsed.some((day) => day.title === "Mother's Day" && day.type === "family")).toBe(true);
   });
-  test("rejects a visit day that ends before it starts", () => {
+  test("rejects a holiday that ends before it starts", () => {
     const bad = [{
       startDate: "2026-12-25",
       endDate: "2026-12-24",
@@ -90,7 +90,7 @@ describe("visitDaysSchema", () => {
       timing: null,
       note: "Family visit day.",
     }];
-    expect(() => visitDaysSchema.parse(bad)).toThrow(/ends before it starts/);
+    expect(() => holidaysSchema.parse(bad)).toThrow(/ends before it starts/);
   });
 });
 

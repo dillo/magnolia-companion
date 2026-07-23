@@ -87,31 +87,31 @@ export const menuWeekSchema = z
   });
 export type MenuWeek = z.infer<typeof menuWeekSchema>;
 
-export const VISIT_DAY_TYPES = ["federal", "family", "jewish", "christian"] as const;
-export type VisitDayType = (typeof VISIT_DAY_TYPES)[number];
+export const HOLIDAY_TYPES = ["federal", "family", "jewish", "christian"] as const;
+export type HolidayType = (typeof HOLIDAY_TYPES)[number];
 
-export const visitDaySchema = z
+export const holidaySchema = z
   .object({
     startDate: isoDate,
     endDate: isoDate,
     title: z.string().min(1),
-    type: z.enum(VISIT_DAY_TYPES),
+    type: z.enum(HOLIDAY_TYPES),
     timing: z.string().min(1).nullable(),
     note: z.string().min(1),
   })
-  .superRefine((v, ctx) => {
-    if (v.endDate < v.startDate) {
-      ctx.addIssue({ code: "custom", message: `${v.title} ends before it starts` });
+  .superRefine((holiday, ctx) => {
+    if (holiday.endDate < holiday.startDate) {
+      ctx.addIssue({ code: "custom", message: `${holiday.title} ends before it starts` });
     }
   });
-export type VisitDay = z.infer<typeof visitDaySchema>;
+export type Holiday = z.infer<typeof holidaySchema>;
 
-export const visitDaysSchema = z.array(visitDaySchema).superRefine((days, ctx) => {
+export const holidaysSchema = z.array(holidaySchema).superRefine((holidays, ctx) => {
   const seen = new Set<string>();
-  for (const day of days) {
-    const key = `${day.startDate}:${day.title}`;
+  for (const holiday of holidays) {
+    const key = `${holiday.startDate}:${holiday.title}`;
     if (seen.has(key)) {
-      ctx.addIssue({ code: "custom", message: `duplicate visit day ${key}` });
+      ctx.addIssue({ code: "custom", message: `duplicate holiday ${key}` });
     }
     seen.add(key);
   }

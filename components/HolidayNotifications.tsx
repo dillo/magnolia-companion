@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { VisitDay } from "@/lib/schema";
+import type { Holiday } from "@/lib/schema";
 import { daysUntil, relativeDayLabel, shortMonthOfISO } from "@/lib/dates";
-import { upcomingVisitDays } from "@/lib/lookup";
+import { upcomingHolidays } from "@/lib/lookup";
 import { useToday } from "@/components/useToday";
 
 function startDateLabel(iso: string): string {
@@ -14,7 +14,7 @@ function startDateLabel(iso: string): string {
   }).format(new Date(`${iso}T12:00:00Z`));
 }
 
-export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[] }) {
+export default function HolidayNotifications({ holidays }: { holidays: Holiday[] }) {
   const today = useToday();
   const [open, setOpen] = useState(false);
   const [anchor, setAnchor] = useState<{ top: number; right: number } | null>(null);
@@ -22,7 +22,7 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const upcoming = today ? upcomingVisitDays(visitDays, today, 4) : [];
+  const upcoming = today ? upcomingHolidays(holidays, today, 4) : [];
   const next = upcoming[0] ?? null;
   const nextInDays = today && next ? daysUntil(today, next.startDate) : null;
   const prominent = nextInDays !== null && nextInDays <= 30;
@@ -128,7 +128,7 @@ export default function VisitNotifications({ visitDays }: { visitDays: VisitDay[
                   })}
                 </div>
                 <div className="border-t border-hairline px-4 py-3">
-                  <Link href="/visits" onClick={() => setOpen(false)}
+                  <Link href="/holidays" onClick={() => setOpen(false)}
                     className="flex items-center justify-between font-semibold text-copper hover:text-ink">
                     <span>All holidays</span>
                     <span aria-hidden="true" className="text-xl leading-none">›</span>

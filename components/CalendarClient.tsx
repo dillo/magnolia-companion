@@ -1,18 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ActivityMonth, VisitDay } from "@/lib/schema";
+import type { ActivityMonth, Holiday } from "@/lib/schema";
 import { DIMENSIONS, type Dimension } from "@/lib/schema";
 import { DIMENSION_META } from "@/lib/dimensions";
 import { formatTime, dayNameOfISO, longDateOfISO } from "@/lib/dates";
-import { visitDaysInRange } from "@/lib/lookup";
+import { holidaysInRange } from "@/lib/lookup";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import DimensionChip from "@/components/DimensionChip";
 import Timeline from "@/components/Timeline";
 import EmptyState from "@/components/EmptyState";
 import ScanLightbox from "@/components/ScanLightbox";
 import { useToday } from "@/components/useToday";
-import { VisitDayCard } from "@/components/VisitDays";
+import { HolidayCard } from "@/components/Holidays";
 
 const DOWS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -49,7 +49,7 @@ function ActivityFilterSelect({
   );
 }
 
-export default function CalendarClient({ months, visitDays }: { months: ActivityMonth[]; visitDays: VisitDay[] }) {
+export default function CalendarClient({ months, holidays }: { months: ActivityMonth[]; holidays: Holiday[] }) {
   const today = useToday();
   const [idx, setIdx] = useState(0);
   const [filter, setFilter] = useState<Dimension | "all">("all");
@@ -93,13 +93,13 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
   const dateOf = (n: number) => `${month.month}-${String(n).padStart(2, "0")}`;
   const monthStart = dateOf(1);
   const monthEnd = dateOf(daysInMonth);
-  const monthVisitDays = visitDaysInRange(visitDays, monthStart, monthEnd);
+  const monthHolidays = holidaysInRange(holidays, monthStart, monthEnd);
   const monthTitle = new Intl.DateTimeFormat("en-US", {
     timeZone: "UTC", month: "long", year: "numeric",
   }).format(new Date(Date.UTC(y, mo - 1, 1)));
   const selDay = selected ? byDate.get(selected) ?? null : null;
-  const selectedVisitDays = selected
-    ? visitDaysInRange(visitDays, selected, selected)
+  const selectedHolidays = selected
+    ? holidaysInRange(holidays, selected, selected)
     : [];
 
   function moveMonth(delta: number) {
@@ -139,7 +139,9 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
           const date = dateOf(i + 1);
           const day = byDate.get(date);
           const specials = day?.events.filter((e) => !e.routine) ?? [];
-          const visits = monthVisitDays.filter((visit) => visit.startDate <= date && visit.endDate >= date);
+          const dateHolidays = monthHolidays.filter(
+            (holiday) => holiday.startDate <= date && holiday.endDate >= date,
+          );
           const isToday = date === today;
           return (
             <button key={date} onClick={() => setSelected(date)}
@@ -152,9 +154,9 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
               {day?.theme && (
                 <div className="truncate font-display italic text-copper">{day.theme}</div>
               )}
-              {visits.slice(0, 2).map((visit) => (
-                <div key={visit.title} className="mb-1 truncate rounded-full border border-copper/30 bg-copper/10 px-2 py-0.5 font-semibold text-copper">
-                  {visit.title}
+              {dateHolidays.slice(0, 2).map((holiday) => (
+                <div key={holiday.title} className="mb-1 truncate rounded-full border border-copper/30 bg-copper/10 px-2 py-0.5 font-semibold text-copper">
+                  {holiday.title}
                 </div>
               ))}
               {specials.slice(0, 3).map((e, j) => {
@@ -196,8 +198,10 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
           const specials = day.events.filter(
             (e) => !e.routine && (filter === "all" || e.dimension === filter),
           );
-          const visits = monthVisitDays.filter((visit) => visit.startDate <= day.date && visit.endDate >= day.date);
-          if (specials.length === 0 && visits.length === 0) return null;
+          const dateHolidays = monthHolidays.filter(
+            (holiday) => holiday.startDate <= day.date && holiday.endDate >= day.date,
+          );
+          if (specials.length === 0 && dateHolidays.length === 0) return null;
           const isToday = day.date === today;
           return (
             <section
@@ -222,11 +226,11 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
                   <span>Details</span>
                 </button>
               </div>
-              {visits.length > 0 && (
+              {dateHolidays.length > 0 && (
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
-                  {visits.map((visit) => (
-                    <span key={visit.title} className="rounded-full border border-copper/30 bg-copper/10 px-2.5 py-0.5 text-[13px] font-semibold text-copper">
-                      {visit.title}
+                  {dateHolidays.map((holiday) => (
+                    <span key={holiday.title} className="rounded-full border border-copper/30 bg-copper/10 px-2.5 py-0.5 text-[13px] font-semibold text-copper">
+                      {holiday.title}
                     </span>
                   ))}
                 </div>
@@ -248,21 +252,21 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
         })}
       </div>
 
-      {monthVisitDays.length > 0 && (
+      {monthHolidays.length > 0 && (
         <section className="mt-4 border-y border-hairline py-3">
           <h2 className="mb-2 font-semibold">Holidays this month</h2>
           <div className="flex flex-wrap gap-2 text-[15px]">
-            {monthVisitDays.map((day) => (
-              <button key={`${day.startDate}-${day.title}`} type="button" onClick={() => setSelected(day.startDate)}
+            {monthHolidays.map((holiday) => (
+              <button key={`${holiday.startDate}-${holiday.title}`} type="button" onClick={() => setSelected(holiday.startDate)}
                 className="rounded-full border border-hairline bg-card px-3 py-1 text-left font-semibold text-copper">
-                {day.title}
+                {holiday.title}
               </button>
             ))}
           </div>
         </section>
       )}
 
-      {(selDay || selectedVisitDays.length > 0) && selected && (
+      {(selDay || selectedHolidays.length > 0) && selected && (
         <div role="dialog" aria-modal="true" aria-labelledby="calendar-day-title"
           className="fixed inset-0 z-50 flex items-center justify-center bg-ink/55 p-4 md:p-6"
           onClick={closeDayDetails}>
@@ -282,10 +286,14 @@ export default function CalendarClient({ months, visitDays }: { months: Activity
                 </svg>
               </button>
             </div>
-            {selectedVisitDays.length > 0 && (
+            {selectedHolidays.length > 0 && (
               <div className="mb-5 space-y-3">
-                {selectedVisitDays.map((day) => (
-                  <VisitDayCard key={`${day.startDate}-${day.title}`} day={day} compact />
+                {selectedHolidays.map((holiday) => (
+                  <HolidayCard
+                    key={`${holiday.startDate}-${holiday.title}`}
+                    holiday={holiday}
+                    compact
+                  />
                 ))}
               </div>
             )}

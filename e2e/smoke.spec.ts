@@ -18,7 +18,7 @@ test("home: activities and meals use their navigation defaults", async ({ page, 
   await expect(page.getByText("Today’s meals")).toBeVisible();
   await expect(page.getByText("Roasted Turkey")).toBeVisible();
   await expect(
-    page.getByRole("tabpanel", { name: "Meals" }).getByRole("heading", { name: "Upcoming Holidays" }),
+    page.getByRole("tabpanel", { name: "Meals" }).getByRole("heading", { name: "Helpful today" }),
   ).toBeVisible();
 
   await page.getByRole("button", { name: "Tomorrow", exact: true }).click();
@@ -76,6 +76,11 @@ test("nav: current page is marked active", async ({ page }) => {
   await nav.getByRole("link", { name: "Calendar" }).click();
   await expect(nav.getByRole("link", { name: "Calendar" })).toHaveAttribute("aria-current", "page");
   await expect(nav.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current", "page");
+
+  await nav.getByRole("link", { name: "Holidays" }).click();
+  await expect(page).toHaveURL(/\/holidays$/);
+  await expect(page.getByRole("heading", { name: "Holidays" })).toBeVisible();
+  await expect(nav.getByRole("link", { name: "Holidays" })).toHaveAttribute("aria-current", "page");
 });
 
 test("no hydration errors, including under reduced motion", async ({ page }) => {

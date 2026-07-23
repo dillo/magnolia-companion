@@ -1,13 +1,13 @@
 import { describe, expect, test } from "vitest";
-import { loadActivityMonths, loadContacts, loadMenuWeeks, loadVisitDays } from "@/lib/content";
+import { loadActivityMonths, loadContacts, loadHolidays, loadMenuWeeks } from "@/lib/content";
 import {
   findActivityDay, findMenuDay, menuWeekFor, publishedMenuWeeks, scansForDate,
-  upcomingVisitDays, visitDaysInRange,
+  holidaysInRange, upcomingHolidays,
 } from "@/lib/lookup";
 
 const months = loadActivityMonths();
 const weeks = loadMenuWeeks();
-const visitDays = loadVisitDays();
+const holidays = loadHolidays();
 const contacts = loadContacts();
 
 describe("loaders", () => {
@@ -45,8 +45,8 @@ describe("lookup", () => {
     expect(scansForDate(months, "2026-07-08")).toEqual([]);
     expect(scansForDate(months, "2026-09-01")).toEqual([]);
   });
-  test("visit day lookups find upcoming and ranged holidays", () => {
-    expect(upcomingVisitDays(visitDays, "2026-07-17", 1)[0].title).toBe("Labor Day");
-    expect(visitDaysInRange(visitDays, "2026-12-05", "2026-12-05").map((day) => day.title)).toContain("Hanukkah");
+  test("holiday lookups find upcoming and ranged holidays", () => {
+    expect(upcomingHolidays(holidays, "2026-07-17", 1)[0].title).toBe("Labor Day");
+    expect(holidaysInRange(holidays, "2026-12-05", "2026-12-05").map((day) => day.title)).toContain("Hanukkah");
   });
 });

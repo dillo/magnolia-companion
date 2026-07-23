@@ -3,22 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { VisitDay } from "@/lib/schema";
+import type { Holiday } from "@/lib/schema";
 import MagnoliaLogo from "@/components/MagnoliaLogo";
-import VisitNotifications from "@/components/VisitNotifications";
+import HolidayNotifications from "@/components/HolidayNotifications";
 
 const NAV = [
   { href: "/", label: "Home" },
   { href: "/menu", label: "Full menu" },
   { href: "/calendar", label: "Calendar" },
   { href: "/explore", label: "Explore" },
-  { href: "/visits", label: "Holidays" },
+  { href: "/holidays", label: "Holidays" },
   { href: "/faq", label: "FAQ" },
   { href: "/contacts", label: "Directory" },
 ];
 
 /** Sticky site header: wordmark + desktop nav + holiday bell. Mobile navigation lives in BottomNav. */
-export default function SiteHeader({ visitDays }: { visitDays: VisitDay[] }) {
+export default function SiteHeader({ holidays }: { holidays: Holiday[] }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
@@ -58,11 +58,11 @@ export default function SiteHeader({ visitDays }: { visitDays: VisitDay[] }) {
                 </Link>
               ))}
             </nav>
-            <VisitNotifications visitDays={visitDays} />
+            <HolidayNotifications holidays={holidays} />
           </div>
 
           <div className="lg:hidden">
-            <VisitNotifications visitDays={visitDays} />
+            <HolidayNotifications holidays={holidays} />
           </div>
         </div>
       </div>

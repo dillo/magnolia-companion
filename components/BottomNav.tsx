@@ -8,7 +8,7 @@ const TABS = [
   { href: "/", label: "Home", icon: SunIcon },
   { href: "/menu", label: "Full menu", icon: MealIcon },
   { href: "/calendar", label: "Calendar", icon: CalendarIcon },
-  { href: "/visits", label: "Holidays", icon: FlagIcon },
+  { href: "/holidays", label: "Holidays", icon: FlagIcon },
 ];
 
 const MORE = [
