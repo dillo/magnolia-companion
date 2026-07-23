@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useSyncExternalStore } from "react";
 import type { ActivityMonth, MenuWeek, VisitDay } from "@/lib/schema";
 import {
   addDaysISO, mondayOfISO,
@@ -18,10 +17,12 @@ import { greetingFor, heroStateFor, tomorrowPreview } from "@/lib/now";
 import { useNow } from "@/components/useNow";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
 import HeroCard from "@/components/HeroCard";
-
-type HomeSection = "activities" | "meals";
-type ActivityPick = "today" | "tomorrow" | "week";
-type MealPick = "today" | "tomorrow";
+import {
+  useHomeNavigation,
+  type ActivityPick,
+  type HomeSection,
+  type MealPick,
+} from "@/components/HomeNavigationContext";
 
 const HOME_SECTIONS: { key: HomeSection; label: string; description: string }[] = [
   { key: "activities", label: "Activities", description: "What’s happening" },
@@ -39,27 +40,6 @@ const MEAL_PICKS: { key: MealPick; label: string }[] = [
   { key: "tomorrow", label: "Tomorrow" },
 ];
 
-const HOME_SECTION_STORAGE_KEY = "magnolia-home-section";
-const HOME_SECTION_EVENT = "magnolia-home-section-change";
-
-function readStoredSection(): HomeSection {
-  try {
-    const saved = window.localStorage.getItem(HOME_SECTION_STORAGE_KEY);
-    return saved === "meals" ? "meals" : "activities";
-  } catch {
-    return "activities";
-  }
-}
-
-function subscribeToStoredSection(onChange: () => void) {
-  window.addEventListener("storage", onChange);
-  window.addEventListener(HOME_SECTION_EVENT, onChange);
-  return () => {
-    window.removeEventListener("storage", onChange);
-    window.removeEventListener(HOME_SECTION_EVENT, onChange);
-  };
-}
-
 export default function HomeClient({
   months,
   weeks,
@@ -71,22 +51,14 @@ export default function HomeClient({
 }) {
   const today = useToday();
   const now = useNow();
-  const storedSection = useSyncExternalStore(subscribeToStoredSection, readStoredSection, () => "activities");
-  const [volatileSection, setVolatileSection] = useState<HomeSection | null>(null);
-  const section = volatileSection ?? storedSection;
-  const [activityPick, setActivityPick] = useState<ActivityPick>("today");
-  const [mealPick, setMealPick] = useState<MealPick>("today");
-
-  function selectSection(next: HomeSection) {
-    try {
-      window.localStorage.setItem(HOME_SECTION_STORAGE_KEY, next);
-      setVolatileSection(null);
-      window.dispatchEvent(new Event(HOME_SECTION_EVENT));
-    } catch {
-      // Storage can be unavailable in privacy-focused browsing modes.
-      setVolatileSection(next);
-    }
-  }
+  const {
+    section,
+    activityPick,
+    mealPick,
+    selectSection,
+    selectActivityPick,
+    selectMealPick,
+  } = useHomeNavigation();
 
   if (!today) return null; // date is client-side by design; render after mount
 
@@ -210,7 +182,7 @@ export default function HomeClient({
             label="Activity dates"
             picks={ACTIVITY_PICKS}
             selected={activityPick}
-            onSelect={setActivityPick}
+            onSelect={selectActivityPick}
           />
 
           {activityPick === "today" && now && day && (
@@ -252,39 +224,50 @@ export default function HomeClient({
         role="tabpanel"
         aria-labelledby="home-tab-meals"
         hidden={section !== "meals"}
-        className={section === "meals" ? "pt-6" : "hidden"}
+        className={section === "meals"
+          ? "grid gap-8 pt-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start"
+          : "hidden"}
       >
-        <div className="max-w-xl">
-          <Masthead
-            eyebrow={mealPick === "tomorrow" ? "Tomorrow’s meals" : "Today’s meals"}
-            main={`${dayNameOfISO(mealDate)}, ${monthDayOfISO(mealDate)}`}
-            year={mealDate.slice(0, 4)}
-            accent="Breakfast, lunch & dinner"
-            flourish={false}
+        <div className="min-w-0">
+          <div className="max-w-xl">
+            <Masthead
+              eyebrow={mealPick === "tomorrow" ? "Tomorrow’s meals" : "Today’s meals"}
+              main={`${dayNameOfISO(mealDate)}, ${monthDayOfISO(mealDate)}`}
+              year={mealDate.slice(0, 4)}
+              accent="Breakfast, lunch & dinner"
+              flourish={false}
+            />
+
+            <DateTabs
+              label="Meal dates"
+              picks={MEAL_PICKS}
+              selected={mealPick}
+              onSelect={selectMealPick}
+            />
+
+            {!menuDay && (
+              <p className="mb-3 text-moss">The menu for this date hasn&apos;t been added yet.</p>
+            )}
+          </div>
+
+          <MealCards
+            day={menuDay}
+            now={mealPick === "today" ? now : null}
+            className="grid gap-3 md:grid-cols-3"
           />
 
-          <DateTabs
-            label="Meal dates"
-            picks={MEAL_PICKS}
-            selected={mealPick}
-            onSelect={setMealPick}
-          />
-
-          {!menuDay && (
-            <p className="mb-3 text-moss">The menu for this date hasn&apos;t been added yet.</p>
-          )}
+          <Link href="/menu"
+            className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
+            View the full menu
+          </Link>
         </div>
 
-        <MealCards
-          day={menuDay}
-          now={mealPick === "today" ? now : null}
-          className="grid gap-3 md:grid-cols-3"
-        />
-
-        <Link href="/menu"
-          className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
-          View the full menu
-        </Link>
+        <aside className="pt-1 text-moss lg:sticky lg:top-6 lg:border-l lg:border-hairline lg:pl-6 lg:pt-0">
+          <VisitDaysSummary
+            days={upcomingVisits}
+            className="border-t border-hairline pt-5 lg:border-t-0 lg:pt-0"
+          />
+        </aside>
       </section>
     </div>
   );

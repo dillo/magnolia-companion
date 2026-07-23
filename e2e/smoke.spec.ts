@@ -5,9 +5,11 @@ async function pinClock(page: Page) {
   await page.clock.install({ time: new Date("2026-07-08T19:00:00Z") });
 }
 
-test("home: activities and meals are first-class views", async ({ page }) => {
+test("home: activities and meals use their navigation defaults", async ({ page, context }) => {
   await pinClock(page);
   await page.goto("/");
+  await expect(page.getByRole("tab", { name: "Activities" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("button", { name: "Today", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("heading", { name: "Wednesday, July 8, 2026" })).toBeVisible();
   await expect(page.getByText("Nat'l Raspberry Day").first()).toBeVisible();
   await expect(page.getByText("Roasted Turkey")).not.toBeVisible();
@@ -15,19 +17,37 @@ test("home: activities and meals are first-class views", async ({ page }) => {
   await page.getByRole("tab", { name: "Meals" }).click();
   await expect(page.getByText("Today’s meals")).toBeVisible();
   await expect(page.getByText("Roasted Turkey")).toBeVisible();
-
-  await page.reload();
-  await expect(page.getByRole("tab", { name: "Meals" })).toHaveAttribute("aria-selected", "true");
-  await expect(page.getByText("Roasted Turkey")).toBeVisible();
+  await expect(
+    page.getByRole("tabpanel", { name: "Meals" }).getByRole("heading", { name: "Upcoming Holidays" }),
+  ).toBeVisible();
 
   await page.getByRole("button", { name: "Tomorrow", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Thursday, July 9, 2026" })).toBeVisible();
-  await expect(page.getByText("BBQ Pork Ribs")).toBeVisible();
+  await expect(page.getByText("Tomorrow’s meals")).toBeVisible();
+  await page.getByRole("link", { name: "Calendar" }).click();
+  await expect(page.getByRole("heading", { name: "July 2026" })).toBeVisible();
+  await page.getByRole("banner").getByRole("link", { name: "Home", exact: true }).click();
+  await expect(page.getByRole("tab", { name: "Meals" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("button", { name: "Today", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByText("Roasted Turkey")).toBeVisible();
 
   await page.getByRole("tab", { name: "Activities" }).click();
+  await expect(page.getByRole("button", { name: "Today", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("heading", { name: "Wednesday, July 8, 2026" })).toBeVisible();
   await page.getByRole("button", { name: "This Week", exact: true }).click();
   await expect(page.getByText("daily routine items").first()).toBeVisible();
   await expect(page.getByText("Therapy Dog Visit with Canine Assistants")).toBeVisible();
+
+  await page.getByRole("link", { name: "Calendar" }).click();
+  await expect(page.getByRole("heading", { name: "July 2026" })).toBeVisible();
+  await page.getByRole("banner").getByRole("link", { name: "Home", exact: true }).click();
+  await expect(page.getByRole("tab", { name: "Activities" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("button", { name: "Today", exact: true })).toHaveAttribute("aria-pressed", "true");
+
+  const newTab = await context.newPage();
+  await pinClock(newTab);
+  await newTab.goto("/");
+  await expect(newTab.getByRole("tab", { name: "Activities" })).toHaveAttribute("aria-selected", "true");
+  await expect(newTab.getByRole("button", { name: "Today", exact: true })).toHaveAttribute("aria-pressed", "true");
 });
 
 test("calendar: grid, filter, day detail", async ({ page }) => {
@@ -116,6 +136,7 @@ test("home: lunch shows serving-now badge during its window", async ({ page }) =
   await page.getByRole("tab", { name: "Meals" }).click();
   await expect(page.getByText("Serving now")).toBeVisible();
   await page.getByRole("tab", { name: "Activities" }).click();
+  await page.getByRole("button", { name: "Today", exact: true }).click();
   const hero = page.getByLabel("Right now");
   await expect(hero.getByText("Up next")).toBeVisible();
   await expect(hero.getByText("Starts in 30 minutes")).toBeVisible();
