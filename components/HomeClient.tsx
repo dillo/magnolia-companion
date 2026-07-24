@@ -378,8 +378,8 @@ function WeekActivities({ months, dates, today }: { months: ActivityMonth[]; dat
         return (
           <section
             key={date}
-            className={`rounded-xl border bg-card px-4 py-3 shadow-sm ${
-              isToday ? "border-copper ring-1 ring-copper" : "border-hairline"
+            className={`rounded-xl border border-hairline px-4 py-3 shadow-sm ${
+              isToday ? "bg-copper/10" : "bg-card"
             }`}
           >
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
