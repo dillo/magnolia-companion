@@ -114,10 +114,28 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
         <div className="flex items-center justify-between">
           <h1 className="font-display text-title font-semibold">{monthTitle}</h1>
           <div className="flex gap-2 md:ml-4">
-            <button aria-label="Previous month" disabled={idx === 0} onClick={() => moveMonth(-1)}
-              className="rounded-full border border-hairline px-4 py-1.5 font-bold text-copper disabled:opacity-30">‹</button>
-            <button aria-label="Next month" disabled={idx === months.length - 1} onClick={() => moveMonth(1)}
-              className="rounded-full border border-hairline px-4 py-1.5 font-bold text-copper disabled:opacity-30">›</button>
+            <button
+              type="button"
+              aria-label="Previous month"
+              disabled={idx === 0}
+              onClick={() => moveMonth(-1)}
+              className="grid h-11 w-11 place-items-center rounded-full border border-hairline bg-card/40 text-copper shadow-sm transition-colors hover:border-copper/40 hover:bg-card disabled:cursor-not-allowed disabled:bg-sand/30 disabled:text-moss/55 disabled:opacity-100"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+                <path d="m14.5 6.5-5.5 5.5 5.5 5.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.75" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              aria-label="Next month"
+              disabled={idx === months.length - 1}
+              onClick={() => moveMonth(1)}
+              className="grid h-11 w-11 place-items-center rounded-full border border-hairline bg-card/40 text-copper shadow-sm transition-colors hover:border-copper/40 hover:bg-card disabled:cursor-not-allowed disabled:bg-sand/30 disabled:text-moss/55 disabled:opacity-100"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+                <path d="m9.5 6.5 5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.75" />
+              </svg>
+            </button>
           </div>
         </div>
         <div className="my-4 md:my-0 md:w-[22rem]">
@@ -206,8 +224,10 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
           return (
             <section
               key={day.date}
-              className={`rounded-xl border bg-card px-4 py-3 shadow-sm ${
-                isToday ? "border-copper ring-1 ring-copper" : "border-hairline"
+              className={`relative rounded-xl border px-4 py-3 shadow-sm ${
+                isToday
+                  ? "border-copper bg-copper/10 ring-1 ring-copper"
+                  : "border-hairline bg-card"
               }`}
             >
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
@@ -220,11 +240,6 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
                   </span>
                 )}
                 {day.theme && <span className="font-display italic text-copper">· {day.theme}</span>}
-                <button type="button" onClick={() => setSelected(day.date)}
-                  aria-label={`Show details for ${dayNameOfISO(day.date)}, ${longDateOfISO(day.date)}`}
-                  className="ml-auto shrink-0 self-center font-semibold text-copper underline-offset-4 hover:underline">
-                  <span>Details</span>
-                </button>
               </div>
               {dateHolidays.length > 0 && (
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -247,6 +262,14 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
                   </div>
                 ))}
               </div>
+              <button
+                type="button"
+                onClick={() => setSelected(day.date)}
+                aria-label={`Show details for ${dayNameOfISO(day.date)}, ${longDateOfISO(day.date)}`}
+                aria-haspopup="dialog"
+                title="View day details"
+                className="absolute inset-0 z-10 cursor-pointer rounded-xl transition-colors hover:bg-copper/[0.025] focus-visible:bg-copper/5"
+              />
             </section>
           );
         })}

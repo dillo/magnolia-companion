@@ -55,6 +55,8 @@ test("calendar: grid, filter, day detail", async ({ page }) => {
   await page.setViewportSize({ width: 1024, height: 900 });
   await page.goto("/calendar");
   await expect(page.getByRole("heading", { name: "July 2026" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Previous month" }).locator("svg")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Next month" }).locator("svg")).toBeVisible();
 
   const filter = page.getByLabel("Activity type");
   await filter.selectOption("emotional");
@@ -64,6 +66,27 @@ test("calendar: grid, filter, day detail", async ({ page }) => {
   await expect(
     page.getByRole("dialog").getByText("Therapy Dog Visit with Canine Assistants"),
   ).toBeVisible();
+});
+
+test("mobile calendar: the full day card opens its details", async ({ page }) => {
+  await pinClock(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/calendar");
+
+  const details = page.getByRole("button", {
+    name: "Show details for Wednesday, July 1, 2026",
+  });
+  await expect(details).toBeVisible();
+  await expect(details).toHaveAttribute("aria-haspopup", "dialog");
+  await expect(details).toHaveClass(/inset-0/);
+
+  const todayCard = page.getByRole("button", {
+    name: "Show details for Wednesday, July 8, 2026",
+  }).locator("xpath=..");
+  await expect(todayCard).toHaveClass(/bg-copper\/10/);
+
+  await details.click();
+  await expect(page.getByRole("dialog")).toBeVisible();
 });
 
 test("nav: current page is marked active", async ({ page }) => {
