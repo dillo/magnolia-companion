@@ -18,8 +18,9 @@ describe("loaders", () => {
   });
 
   test("loadContacts returns the committed directory", () => {
-    expect(contacts.contacts).toHaveLength(2);
+    expect(contacts.contacts).toHaveLength(8);
     expect(contacts.contacts[0].name).toBe("Roswell Fire Station 24");
+    expect(contacts.contacts.at(-1)?.name).toBe("Kimberly Knowles");
   });
 });
 

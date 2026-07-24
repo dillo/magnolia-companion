@@ -190,7 +190,7 @@ test("disclaimer: identifies the app as independent and unofficial", async ({ pa
   );
 });
 
-test("contacts: staff directory groups the published contacts", async ({ page }) => {
+test("contacts: staff directory lists the published contacts", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Main" });
@@ -198,9 +198,14 @@ test("contacts: staff directory groups the published contacts", async ({ page })
 
   await expect(page).toHaveTitle("Staff Directory | Magnolia Companion");
   await expect(page.getByRole("heading", { name: "Staff Directory" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Fire Department" })).toBeVisible();
-  await expect(page.getByText("Roswell Fire Station 24")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Police Department" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Roswell Fire Station 24" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Roswell Public Safety Headquarters" })).toBeVisible();
+  const lyshon = page.getByRole("listitem").filter({
+    has: page.getByRole("heading", { name: "Lyshon Calyen" }),
+  });
+  await expect(lyshon.getByText("(470) 294-7448", { exact: true })).toBeVisible();
+  await expect(lyshon.getByText("(770) 643-9433", { exact: true })).toBeVisible();
+  await expect(lyshon.getByText("(770) 643-9678", { exact: true })).toBeVisible();
 });
 
 test("mobile: footer clears the fixed navigation without excess space", async ({ page }) => {

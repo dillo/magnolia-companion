@@ -18,8 +18,9 @@ export const contactSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   role: z.string().min(1),
-  department: z.string().min(1),
-  phone: z.string().min(1).nullable(),
+  cell: z.string().min(1).nullable(),
+  main: z.string().min(1).nullable(),
+  fax: z.string().min(1).nullable(),
   email: z.string().email().nullable(),
 });
 export type Contact = z.infer<typeof contactSchema>;
@@ -37,10 +38,6 @@ export const contactsSchema = z
   });
 export type ContactsDirectory = z.infer<typeof contactsSchema>;
 ```
-
-`department` is a free-text string, not a fixed enum — the actual set of
-departments isn't known yet, and the page groups contacts dynamically by
-whatever values are present rather than a hardcoded list.
 
 ## Content file
 
@@ -67,9 +64,8 @@ yet; nothing to filter or search with zero/few entries). Structure follows
 - Eyebrow / `<h1>` "Staff Directory" + short subhead
 - If `contacts.length === 0`: render `EmptyState` with a message like
   "Staff directory is coming soon."
-- Otherwise: group contacts by `department` (in first-seen order) and
-  render each as a card list — name, role, and `tel:`/`mailto:` links for
-  phone/email when present.
+- Otherwise: render a responsive card for each contact — name, role, labeled
+  cell/main/fax numbers, and email when present.
 
 `export const metadata` follows the pattern in other pages (title +
 description).
@@ -91,8 +87,6 @@ reachable even with no data:
 
 - Search/filter UI — nothing to filter with an empty or small dataset;
   revisit once real data exists (`FaqClient` is the precedent if needed).
-- A fixed `department` enum — premature without knowing the real set of
-  departments.
 - Resident directories, family/emergency contacts, or third-party provider
   contacts — this scaffold covers staff contacts only, per user decision.
 
@@ -102,4 +96,4 @@ reachable even with no data:
   companion case for `loadContacts()` — empty-file fallback and a valid
   sample parse.
 - Manual check: page renders the empty state with no `content/contacts.json`
-  entries, and renders grouped cards once sample data is added locally.
+  entries, and renders contact cards once sample data is added locally.

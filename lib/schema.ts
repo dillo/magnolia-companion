@@ -162,8 +162,9 @@ export const contactSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   role: z.string().min(1),
-  department: z.string().min(1),
-  phone: z.string().min(1).nullable(),
+  cell: z.string().min(1).nullable(),
+  main: z.string().min(1).nullable(),
+  fax: z.string().min(1).nullable(),
   email: z.string().email().nullable(),
 });
 export type Contact = z.infer<typeof contactSchema>;

@@ -1,19 +1,75 @@
 {
   "contacts": [
     {
+      "id": "lyshon-calyen",
+      "name": "Lyshon Calyen",
+      "role": "Health and Wellness Director",
+      "cell": "(470) 294-7448",
+      "main": "(770) 643-9433",
+      "fax": "(770) 643-9678",
+      "email": "lcalyen@pegasusseniorliving.com"
+    },
+    {
+      "id": "michael-barday",
+      "name": "Michael Barday",
+      "role": "Dining Services Director",
+      "cell": null,
+      "main": "(770) 643-9433",
+      "fax": "(770) 643-9678",
+      "email": "mbarday@pegasusseniorliving.com"
+    },
+    {
+      "id": "kevin-holyfield",
+      "name": "Kevin Holyfield",
+      "role": "Executive Director",
+      "cell": null,
+      "main": "(770) 643-9433",
+      "fax": "(770) 643-9678",
+      "email": "kholyfield@pegasusseniorliving.com"
+    },
+    {
+      "id": "shirma-hunte-hines",
+      "name": "Shirma Hunte-Hines",
+      "role": "Resident Care Coordinator",
+      "cell": "(770) 354-6085",
+      "main": "(770) 643-9433",
+      "fax": "(770) 643-9678",
+      "email": "shines@pegasusseniorliving.com"
+    },
+    {
+      "id": "branan-johnston",
+      "name": "Branan Johnston",
+      "role": "Maintenance Director",
+      "cell": "(470) 383-7895",
+      "main": "(770) 643-9433",
+      "fax": "(770) 643-9678",
+      "email": "bjohnston@pegasusseniorliving.com"
+    },
+    {
+      "id": "kimberly-knowles",
+      "name": "Kimberly Knowles",
+      "role": "Business Office Director",
+      "cell": "(470) 608-9950",
+      "main": "(770) 643-9433",
+      "fax": "(770) 643-9678",
+      "email": "kknowles@pegasusseniorliving.com"
+    },
+    {
       "id": "roswell-fire-station-24",
       "name": "Roswell Fire Station 24",
       "role": "Fire and Rescue",
-      "department": "Fire Department",
-      "phone": "(770) 641-3730",
+      "cell": null,
+      "main": "(770) 641-3730",
+      "fax": null,
       "email": "firecustomerserviceteam@roswellgov.com"
     },
     {
       "id": "roswell-public-safety-headquarters",
       "name": "Roswell Public Safety Headquarters",
       "role": "Police",
-      "department": "Police Department",
-      "phone": "(770) 640-4160",
+      "cell": null,
+      "main": "(770) 640-4160",
+      "fax": null,
       "email": "policerecords@roswellgov.com"
     }
   ]

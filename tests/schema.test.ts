@@ -132,8 +132,9 @@ describe("nearbyPlacesSchema", () => {
 describe("contactsSchema", () => {
   test("accepts the committed contacts fixture", () => {
     const parsed = contactsSchema.parse(readJSON("content/contacts.json"));
-    expect(parsed.contacts).toHaveLength(2);
+    expect(parsed.contacts).toHaveLength(8);
     expect(parsed.contacts[0].name).toBe("Roswell Fire Station 24");
+    expect(parsed.contacts.at(-1)?.name).toBe("Kimberly Knowles");
   });
   test("accepts a fully populated contact", () => {
     const parsed = contactsSchema.parse({
@@ -142,8 +143,9 @@ describe("contactsSchema", () => {
           id: "jane-smith",
           name: "Jane Smith",
           role: "Executive Director",
-          department: "Administration",
-          phone: "(770) 555-0100",
+          cell: "(770) 555-0100",
+          main: "(770) 555-0101",
+          fax: "(770) 555-0102",
           email: "jane.smith@example.com",
         },
       ],
@@ -155,8 +157,9 @@ describe("contactsSchema", () => {
       id: "same",
       name: "Jane Smith",
       role: "Executive Director",
-      department: "Administration",
-      phone: null,
+      cell: null,
+      main: null,
+      fax: null,
       email: null,
     };
     expect(() => contactsSchema.parse({ contacts: [contact, contact] })).toThrow(/duplicate contact/);
