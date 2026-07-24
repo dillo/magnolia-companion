@@ -41,6 +41,38 @@ details[open] > .faq-answer { animation: faq-fade 0.18s ease-out; }
 
 body { background: var(--color-petal); color: var(--color-ink); }
 
+/* Warm, fine-grained card stock inspired by a linen restaurant menu. */
+.meal-card-paper {
+  --meal-paper-base: color-mix(in srgb, var(--color-card) 58%, var(--color-petal));
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--color-copper) 5%, transparent) 0,
+      transparent 38%
+    ),
+    repeating-linear-gradient(
+      100deg,
+      transparent 0 4px,
+      color-mix(in srgb, var(--color-ink) 1.5%, transparent) 4px 5px,
+      transparent 5px 9px
+    ),
+    repeating-linear-gradient(
+      10deg,
+      transparent 0 7px,
+      color-mix(in srgb, var(--color-copper) 1%, transparent) 7px 8px,
+      transparent 8px 13px
+    ),
+    var(--meal-paper-base);
+}
+
+.meal-card-paper-serving {
+  --meal-paper-base: color-mix(in srgb, var(--color-card) 88%, var(--color-copper));
+}
+
+:root[data-contrast="high"] .meal-card-paper {
+  background: var(--color-card);
+}
+
 :focus-visible { outline: 2px solid var(--color-copper); outline-offset: 2px; }
 
 :root[data-reduced-motion="true"] *, :root[data-reduced-motion="true"] *::before, :root[data-reduced-motion="true"] *::after {

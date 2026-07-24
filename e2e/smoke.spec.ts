@@ -101,6 +101,7 @@ test("menu: day tabs swap the meal cards", async ({ page }) => {
   for (const meal of ["Breakfast", "Lunch", "Dinner"]) {
     await expect(page.getByRole("heading", { name: meal }).locator("svg")).toBeVisible();
   }
+  await expect(page.getByText("4:00 PM – 6:30 PM")).toBeVisible();
   // Wednesday July 8 is selected by default (today).
   await expect(page.getByText("Roasted Turkey")).toBeVisible();
   await page.getByRole("tab", { name: "Monday, July 6, 2026" }).click();
