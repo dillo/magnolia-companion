@@ -58,24 +58,38 @@ export default function ContactsPage() {
                   <li key={contact.id}>
                     <p className="font-semibold text-ink">{contact.name}</p>
                     <p className="text-moss">{contact.role}</p>
-                    <div className="mt-1 flex flex-wrap gap-x-4 text-sm">
-                      {contact.phone && (
-                        <a
-                          href={`tel:${contact.phone}`}
-                          className="text-copper underline-offset-4 hover:underline"
-                        >
-                          {contact.phone}
-                        </a>
-                      )}
-                      {contact.email && (
-                        <a
-                          href={`mailto:${contact.email}`}
-                          className="text-copper underline-offset-4 hover:underline"
-                        >
-                          {contact.email}
-                        </a>
-                      )}
-                    </div>
+                    {(contact.phone || contact.email) && (
+                      <dl className="mt-2 grid grid-cols-[max-content_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1 text-[15px] leading-snug">
+                        {contact.phone && (
+                          <>
+                            <dt className="text-moss">Phone:</dt>
+                            <dd className="min-w-0">
+                              <a
+                                href={`tel:${contact.phone}`}
+                                aria-label={`Call ${contact.name} at ${contact.phone}`}
+                                className="font-medium tabular-nums text-ink underline decoration-hairline underline-offset-4 hover:text-copper"
+                              >
+                                {contact.phone}
+                              </a>
+                            </dd>
+                          </>
+                        )}
+                        {contact.email && (
+                          <>
+                            <dt className="text-moss">Email:</dt>
+                            <dd className="min-w-0">
+                              <a
+                                href={`mailto:${contact.email}`}
+                                aria-label={`Email ${contact.name} at ${contact.email}`}
+                                className="font-medium text-ink underline decoration-hairline underline-offset-4 [overflow-wrap:anywhere] hover:text-copper"
+                              >
+                                {contact.email}
+                              </a>
+                            </dd>
+                          </>
+                        )}
+                      </dl>
+                    )}
                   </li>
                 ))}
               </ul>

@@ -89,33 +89,43 @@ export default function HelpfulToday({
                   <p className="leading-snug text-moss">{contact.role}</p>
                 </div>
               </div>
-              <p className="mt-2 text-[15px] text-moss">{contact.department}</p>
+              <p className="mt-1.5 text-[15px] text-moss">{contact.department}</p>
 
               {(contact.phone || contact.email) && (
-                <div className="mt-3 flex flex-wrap gap-2">
+                <dl className="mt-2 grid grid-cols-[max-content_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1 text-[15px] leading-snug">
                   {contact.phone && (
-                    <a
-                      href={`tel:${contact.phone}`}
-                      aria-label={`Call ${contact.name} at ${contact.phone}`}
-                      className="inline-flex min-h-11 items-center whitespace-nowrap rounded-full bg-copper px-4 py-2 font-semibold tabular-nums text-petal hover:bg-copper/90"
-                    >
-                      Call {contact.phone}
-                    </a>
+                    <>
+                      <dt className="text-moss">Phone:</dt>
+                      <dd className="min-w-0">
+                        <a
+                          href={`tel:${contact.phone}`}
+                          aria-label={`Call ${contact.name} at ${contact.phone}`}
+                          className="font-medium tabular-nums text-ink underline decoration-hairline underline-offset-4 hover:text-copper"
+                        >
+                          {contact.phone}
+                        </a>
+                      </dd>
+                    </>
                   )}
                   {contact.email && (
-                    <a
-                      href={`mailto:${contact.email}`}
-                      aria-label={`Email ${contact.name}`}
-                      className="inline-flex min-h-11 items-center rounded-full border border-hairline bg-sand px-4 py-2 font-semibold text-ink hover:border-copper/40 hover:text-copper"
-                    >
-                      Email
-                    </a>
+                    <>
+                      <dt className="text-moss">Email:</dt>
+                      <dd className="min-w-0">
+                        <a
+                          href={`mailto:${contact.email}`}
+                          aria-label={`Email ${contact.name} at ${contact.email}`}
+                          className="font-medium text-ink underline decoration-hairline underline-offset-4 [overflow-wrap:anywhere] hover:text-copper"
+                        >
+                          {contact.email}
+                        </a>
+                      </dd>
+                    </>
                   )}
-                </div>
+                </dl>
               )}
               <Link
                 href="/contacts"
-                className="mt-3 inline-flex min-h-11 items-center font-semibold text-copper underline-offset-4 hover:underline"
+                className="mt-2 inline-flex items-center py-1.5 font-semibold text-copper underline-offset-4 hover:underline"
               >
                 Open the directory
                 <span aria-hidden="true" className="ml-1.5 text-xl leading-none">›</span>
