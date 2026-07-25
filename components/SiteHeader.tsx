@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { Holiday } from "@/lib/schema";
 import MagnoliaLogo from "@/components/MagnoliaLogo";
-import HolidayNotifications from "@/components/HolidayNotifications";
+import Notifications from "@/components/Notifications";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -58,11 +58,11 @@ export default function SiteHeader({ holidays }: { holidays: Holiday[] }) {
                 </Link>
               ))}
             </nav>
-            <HolidayNotifications holidays={holidays} />
+            <Notifications holidays={holidays} />
           </div>
 
           <div className="lg:hidden">
-            <HolidayNotifications holidays={holidays} />
+            <Notifications holidays={holidays} />
           </div>
         </div>
       </div>

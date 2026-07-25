@@ -106,6 +106,42 @@ test("nav: current page is marked active", async ({ page }) => {
   await expect(nav.getByRole("link", { name: "Holidays" })).toHaveAttribute("aria-current", "page");
 });
 
+test("header: holiday notification shows only the next holiday", async ({ page }) => {
+  await pinClock(page);
+  await page.goto("/");
+  await page.getByRole("button", { name: "Show notifications" }).click();
+
+  const notifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
+  await expect(notifications.getByRole("heading", { name: "Labor Day" })).toBeVisible();
+  await expect(notifications.getByRole("heading", { name: "Columbus Day" })).toHaveCount(0);
+});
+
+test("rent reminder: appears in notifications and Home Today and Tomorrow views", async ({ page }) => {
+  await page.clock.install({ time: new Date("2026-07-29T11:00:00Z") });
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Show notifications" }).click();
+  const notifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
+  await expect(notifications.getByRole("heading", { name: "Rent payment" })).toBeVisible();
+  await expect(notifications.getByText("Due in 3 days")).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  const activities = page.getByRole("tabpanel", { name: "Activities" });
+  const rentReminder = activities.getByRole("region", { name: "Rent payment reminder" });
+  await expect(rentReminder).toBeVisible();
+  const firstUp = activities.getByRole("region", { name: "Right now" });
+  await expect(firstUp.getByText("First up today")).toBeVisible();
+  expect((await rentReminder.boundingBox())!.height).toBeLessThan((await firstUp.boundingBox())!.height);
+  await page.getByRole("button", { name: "Tomorrow", exact: true }).click();
+  await expect(activities.getByRole("region", { name: "Rent payment reminder" })).toBeVisible();
+
+  await page.getByRole("tab", { name: "Meals" }).click();
+  const meals = page.getByRole("tabpanel", { name: "Meals" });
+  await expect(meals.getByRole("region", { name: "Rent payment reminder" })).toBeVisible();
+  await meals.getByRole("button", { name: "Tomorrow", exact: true }).click();
+  await expect(meals.getByRole("region", { name: "Rent payment reminder" })).toBeVisible();
+});
+
 test("no hydration errors, including under reduced motion", async ({ page }) => {
   const errors: string[] = [];
   page.on("console", (m) => {
