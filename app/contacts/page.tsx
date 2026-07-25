@@ -37,7 +37,7 @@ export default function ContactsPage() {
               <h2 className="font-display text-xl font-semibold leading-snug text-ink">
                 {contact.name}
               </h2>
-              <p className="mt-1 text-moss">{contact.role}</p>
+              <p className="mt-1 text-copper">{contact.role}</p>
               <ContactDetails contact={contact} className="mt-3" />
             </li>
           ))}

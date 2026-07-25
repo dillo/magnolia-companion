@@ -87,7 +87,7 @@ export default function HelpfulToday({
                 </span>
                 <div className="min-w-0">
                   <h3 className="font-display text-xl font-semibold leading-snug text-ink">{contact.name}</h3>
-                  <p className="leading-snug text-moss">{contact.role}</p>
+                  <p className="leading-snug text-copper">{contact.role}</p>
                 </div>
               </div>
 

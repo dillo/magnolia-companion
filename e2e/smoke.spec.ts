@@ -229,12 +229,19 @@ test("disclaimer: identifies the app as independent and unofficial", async ({ pa
 test("contacts: staff directory lists the published contacts", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
+  const featuredContact = page
+    .getByRole("tabpanel", { name: "Activities" })
+    .getByText("From the directory")
+    .locator("..");
+  await expect(featuredContact.getByRole("heading")).toHaveClass(/text-ink/);
+  await expect(featuredContact.locator("h3 + p")).toHaveClass(/text-copper/);
   const nav = page.getByRole("navigation", { name: "Main" });
   await nav.getByRole("link", { name: "Directory" }).click();
 
   await expect(page).toHaveTitle("Staff Directory | Magnolia Companion");
   await expect(page.getByRole("heading", { name: "Staff Directory" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Roswell Fire Station 24" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Roswell Fire Station 24" })).toHaveClass(/text-ink/);
+  await expect(page.getByText("Fire and Rescue", { exact: true })).toHaveClass(/text-copper/);
   await expect(page.getByRole("heading", { name: "Roswell Public Safety Headquarters" })).toBeVisible();
   const lyshon = page.getByRole("listitem").filter({
     has: page.getByRole("heading", { name: "Lyshon Calyen" }),
