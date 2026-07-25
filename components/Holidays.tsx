@@ -1,26 +1,26 @@
-import type { Holiday, HolidayType } from "@/lib/schema";
+import type { Holiday, HolidayCategory } from "@/lib/schema";
 import {
   dayNameOfISO, daysUntil, longDateOfISO, relativeDayLabel, shortMonthOfISO,
 } from "@/lib/dates";
 
-const TYPE_LABELS: Record<HolidayType, string> = {
+const CATEGORY_LABELS: Record<HolidayCategory, string> = {
   federal: "Federal",
   family: "Family",
   jewish: "Jewish",
   christian: "Christian",
 };
 
-const TYPE_STYLES: Record<HolidayType, string> = {
+const CATEGORY_STYLES: Record<HolidayCategory, string> = {
   federal: "border-copper/40 bg-copper/10 text-copper",
   family: "border-ink/25 bg-ink/10 text-ink",
   jewish: "border-moss/35 bg-moss/10 text-moss",
   christian: "border-hairline bg-card text-moss",
 };
 
-export function HolidayTypePill({ type }: { type: HolidayType }) {
+export function HolidayCategoryPill({ category }: { category: HolidayCategory }) {
   return (
-    <span className={`inline-flex rounded-full border px-2 py-0.5 text-[13px] font-semibold ${TYPE_STYLES[type]}`}>
-      {TYPE_LABELS[type]}
+    <span className={`inline-flex rounded-full border px-2 py-0.5 text-[13px] font-semibold ${CATEGORY_STYLES[category]}`}>
+      {CATEGORY_LABELS[category]}
     </span>
   );
 }
@@ -46,7 +46,9 @@ export function HolidayCard({
       <article className="border-t border-hairline py-3 first:border-t-0 first:pt-0">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="font-display text-xl font-semibold text-ink">{holiday.title}</h3>
-          <HolidayTypePill type={holiday.type} />
+          {holiday.categories.map((category) => (
+            <HolidayCategoryPill key={category} category={category} />
+          ))}
         </div>
         <p className="mt-1 font-semibold text-copper">{holidayDateLabel(holiday)}</p>
         {holiday.timing && <p className="mt-1 text-moss">{holiday.timing}</p>}
@@ -72,7 +74,9 @@ export function HolidayCard({
         <div className="min-w-0">
           <h3 className="font-display text-xl font-semibold leading-snug text-ink">{holiday.title}</h3>
           <div className="mt-1 flex flex-wrap items-center gap-1.5">
-            <HolidayTypePill type={holiday.type} />
+            {holiday.categories.map((category) => (
+              <HolidayCategoryPill key={category} category={category} />
+            ))}
             {inDays !== null && (
               <span
                 className={`whitespace-nowrap rounded-full px-2 py-0.5 text-[13px] font-bold ${

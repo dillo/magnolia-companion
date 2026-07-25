@@ -87,21 +87,24 @@ export const menuWeekSchema = z
   });
 export type MenuWeek = z.infer<typeof menuWeekSchema>;
 
-export const HOLIDAY_TYPES = ["federal", "family", "jewish", "christian"] as const;
-export type HolidayType = (typeof HOLIDAY_TYPES)[number];
+export const HOLIDAY_CATEGORIES = ["federal", "family", "jewish", "christian"] as const;
+export type HolidayCategory = (typeof HOLIDAY_CATEGORIES)[number];
 
 export const holidaySchema = z
   .object({
     startDate: isoDate,
     endDate: isoDate,
     title: z.string().min(1),
-    type: z.enum(HOLIDAY_TYPES),
+    categories: z.array(z.enum(HOLIDAY_CATEGORIES)).min(1),
     timing: z.string().min(1).nullable(),
     note: z.string().min(1),
   })
   .superRefine((holiday, ctx) => {
     if (holiday.endDate < holiday.startDate) {
       ctx.addIssue({ code: "custom", message: `${holiday.title} ends before it starts` });
+    }
+    if (new Set(holiday.categories).size !== holiday.categories.length) {
+      ctx.addIssue({ code: "custom", message: `${holiday.title} has duplicate categories` });
     }
   });
 export type Holiday = z.infer<typeof holidaySchema>;

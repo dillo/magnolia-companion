@@ -78,19 +78,33 @@ describe("menuWeekSchema", () => {
 describe("holidaysSchema", () => {
   test("accepts the committed holiday fixture", () => {
     const parsed = holidaysSchema.parse(readJSON("content/holidays.json"));
-    expect(parsed.some((day) => day.title === "Hanukkah" && day.type === "jewish")).toBe(true);
-    expect(parsed.some((day) => day.title === "Mother's Day" && day.type === "family")).toBe(true);
+    expect(parsed.find((day) => day.title === "Hanukkah")?.categories).toContain("jewish");
+    expect(parsed.find((day) => day.title === "Mother's Day")?.categories).toContain("family");
+    expect(parsed.find((day) => day.title === "Christmas Day")?.categories).toEqual(
+      expect.arrayContaining(["federal", "family", "christian"]),
+    );
   });
   test("rejects a holiday that ends before it starts", () => {
     const bad = [{
       startDate: "2026-12-25",
       endDate: "2026-12-24",
       title: "Christmas Day",
-      type: "federal",
+      categories: ["federal", "family", "christian"],
       timing: null,
       note: "Family visit day.",
     }];
     expect(() => holidaysSchema.parse(bad)).toThrow(/ends before it starts/);
+  });
+  test("rejects duplicate holiday categories", () => {
+    const bad = [{
+      startDate: "2026-12-25",
+      endDate: "2026-12-25",
+      title: "Christmas Day",
+      categories: ["federal", "family", "family"],
+      timing: null,
+      note: "Family visit day.",
+    }];
+    expect(() => holidaysSchema.parse(bad)).toThrow(/duplicate categories/);
   });
 });
 

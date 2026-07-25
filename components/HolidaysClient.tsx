@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { FeaturedFaq } from "@/lib/faqs";
-import type { Contact, Holiday, HolidayType } from "@/lib/schema";
+import type { Contact, Holiday } from "@/lib/schema";
 import { upcomingHolidays } from "@/lib/lookup";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import HelpfulToday from "@/components/HelpfulToday";
@@ -10,11 +10,22 @@ import { useToday } from "@/components/useToday";
 import { HolidayCard } from "@/components/Holidays";
 import EmptyState from "@/components/EmptyState";
 
-const FILTERS: { key: HolidayType | "all"; label: string }[] = [
+type HolidayFilter = "all" | "family" | "federal" | "religious";
+
+const FILTERS: { key: HolidayFilter; label: string; dotClass?: string }[] = [
   { key: "all", label: "All" },
-  { key: "family", label: "Family" },
-  { key: "federal", label: "Federal" },
+  { key: "family", label: "Family", dotClass: "bg-ink" },
+  { key: "federal", label: "Federal", dotClass: "bg-copper" },
+  { key: "religious", label: "Religious", dotClass: "bg-moss" },
 ];
+
+function matchesFilter(holiday: Holiday, filter: HolidayFilter): boolean {
+  if (filter === "all") return true;
+  if (filter === "religious") {
+    return holiday.categories.some((category) => category === "jewish" || category === "christian");
+  }
+  return holiday.categories.includes(filter);
+}
 
 export default function HolidaysClient({
   holidays,
@@ -26,12 +37,16 @@ export default function HolidaysClient({
   contacts: Contact[];
 }) {
   const today = useToday();
-  const [filter, setFilter] = useState<HolidayType | "all">("all");
+  const [filter, setFilter] = useState<HolidayFilter>("all");
 
-  const filtered = useMemo(() => {
-    const upcoming = today ? upcomingHolidays(holidays, today) : holidays;
-    return filter === "all" ? upcoming : upcoming.filter((holiday) => holiday.type === filter);
-  }, [filter, holidays, today]);
+  const upcoming = useMemo(
+    () => today ? upcomingHolidays(holidays, today) : holidays,
+    [holidays, today],
+  );
+  const filtered = useMemo(
+    () => upcoming.filter((holiday) => matchesFilter(holiday, filter)),
+    [filter, upcoming],
+  );
 
   if (!today) return null;
 
@@ -43,13 +58,26 @@ export default function HolidaysClient({
           <div>
             <h1 className="font-display text-title font-semibold">Holidays</h1>
           </div>
-          <div role="tablist" aria-label="Holiday type" className="mt-4 inline-grid w-fit grid-cols-3 rounded-full bg-hairline/60 p-1 md:mt-0">
+          <div role="group" aria-label="Filter holidays" className="mt-4 flex flex-wrap items-center gap-2 md:mt-0">
             {FILTERS.map((item) => (
-              <button key={item.key} role="tab" aria-selected={filter === item.key} onClick={() => setFilter(item.key)}
-                className={`whitespace-nowrap rounded-full px-2 py-2 text-center text-[15px] font-semibold sm:px-3 ${
-                  filter === item.key ? "bg-copper text-petal" : "text-moss"
-                }`}>
+              <button
+                key={item.key}
+                type="button"
+                aria-pressed={filter === item.key}
+                onClick={() => setFilter(item.key)}
+                className={`flex min-h-10 items-center gap-1.5 rounded-full px-3.5 py-1.5 font-semibold transition-colors ${
+                  filter === item.key
+                    ? "bg-copper text-petal"
+                    : "bg-card text-moss ring-1 ring-inset ring-hairline hover:ring-copper/40 hover:text-ink"
+                }`}
+              >
+                {item.dotClass && (
+                  <span aria-hidden="true" className={`h-2.5 w-2.5 rounded-full ${item.dotClass}`} />
+                )}
                 {item.label}
+                <span className="text-[13px] font-bold tabular-nums opacity-70">
+                  {upcoming.filter((holiday) => matchesFilter(holiday, item.key)).length}
+                </span>
               </button>
             ))}
           </div>

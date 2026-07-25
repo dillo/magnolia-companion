@@ -3,7 +3,7 @@
     "startDate": "2026-09-07",
     "endDate": "2026-09-07",
     "title": "Labor Day",
-    "type": "federal",
+    "categories": ["federal", "family"],
     "timing": null,
     "note": "Federal holiday and common family lunch visit day. Confirm guest meal availability with the dining hall."
   },
@@ -11,7 +11,7 @@
     "startDate": "2026-10-12",
     "endDate": "2026-10-12",
     "title": "Columbus Day",
-    "type": "federal",
+    "categories": ["federal"],
     "timing": null,
     "note": "Federal holiday. Check dining hall guest meal policy before planning around lunch."
   },
@@ -19,7 +19,7 @@
     "startDate": "2026-11-11",
     "endDate": "2026-11-11",
     "title": "Veterans Day",
-    "type": "federal",
+    "categories": ["federal", "family"],
     "timing": null,
     "note": "Federal holiday and meaningful visit day for many families."
   },
@@ -27,7 +27,7 @@
     "startDate": "2026-11-26",
     "endDate": "2026-11-26",
     "title": "Thanksgiving Day",
-    "type": "federal",
+    "categories": ["federal", "family"],
     "timing": null,
     "note": "Major family dining holiday. Confirm guest reservations, meal times, and seating rules early."
   },
@@ -35,7 +35,7 @@
     "startDate": "2026-12-04",
     "endDate": "2026-12-12",
     "title": "Hanukkah",
-    "type": "jewish",
+    "categories": ["jewish", "family"],
     "timing": "Begins at sundown on December 4 and ends at nightfall on December 12.",
     "note": "Eight-day Jewish festival. Families may want to coordinate evening or weekend visits."
   },
@@ -43,7 +43,7 @@
     "startDate": "2026-12-25",
     "endDate": "2026-12-25",
     "title": "Christmas Day",
-    "type": "federal",
+    "categories": ["federal", "family", "christian"],
     "timing": null,
     "note": "Major family dining holiday. Confirm guest reservations, meal times, and seating rules early."
   },
@@ -51,7 +51,7 @@
     "startDate": "2027-01-01",
     "endDate": "2027-01-01",
     "title": "New Year's Day",
-    "type": "federal",
+    "categories": ["federal", "family"],
     "timing": null,
     "note": "Federal holiday. Good day to check dining room hours before planning a visit."
   },
@@ -59,7 +59,7 @@
     "startDate": "2027-01-18",
     "endDate": "2027-01-18",
     "title": "Martin Luther King Jr. Day",
-    "type": "federal",
+    "categories": ["federal"],
     "timing": null,
     "note": "Federal holiday. Check dining hall guest meal policy before planning around lunch."
   },
@@ -67,7 +67,7 @@
     "startDate": "2027-02-15",
     "endDate": "2027-02-15",
     "title": "Washington's Birthday",
-    "type": "federal",
+    "categories": ["federal"],
     "timing": null,
     "note": "Federal holiday. Often called Presidents Day by other calendars."
   },
@@ -75,7 +75,7 @@
     "startDate": "2027-03-28",
     "endDate": "2027-03-28",
     "title": "Easter Sunday",
-    "type": "christian",
+    "categories": ["christian", "family"],
     "timing": null,
     "note": "Major family dining holiday. Confirm guest reservations, meal times, and seating rules early."
   },
@@ -83,7 +83,7 @@
     "startDate": "2027-05-09",
     "endDate": "2027-05-09",
     "title": "Mother's Day",
-    "type": "family",
+    "categories": ["family"],
     "timing": null,
     "note": "High-priority family dining day. Confirm guest reservations and meal times early."
   },
@@ -91,7 +91,7 @@
     "startDate": "2027-05-31",
     "endDate": "2027-05-31",
     "title": "Memorial Day",
-    "type": "federal",
+    "categories": ["federal", "family"],
     "timing": null,
     "note": "Federal holiday and common family lunch visit day."
   },
@@ -99,7 +99,7 @@
     "startDate": "2027-06-19",
     "endDate": "2027-06-19",
     "title": "Juneteenth National Independence Day",
-    "type": "federal",
+    "categories": ["federal"],
     "timing": "Federal observance is Friday, June 18, 2027.",
     "note": "Federal holiday. Confirm dining room hours and guest meal availability."
   },
@@ -107,7 +107,7 @@
     "startDate": "2027-06-20",
     "endDate": "2027-06-20",
     "title": "Father's Day",
-    "type": "family",
+    "categories": ["family"],
     "timing": null,
     "note": "High-priority family dining day. Confirm guest reservations and meal times early."
   },
@@ -115,7 +115,7 @@
     "startDate": "2027-07-04",
     "endDate": "2027-07-04",
     "title": "Independence Day",
-    "type": "federal",
+    "categories": ["federal", "family"],
     "timing": "Federal observance is Monday, July 5, 2027.",
     "note": "Federal holiday and common family visit day. Check holiday meal schedule."
   },
@@ -123,7 +123,7 @@
     "startDate": "2027-09-06",
     "endDate": "2027-09-06",
     "title": "Labor Day",
-    "type": "federal",
+    "categories": ["federal", "family"],
     "timing": null,
     "note": "Federal holiday and common family lunch visit day."
   },
@@ -131,7 +131,7 @@
     "startDate": "2027-10-11",
     "endDate": "2027-10-11",
     "title": "Columbus Day",
-    "type": "federal",
+    "categories": ["federal"],
     "timing": null,
     "note": "Federal holiday. Check dining hall guest meal policy before planning around lunch."
   },
@@ -139,7 +139,7 @@
     "startDate": "2027-11-11",
     "endDate": "2027-11-11",
     "title": "Veterans Day",
-    "type": "federal",
+    "categories": ["federal", "family"],
     "timing": null,
     "note": "Federal holiday and meaningful visit day for many families."
   },
@@ -147,7 +147,7 @@
     "startDate": "2027-11-25",
     "endDate": "2027-11-25",
     "title": "Thanksgiving Day",
-    "type": "federal",
+    "categories": ["federal", "family"],
     "timing": null,
     "note": "Major family dining holiday. Confirm guest reservations, meal times, and seating rules early."
   },
@@ -155,7 +155,7 @@
     "startDate": "2027-12-25",
     "endDate": "2027-12-25",
     "title": "Christmas Day",
-    "type": "federal",
+    "categories": ["federal", "family", "christian"],
     "timing": "Federal observance is Friday, December 24, 2027.",
     "note": "Major family dining holiday. Confirm guest reservations, meal times, and seating rules early."
   },
@@ -163,7 +163,7 @@
     "startDate": "2027-12-24",
     "endDate": "2028-01-01",
     "title": "Hanukkah",
-    "type": "jewish",
+    "categories": ["jewish", "family"],
     "timing": "Begins at sundown on December 24 and ends at nightfall on January 1.",
     "note": "Eight-day Jewish festival. Families may want to coordinate evening or weekend visits."
   }

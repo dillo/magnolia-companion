@@ -106,6 +106,33 @@ test("nav: current page is marked active", async ({ page }) => {
   await expect(nav.getByRole("link", { name: "Holidays" })).toHaveAttribute("aria-current", "page");
 });
 
+test("holidays: Explore-style filters group religious holidays", async ({ page }) => {
+  await pinClock(page);
+  await page.goto("/holidays");
+
+  const filters = page.getByRole("group", { name: "Filter holidays" });
+  const religious = filters.getByRole("button", { name: /^Religious/ });
+  await expect(religious).toHaveAttribute("aria-pressed", "false");
+  await expect(religious).toHaveClass(/ring-inset/);
+
+  await religious.click();
+  await expect(religious).toHaveAttribute("aria-pressed", "true");
+  await expect(religious).toHaveClass(/bg-copper/);
+  await expect(page.getByRole("heading", { name: "Hanukkah" }).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Easter Sunday" })).toBeVisible();
+  const christmas = page.getByRole("heading", { name: "Christmas Day" }).first().locator("..");
+  await expect(christmas.getByText("Federal", { exact: true })).toBeVisible();
+  await expect(christmas.getByText("Family", { exact: true })).toBeVisible();
+  await expect(christmas.getByText("Christian", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Labor Day" })).toHaveCount(0);
+
+  const family = filters.getByRole("button", { name: /^Family/ });
+  await family.click();
+  await expect(page.getByRole("heading", { name: "Thanksgiving Day" }).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Christmas Day" }).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Columbus Day" })).toHaveCount(0);
+});
+
 test("header: holiday notification shows only the next holiday", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
