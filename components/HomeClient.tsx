@@ -242,12 +242,13 @@ export default function HomeClient({
             />
 
             <RentReminder date={mealDate} />
-            <MedicationRefillReminder date={today} />
 
             {!menuDay && (
               <p className="mb-3 text-moss">The menu for this date hasn&apos;t been added yet.</p>
             )}
           </div>
+
+          <MedicationRefillReminder date={today} />
 
           <MealCards
             day={menuDay}

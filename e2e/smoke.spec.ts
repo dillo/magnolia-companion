@@ -201,6 +201,7 @@ test("rent reminder: appears in notifications and Home Today and Tomorrow views"
 });
 
 test("medication refill reminder: appears all weekend and clears Monday", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.clock.install({ time: new Date("2026-07-11T16:00:00Z") }); // Saturday noon EDT
   await page.goto("/");
 
@@ -216,10 +217,23 @@ test("medication refill reminder: appears all weekend and clears Monday", async 
   await page.keyboard.press("Escape");
 
   await page.getByRole("tab", { name: "Meals" }).click();
-  await expect(
-    page.getByRole("tabpanel", { name: "Meals" })
-      .getByRole("region", { name: "Medication refill reminder" }),
-  ).toBeVisible();
+  const meals = page.getByRole("tabpanel", { name: "Meals" });
+  const mealReminder = meals.getByRole("region", { name: "Medication refill reminder" });
+  await expect(mealReminder).toBeVisible();
+
+  const reminderBox = await mealReminder.boundingBox();
+  const firstMealBox = await meals.locator(".meal-card-paper").first().boundingBox();
+  const lastMealBox = await meals.locator(".meal-card-paper").last().boundingBox();
+  expect(reminderBox).not.toBeNull();
+  expect(firstMealBox).not.toBeNull();
+  expect(lastMealBox).not.toBeNull();
+  expect(Math.abs(reminderBox!.x - firstMealBox!.x)).toBeLessThanOrEqual(1);
+  expect(
+    Math.abs(
+      reminderBox!.x + reminderBox!.width
+      - (lastMealBox!.x + lastMealBox!.width),
+    ),
+  ).toBeLessThanOrEqual(1);
 
   await page.clock.setSystemTime(new Date("2026-07-13T16:00:00Z")); // Monday noon EDT
   await page.reload();
