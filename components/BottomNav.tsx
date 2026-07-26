@@ -7,11 +7,12 @@ import { useEffect, useRef, useState } from "react";
 const TABS = [
   { href: "/", label: "Home", icon: SunIcon },
   { href: "/menu", label: "Full menu", icon: MealIcon },
-  { href: "/calendar", label: "Calendar", icon: CalendarIcon },
+  { href: "/medications", label: "Meds", icon: MedicationIcon },
   { href: "/contacts", label: "Directory", icon: DirectoryIcon },
 ];
 
 const MORE = [
+  { href: "/calendar", label: "Calendar", icon: CalendarIcon },
   { href: "/explore", label: "Explore", icon: CompassIcon },
   { href: "/faq", label: "FAQ", icon: QuestionIcon },
   { href: "/holidays", label: "Holidays", icon: FlagIcon },
@@ -131,7 +132,7 @@ export default function BottomNav() {
                 Tap More for more pages
               </span>
               <span className="mt-0.5 block text-[15px] leading-snug text-moss">
-                Explore, holidays, FAQ &amp; About
+                Calendar, explore, holidays, FAQ &amp; About
               </span>
             </button>
             <button
@@ -207,6 +208,14 @@ function MealIcon() {
     <svg aria-hidden="true" viewBox="0 0 24 24" className={ICON}>
       <path d="M7 3v18M4.5 3v5a2.5 2.5 0 0 0 5 0V3" {...STROKE} />
       <path d="M17 3c-1.7 1.5-2.5 3.5-2.5 6 0 2 1 3 2.5 3v9" {...STROKE} />
+    </svg>
+  );
+}
+
+function MedicationIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={ICON}>
+      <path d="m8.2 17.6 9.4-9.4a3.5 3.5 0 0 0-5-5l-9.4 9.4a3.5 3.5 0 0 0 5 5ZM8 8l8 8" {...STROKE} />
     </svg>
   );
 }

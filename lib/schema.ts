@@ -184,3 +184,61 @@ export const contactsSchema = z
     }
   });
 export type ContactsDirectory = z.infer<typeof contactsSchema>;
+
+export const MEDICATION_PERIODS = ["morning", "evening"] as const;
+export type MedicationPeriod = (typeof MEDICATION_PERIODS)[number];
+
+export const MEDICATION_DAYS = [
+  "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+] as const;
+export type MedicationDay = (typeof MEDICATION_DAYS)[number];
+
+export const medicationDoseSchema = z
+  .object({
+    period: z.enum(MEDICATION_PERIODS),
+    amount: z.string().min(1),
+    days: z.array(z.enum(MEDICATION_DAYS)).min(1),
+  })
+  .superRefine((dose, ctx) => {
+    if (new Set(dose.days).size !== dose.days.length) {
+      ctx.addIssue({ code: "custom", message: "dose has duplicate days" });
+    }
+  });
+export type MedicationDose = z.infer<typeof medicationDoseSchema>;
+
+export const medicationSchema = z
+  .object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    purpose: z.string().min(1),
+    doses: z.array(medicationDoseSchema).min(1),
+  })
+  .superRefine((medication, ctx) => {
+    const covered = new Set<string>();
+    for (const dose of medication.doses) {
+      for (const day of dose.days) {
+        const key = `${dose.period}:${day}`;
+        if (covered.has(key)) {
+          ctx.addIssue({
+            code: "custom",
+            message: `${medication.name} has overlapping ${dose.period} doses on ${day}`,
+          });
+        }
+        covered.add(key);
+      }
+    }
+  });
+export type Medication = z.infer<typeof medicationSchema>;
+
+export const medicationsSchema = z
+  .object({ medications: z.array(medicationSchema) })
+  .superRefine((directory, ctx) => {
+    const seen = new Set<string>();
+    for (const medication of directory.medications) {
+      if (seen.has(medication.id)) {
+        ctx.addIssue({ code: "custom", message: `duplicate medication id ${medication.id}` });
+      }
+      seen.add(medication.id);
+    }
+  });
+export type MedicationsDirectory = z.infer<typeof medicationsSchema>;

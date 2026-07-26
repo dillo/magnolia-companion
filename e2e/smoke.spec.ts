@@ -106,6 +106,37 @@ test("nav: current page is marked active", async ({ page }) => {
   await expect(nav.getByRole("link", { name: "Holidays" })).toHaveAttribute("aria-current", "page");
 });
 
+test("medications: morning and evening routines preserve special schedules", async ({ page }) => {
+  await page.goto("/medications");
+
+  await expect(page).toHaveTitle("Medications | Magnolia Companion");
+  const morningTab = page.getByRole("tab", { name: "Morning" });
+  const eveningTab = page.getByRole("tab", { name: "Evening" });
+  await expect(morningTab).toHaveAttribute("aria-selected", "true");
+
+  const morning = page.getByRole("tabpanel", { name: "Morning" });
+  await expect(morning.getByRole("heading", { name: "Morning medications" })).toBeVisible();
+  const levothyroxine = morning.getByRole("listitem").filter({
+    has: morning.getByRole("heading", { name: "Levothyroxine" }),
+  });
+  await expect(levothyroxine.getByText("112 mcg")).toBeVisible();
+  await expect(levothyroxine.getByText("Monday–Friday")).toBeVisible();
+  await expect(levothyroxine.getByText("125 mcg")).toBeVisible();
+  await expect(levothyroxine.getByText("Saturday & Sunday")).toBeVisible();
+
+  await eveningTab.click();
+  await expect(eveningTab).toHaveAttribute("aria-selected", "true");
+  const evening = page.getByRole("tabpanel", { name: "Evening" });
+  const ciprofloxacin = evening.getByRole("listitem").filter({
+    has: evening.getByRole("heading", { name: "Ciprofloxacin" }),
+  });
+  await expect(ciprofloxacin.getByText("Monday, Wednesday & Friday only")).toBeVisible();
+  await expect(evening.getByRole("heading", { name: "Metoprolol Succinate ER" })).toHaveCount(0);
+
+  const allMedications = page.getByRole("heading", { name: "All medications" }).locator("..").locator("..");
+  await expect(allMedications.getByRole("heading", { name: "Tylenol 8 HR Arthritis Pain" })).toBeVisible();
+});
+
 test("holidays: Explore-style filters group religious holidays", async ({ page }) => {
   await pinClock(page);
   await page.goto("/holidays");
@@ -296,17 +327,19 @@ test("mobile: footer clears the fixed navigation without excess space", async ({
   expect(gap).toBeLessThan(24);
 });
 
-test("mobile: directory is a tab and more navigation items have icons", async ({ page }) => {
+test("mobile: medications and directory are adjacent tabs", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
   const bottomNav = page.locator('nav[aria-label="Main"]:visible');
+  await expect(bottomNav.getByRole("link", { name: "Meds", exact: true }).locator("svg")).toBeVisible();
   await expect(bottomNav.getByRole("link", { name: "Directory", exact: true }).locator("svg")).toBeVisible();
+  await expect(bottomNav.getByRole("link", { name: "Calendar", exact: true })).toHaveCount(0);
   await expect(bottomNav.getByRole("link", { name: "Holidays", exact: true })).toHaveCount(0);
 
   await bottomNav.getByRole("button", { name: "More", exact: true }).click();
 
-  for (const label of ["Explore", "FAQ", "Holidays", "About & Disclaimer"]) {
+  for (const label of ["Calendar", "Explore", "FAQ", "Holidays", "About & Disclaimer"]) {
     await expect(bottomNav.getByRole("link", { name: label, exact: true }).locator("svg")).toBeVisible();
   }
 });
@@ -317,7 +350,7 @@ test("mobile: the More pages coachmark teaches the menu once", async ({ page }) 
 
   const tip = page.getByRole("button", { name: /Tap More for more pages/ });
   await expect(tip).toBeVisible();
-  await expect(tip).toContainText("Explore, holidays, FAQ & About");
+  await expect(tip).toContainText("Calendar, explore, holidays, FAQ & About");
 
   const tipBox = await tip.boundingBox();
   const accessibilityBox = await page

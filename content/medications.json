@@ -1,0 +1,144 @@
+{
+  "medications": [
+    {
+      "id": "eliquis",
+      "name": "Eliquis",
+      "purpose": "Blood thinner",
+      "doses": [
+        {
+          "period": "morning",
+          "amount": "2.5 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        },
+        {
+          "period": "evening",
+          "amount": "2.5 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        }
+      ]
+    },
+    {
+      "id": "metoprolol-succinate-er",
+      "name": "Metoprolol Succinate ER",
+      "purpose": "Blood pressure",
+      "doses": [
+        {
+          "period": "morning",
+          "amount": "25 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        }
+      ]
+    },
+    {
+      "id": "rosuvastatin-calcium",
+      "name": "Rosuvastatin Calcium",
+      "purpose": "Cholesterol control",
+      "doses": [
+        {
+          "period": "morning",
+          "amount": "5 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        }
+      ]
+    },
+    {
+      "id": "furosemide",
+      "name": "Furosemide",
+      "purpose": "Water pill",
+      "doses": [
+        {
+          "period": "morning",
+          "amount": "40 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        }
+      ]
+    },
+    {
+      "id": "levothyroxine",
+      "name": "Levothyroxine",
+      "purpose": "Thyroid supplement",
+      "doses": [
+        {
+          "period": "morning",
+          "amount": "112 mcg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+        },
+        {
+          "period": "morning",
+          "amount": "125 mcg",
+          "days": ["saturday", "sunday"]
+        }
+      ]
+    },
+    {
+      "id": "gabapentin",
+      "name": "Gabapentin",
+      "purpose": "Nerve pain",
+      "doses": [
+        {
+          "period": "evening",
+          "amount": "100 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        }
+      ]
+    },
+    {
+      "id": "ciprofloxacin",
+      "name": "Ciprofloxacin",
+      "purpose": "Urinary tract infection prevention",
+      "doses": [
+        {
+          "period": "evening",
+          "amount": "250 mg",
+          "days": ["monday", "wednesday", "friday"]
+        }
+      ]
+    },
+    {
+      "id": "potassium-chloride-er",
+      "name": "Potassium Chloride ER",
+      "purpose": "Supplement",
+      "doses": [
+        {
+          "period": "evening",
+          "amount": "10 mEq",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        }
+      ]
+    },
+    {
+      "id": "tolterodine-tartrate",
+      "name": "Tolterodine Tartrate",
+      "purpose": "Bladder control",
+      "doses": [
+        {
+          "period": "morning",
+          "amount": "2 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        },
+        {
+          "period": "evening",
+          "amount": "2 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        }
+      ]
+    },
+    {
+      "id": "tylenol-8-hr-arthritis-pain",
+      "name": "Tylenol 8 HR Arthritis Pain",
+      "purpose": "Pain management",
+      "doses": [
+        {
+          "period": "morning",
+          "amount": "650 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        },
+        {
+          "period": "evening",
+          "amount": "650 mg",
+          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        }
+      ]
+    }
+  ]
+}

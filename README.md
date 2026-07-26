@@ -29,6 +29,12 @@ Menu files are named by the first visible date on the printed weekly menu.
 - `npm run build` — production build (also validates all content JSON)
 - `npm run ingest` — refresh content from Go Icon or extract structured data from scan photos
 
+## Updating medications
+
+Medication routines live in `content/medications.json`. Each dose records its
+morning or evening period, amount, and exact weekdays. The build validates that
+one medication never has overlapping doses in the same period on the same day.
+
 ## Secrets
 
 `ANTHROPIC_API_KEY` lives only in the local `.env` (git-ignored) and is only needed for photo ingest.

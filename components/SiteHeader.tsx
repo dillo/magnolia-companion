@@ -10,11 +10,12 @@ import Notifications from "@/components/Notifications";
 const NAV = [
   { href: "/", label: "Home" },
   { href: "/menu", label: "Full menu" },
+  { href: "/medications", label: "Medications" },
+  { href: "/contacts", label: "Directory" },
   { href: "/calendar", label: "Calendar" },
   { href: "/explore", label: "Explore" },
   { href: "/holidays", label: "Holidays" },
   { href: "/faq", label: "FAQ" },
-  { href: "/contacts", label: "Directory" },
 ];
 
 /** Sticky site header: wordmark + desktop nav + holiday bell. Mobile navigation lives in BottomNav. */
@@ -41,20 +42,26 @@ export default function SiteHeader({ holidays }: { holidays: Holiday[] }) {
         <div className="flex items-center justify-between gap-2 sm:gap-4">
           <MagnoliaLogo />
 
-          <div className="hidden items-center gap-4 lg:flex">
-            <nav aria-label="Main" className="flex items-center gap-2">
+          <div className="hidden items-center gap-3 lg:flex">
+            <nav aria-label="Main" className="flex items-center gap-1">
               {NAV.map((n) => (
                 <Link
                   key={n.href}
                   href={n.href}
+                  aria-label={n.href === "/medications" ? n.label : undefined}
                   aria-current={pathname === n.href ? "page" : undefined}
-                  className={`whitespace-nowrap rounded-full px-4 py-2 text-center font-semibold ${
+                  className={`whitespace-nowrap rounded-full px-3 py-2 text-center font-semibold xl:px-4 ${
                     pathname === n.href
                       ? "bg-copper text-petal"
                       : "text-moss hover:bg-hairline hover:text-ink"
                   }`}
                 >
-                  {n.label}
+                  {n.href === "/medications" ? (
+                    <>
+                      <span className="xl:hidden">Meds</span>
+                      <span className="hidden xl:inline">Medications</span>
+                    </>
+                  ) : n.label}
                 </Link>
               ))}
             </nav>

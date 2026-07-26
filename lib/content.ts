@@ -1,8 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import {
-  activityMonthSchema, contactsSchema, holidaysSchema, menuWeekSchema, nearbyPlacesSchema,
-  type ActivityMonth, type ContactsDirectory, type Holiday, type MenuWeek, type NearbyPlacesDirectory,
+  activityMonthSchema, contactsSchema, holidaysSchema, medicationsSchema, menuWeekSchema, nearbyPlacesSchema,
+  type ActivityMonth, type ContactsDirectory, type Holiday, type MedicationsDirectory, type MenuWeek,
+  type NearbyPlacesDirectory,
 } from "./schema";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
@@ -76,5 +77,15 @@ export function loadContacts(): ContactsDirectory {
     return contactsSchema.parse(JSON.parse(fs.readFileSync(file, "utf8")));
   } catch (err) {
     throw new Error(`content/contacts.json: ${err instanceof Error ? err.message : err}`);
+  }
+}
+
+export function loadMedications(): MedicationsDirectory {
+  const file = path.join(CONTENT_DIR, "medications.json");
+  if (!fs.existsSync(file)) return { medications: [] };
+  try {
+    return medicationsSchema.parse(JSON.parse(fs.readFileSync(file, "utf8")));
+  } catch (err) {
+    throw new Error(`content/medications.json: ${err instanceof Error ? err.message : err}`);
   }
 }
