@@ -12,7 +12,11 @@ import {
   shortMonthOfISO,
 } from "@/lib/dates";
 import { upcomingHolidays } from "@/lib/lookup";
-import { rentDueStatusLabel, rentReminderFor } from "@/lib/reminders";
+import {
+  medicationRefillReminderFor,
+  rentDueStatusLabel,
+  rentReminderFor,
+} from "@/lib/reminders";
 import { useToday } from "@/components/useToday";
 
 function startDateLabel(iso: string): string {
@@ -31,9 +35,10 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
 
   const nextHoliday = today ? upcomingHolidays(holidays, today, 1)[0] ?? null : null;
   const rentReminder = today ? rentReminderFor(today) : null;
+  const medicationRefillReminder = today ? medicationRefillReminderFor(today) : null;
   const holidayInDays = today && nextHoliday ? daysUntil(today, nextHoliday.startDate) : null;
   const holidaySoon = holidayInDays !== null && holidayInDays <= 30;
-  const prominent = rentReminder !== null || holidaySoon;
+  const prominent = medicationRefillReminder !== null || rentReminder !== null || holidaySoon;
 
   useLayoutEffect(() => {
     if (!open || !buttonRef.current) return;
@@ -60,7 +65,7 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
     };
   }, [open]);
 
-  if (!today || (!nextHoliday && !rentReminder)) return null;
+  if (!today || (!nextHoliday && !rentReminder && !medicationRefillReminder)) return null;
 
   return (
     <>
@@ -106,6 +111,25 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
                 </div>
 
                 <div className="divide-y divide-hairline">
+                  {medicationRefillReminder && (
+                    <article className="grid grid-cols-[3rem_minmax(0,1fr)] items-center gap-3 bg-copper/10 px-4 py-2">
+                      <div
+                        aria-hidden="true"
+                        className="grid h-11 place-items-center rounded-lg bg-copper text-petal"
+                      >
+                        <MedicationRefillIcon />
+                      </div>
+                      <div className="flex min-w-0 items-center justify-between gap-3">
+                        <h3 className="min-w-0 font-semibold leading-tight text-ink">
+                          Refill meds
+                        </h3>
+                        <span className="shrink-0 whitespace-nowrap rounded-full bg-copper px-2 py-0.5 text-[13px] font-bold text-petal">
+                          Weekend task
+                        </span>
+                      </div>
+                    </article>
+                  )}
+
                   {rentReminder && (
                     <article className="grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 bg-copper/10 px-4 py-3">
                       <div className="flex h-16 flex-col items-center justify-center rounded-lg bg-copper text-center text-petal">
@@ -160,9 +184,9 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
                   )}
                 </div>
                 {nextHoliday && (
-                  <div className="border-t border-hairline px-4 py-3">
+                  <div className="divide-y divide-hairline border-t border-hairline">
                     <Link href="/holidays" onClick={() => setOpen(false)}
-                      className="flex items-center justify-between font-semibold text-copper hover:text-ink">
+                      className="flex items-center justify-between px-4 py-3 font-semibold text-copper hover:text-ink">
                       <span>All holidays</span>
                       <span aria-hidden="true" className="text-xl leading-none">›</span>
                     </Link>
@@ -174,5 +198,26 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
           document.body,
         )}
     </>
+  );
+}
+
+function MedicationRefillIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5">
+      <rect
+        x="3"
+        y="5"
+        width="18"
+        height="15"
+        rx="2"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
+      <path d="M3 10h18M9 10v10M15 10v10" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="6" cy="7.5" r="1" fill="currentColor" />
+      <circle cx="12" cy="7.5" r="1" fill="currentColor" />
+      <circle cx="18" cy="7.5" r="1" fill="currentColor" />
+    </svg>
   );
 }

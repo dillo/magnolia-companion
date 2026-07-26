@@ -18,6 +18,7 @@ import { greetingFor, heroStateFor, tomorrowPreview } from "@/lib/now";
 import { useNow } from "@/components/useNow";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
 import HeroCard from "@/components/HeroCard";
+import MedicationRefillReminder from "@/components/MedicationRefillReminder";
 import RentReminder from "@/components/RentReminder";
 import {
   useHomeNavigation,
@@ -183,6 +184,7 @@ export default function HomeClient({
           />
 
           {activityPick !== "week" && <RentReminder date={activityDate} />}
+          <MedicationRefillReminder date={today} />
 
           {activityPick === "today" && now && day && (
             <div className="mb-5">
@@ -240,6 +242,7 @@ export default function HomeClient({
             />
 
             <RentReminder date={mealDate} />
+            <MedicationRefillReminder date={today} />
 
             {!menuDay && (
               <p className="mb-3 text-moss">The menu for this date hasn&apos;t been added yet.</p>

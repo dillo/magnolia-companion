@@ -1,10 +1,14 @@
-import { addDaysISO, daysUntil } from "./dates";
+import { addDaysISO, dayNameOfISO, daysUntil } from "./dates";
 
 export const RENT_REMINDER_LEAD_DAYS = 3;
 
 export type RentReminder = {
   dueDate: string;
   daysUntilDue: number;
+};
+
+export type MedicationRefillReminder = {
+  day: "Saturday" | "Sunday";
 };
 
 function firstOfNextMonthISO(date: string): string {
@@ -37,4 +41,11 @@ export function rentDueStatusLabel(daysUntilDue: number): string {
   if (daysUntilDue === 1) return "Due tomorrow";
   if (daysUntilDue === 0) return "Due today";
   return "Payment due";
+}
+
+/** Visible throughout the weekend, then clears when the local date becomes Monday. */
+export function medicationRefillReminderFor(date: string): MedicationRefillReminder | null {
+  const day = dayNameOfISO(date);
+  if (day !== "Saturday" && day !== "Sunday") return null;
+  return { day };
 }

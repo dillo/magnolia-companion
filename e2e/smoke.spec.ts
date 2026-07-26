@@ -200,6 +200,38 @@ test("rent reminder: appears in notifications and Home Today and Tomorrow views"
   await expect(meals.getByRole("region", { name: "Rent payment reminder" })).toBeVisible();
 });
 
+test("medication refill reminder: appears all weekend and clears Monday", async ({ page }) => {
+  await page.clock.install({ time: new Date("2026-07-11T16:00:00Z") }); // Saturday noon EDT
+  await page.goto("/");
+
+  const activities = page.getByRole("tabpanel", { name: "Activities" });
+  await expect(
+    activities.getByRole("region", { name: "Medication refill reminder" }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Show notifications" }).click();
+  const notifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
+  await expect(notifications.getByRole("heading", { name: "Refill meds" })).toBeVisible();
+  await expect(notifications.getByText("Weekend task")).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  await page.getByRole("tab", { name: "Meals" }).click();
+  await expect(
+    page.getByRole("tabpanel", { name: "Meals" })
+      .getByRole("region", { name: "Medication refill reminder" }),
+  ).toBeVisible();
+
+  await page.clock.setSystemTime(new Date("2026-07-13T16:00:00Z")); // Monday noon EDT
+  await page.reload();
+  await expect(
+    page.getByRole("region", { name: "Medication refill reminder" }),
+  ).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Show notifications" }).click();
+  const mondayNotifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
+  await expect(mondayNotifications.getByRole("heading", { name: "Refill meds" })).toHaveCount(0);
+});
+
 test("no hydration errors, including under reduced motion", async ({ page }) => {
   const errors: string[] = [];
   page.on("console", (m) => {

@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
   RENT_REMINDER_LEAD_DAYS,
+  medicationRefillReminderFor,
   rentDueStatusLabel,
   rentReminderFor,
 } from "@/lib/reminders";
@@ -34,5 +35,17 @@ describe("rentDueStatusLabel", () => {
     expect(rentDueStatusLabel(3)).toBe("Due in 3 days");
     expect(rentDueStatusLabel(1)).toBe("Due tomorrow");
     expect(rentDueStatusLabel(0)).toBe("Due today");
+  });
+});
+
+describe("medicationRefillReminderFor", () => {
+  test("appears on Saturday and Sunday", () => {
+    expect(medicationRefillReminderFor("2026-07-11")).toEqual({ day: "Saturday" });
+    expect(medicationRefillReminderFor("2026-07-12")).toEqual({ day: "Sunday" });
+  });
+
+  test("is absent before the weekend and clears on Monday", () => {
+    expect(medicationRefillReminderFor("2026-07-10")).toBeNull();
+    expect(medicationRefillReminderFor("2026-07-13")).toBeNull();
   });
 });
