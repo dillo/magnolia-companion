@@ -296,6 +296,53 @@ test("mobile: footer clears the fixed navigation without excess space", async ({
   expect(gap).toBeLessThan(24);
 });
 
+test("mobile: directory is a tab and more navigation items have icons", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const bottomNav = page.locator('nav[aria-label="Main"]:visible');
+  await expect(bottomNav.getByRole("link", { name: "Directory", exact: true }).locator("svg")).toBeVisible();
+  await expect(bottomNav.getByRole("link", { name: "Holidays", exact: true })).toHaveCount(0);
+
+  await bottomNav.getByRole("button", { name: "More", exact: true }).click();
+
+  for (const label of ["Explore", "FAQ", "Holidays", "About & Disclaimer"]) {
+    await expect(bottomNav.getByRole("link", { name: label, exact: true }).locator("svg")).toBeVisible();
+  }
+});
+
+test("mobile: the More pages coachmark teaches the menu once", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const tip = page.getByRole("button", { name: /Tap More for more pages/ });
+  await expect(tip).toBeVisible();
+  await expect(tip).toContainText("Explore, holidays, FAQ & About");
+
+  const tipBox = await tip.boundingBox();
+  const accessibilityBox = await page
+    .getByRole("button", { name: "Accessibility settings", exact: true })
+    .boundingBox();
+  expect(tipBox).not.toBeNull();
+  expect(accessibilityBox).not.toBeNull();
+  expect(tipBox!.x + tipBox!.width).toBeLessThanOrEqual(accessibilityBox!.x);
+
+  await tip.click();
+  await expect(page.getByRole("button", { name: "More", exact: true })).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
+  await expect(page.getByRole("link", { name: "Holidays", exact: true })).toBeVisible();
+  await expect(tip).toHaveCount(0);
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem("mc-more-discovered")))
+    .toBe("true");
+
+  await page.reload();
+  await page.waitForTimeout(100);
+  await expect(tip).toHaveCount(0);
+});
+
 test("mobile: accessibility dialog closes from the blank space above navigation", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
