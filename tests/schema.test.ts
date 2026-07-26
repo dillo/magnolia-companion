@@ -146,12 +146,18 @@ describe("nearbyPlacesSchema", () => {
 describe("contactsSchema", () => {
   test("accepts the committed contacts fixture", () => {
     const parsed = contactsSchema.parse(readJSON("content/contacts.json"));
-    expect(parsed.contacts).toHaveLength(9);
+    expect(parsed.contacts).toHaveLength(11);
     expect(parsed.contacts[0].name).toBe("Lyshon Calyen");
     expect(parsed.contacts.at(-1)?.name).toBe("Roswell Public Safety Headquarters");
     expect(parsed.contacts.filter((contact) => contact.category === "magnolia")).toHaveLength(6);
     expect(parsed.contacts.filter((contact) => contact.category === "emergency")).toHaveLength(3);
-    expect(parsed.contacts.filter((contact) => contact.category === "doctors")).toHaveLength(0);
+    expect(parsed.contacts.filter((contact) => contact.category === "doctors")).toHaveLength(2);
+    expect(
+      parsed.contacts.find((contact) => contact.id === "albert-f-johary-md")?.address,
+    ).toBe("1320 Center Drive, Suite 100, Dunwoody, GA 30338");
+    expect(
+      parsed.contacts.find((contact) => contact.id === "thomas-m-guest-md")?.address,
+    ).toBe("5671 Peachtree Dunwoody Road, Floor 3, Suite 300, Atlanta, GA 30342");
     expect(
       parsed.contacts.find((contact) => contact.id === "wellstar-north-fulton-medical-center")?.address,
     ).toBe("3000 Hospital Boulevard, Roswell, GA 30076");

@@ -18,11 +18,12 @@ describe("loaders", () => {
   });
 
   test("loadContacts returns the committed directory", () => {
-    expect(contacts.contacts).toHaveLength(9);
+    expect(contacts.contacts).toHaveLength(11);
     expect(contacts.contacts[0].name).toBe("Lyshon Calyen");
     expect(contacts.contacts.at(-1)?.name).toBe("Roswell Public Safety Headquarters");
     expect(contacts.contacts.filter((contact) => contact.category === "magnolia")).toHaveLength(6);
     expect(contacts.contacts.filter((contact) => contact.category === "emergency")).toHaveLength(3);
+    expect(contacts.contacts.filter((contact) => contact.category === "doctors")).toHaveLength(2);
     expect(
       contacts.contacts.find((contact) => contact.id === "wellstar-north-fulton-medical-center")?.address,
     ).toBe("3000 Hospital Boulevard, Roswell, GA 30076");

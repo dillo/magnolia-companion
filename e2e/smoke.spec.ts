@@ -331,10 +331,10 @@ test("contacts: directory filters the published contacts", async ({ page }) => {
   await expect(page).toHaveTitle("Directory | Magnolia Companion");
   await expect(page.getByRole("heading", { name: "Directory", exact: true })).toBeVisible();
   const filters = page.getByRole("group", { name: "Filter directory" });
-  await expect(filters.getByRole("button", { name: /^All\s+9$/ })).toHaveAttribute("aria-pressed", "true");
+  await expect(filters.getByRole("button", { name: /^All\s+11$/ })).toHaveAttribute("aria-pressed", "true");
   await expect(filters.getByRole("button", { name: /^Magnolia\s+6$/ })).toBeVisible();
   await expect(filters.getByRole("button", { name: /^Emergency\s+3$/ })).toBeVisible();
-  await expect(filters.getByRole("button", { name: /^Doctors\s+0$/ })).toBeVisible();
+  await expect(filters.getByRole("button", { name: /^Doctors\s+2$/ })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Roswell Fire Station 24" })).toHaveClass(/text-ink/);
   await expect(page.getByText("Fire and Rescue", { exact: true })).toHaveClass(/text-copper/);
   await expect(page.getByRole("heading", { name: "Roswell Public Safety Headquarters" })).toBeVisible();
@@ -361,8 +361,27 @@ test("contacts: directory filters the published contacts", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Lyshon Calyen" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Wellstar North Fulton Medical Center" })).toHaveCount(0);
 
-  await filters.getByRole("button", { name: /^Doctors\s+0$/ }).click();
-  await expect(page.getByText("No doctors have been added yet.")).toBeVisible();
+  await filters.getByRole("button", { name: /^Doctors\s+2$/ }).click();
+  const primaryCare = page.getByRole("listitem").filter({
+    has: page.getByRole("heading", { name: "Albert F. Johary, MD" }),
+  });
+  await expect(primaryCare.getByText("Primary Care Physician", { exact: true })).toBeVisible();
+  await expect(
+    primaryCare.getByText("1320 Center Drive, Suite 100, Dunwoody, GA 30338", { exact: true }),
+  ).toBeVisible();
+  await expect(primaryCare.getByText("(770) 730-8908", { exact: true })).toBeVisible();
+  await expect(primaryCare.getByText("(770) 730-8230", { exact: true })).toBeVisible();
+  const cardiologist = page.getByRole("listitem").filter({
+    has: page.getByRole("heading", { name: "Thomas M Guest, MD" }),
+  });
+  await expect(cardiologist.getByText("Cardiologist", { exact: true })).toBeVisible();
+  await expect(
+    cardiologist.getByText(
+      "5671 Peachtree Dunwoody Road, Floor 3, Suite 300, Atlanta, GA 30342",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(cardiologist.getByText("(404) 778-6070", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Lyshon Calyen" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Wellstar North Fulton Medical Center" })).toHaveCount(0);
 });

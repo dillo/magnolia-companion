@@ -61,6 +61,28 @@
       "email": "kknowles@pegasusseniorliving.com"
     },
     {
+      "id": "albert-f-johary-md",
+      "name": "Albert F. Johary, MD",
+      "role": "Primary Care Physician",
+      "category": "doctors",
+      "cell": null,
+      "main": "(770) 730-8908",
+      "fax": "(770) 730-8230",
+      "email": null,
+      "address": "1320 Center Drive, Suite 100, Dunwoody, GA 30338"
+    },
+    {
+      "id": "thomas-m-guest-md",
+      "name": "Thomas M Guest, MD",
+      "role": "Cardiologist",
+      "category": "doctors",
+      "cell": null,
+      "main": "(404) 778-6070",
+      "fax": null,
+      "email": null,
+      "address": "5671 Peachtree Dunwoody Road, Floor 3, Suite 300, Atlanta, GA 30342"
+    },
+    {
       "id": "wellstar-north-fulton-medical-center",
       "name": "Wellstar North Fulton Medical Center",
       "role": "Nearest Emergency Room",
