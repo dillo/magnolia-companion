@@ -161,14 +161,19 @@ export const nearbyPlacesSchema = z.object({
 });
 export type NearbyPlacesDirectory = z.infer<typeof nearbyPlacesSchema>;
 
+export const CONTACT_CATEGORIES = ["magnolia", "emergency", "doctors"] as const;
+export type ContactCategory = (typeof CONTACT_CATEGORIES)[number];
+
 export const contactSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   role: z.string().min(1),
+  category: z.enum(CONTACT_CATEGORIES),
   cell: z.string().min(1).nullable(),
   main: z.string().min(1).nullable(),
   fax: z.string().min(1).nullable(),
   email: z.string().email().nullable(),
+  address: z.string().min(1).optional(),
 });
 export type Contact = z.infer<typeof contactSchema>;
 

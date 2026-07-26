@@ -146,9 +146,15 @@ describe("nearbyPlacesSchema", () => {
 describe("contactsSchema", () => {
   test("accepts the committed contacts fixture", () => {
     const parsed = contactsSchema.parse(readJSON("content/contacts.json"));
-    expect(parsed.contacts).toHaveLength(8);
-    expect(parsed.contacts[0].name).toBe("Roswell Fire Station 24");
-    expect(parsed.contacts.at(-1)?.name).toBe("Kimberly Knowles");
+    expect(parsed.contacts).toHaveLength(9);
+    expect(parsed.contacts[0].name).toBe("Lyshon Calyen");
+    expect(parsed.contacts.at(-1)?.name).toBe("Roswell Public Safety Headquarters");
+    expect(parsed.contacts.filter((contact) => contact.category === "magnolia")).toHaveLength(6);
+    expect(parsed.contacts.filter((contact) => contact.category === "emergency")).toHaveLength(3);
+    expect(parsed.contacts.filter((contact) => contact.category === "doctors")).toHaveLength(0);
+    expect(
+      parsed.contacts.find((contact) => contact.id === "wellstar-north-fulton-medical-center")?.address,
+    ).toBe("3000 Hospital Boulevard, Roswell, GA 30076");
   });
   test("accepts a fully populated contact", () => {
     const parsed = contactsSchema.parse({
@@ -157,20 +163,25 @@ describe("contactsSchema", () => {
           id: "jane-smith",
           name: "Jane Smith",
           role: "Executive Director",
+          category: "magnolia",
           cell: "(770) 555-0100",
           main: "(770) 555-0101",
           fax: "(770) 555-0102",
           email: "jane.smith@example.com",
+          address: "123 Main Street, Roswell, GA 30076",
         },
       ],
     });
     expect(parsed.contacts[0].name).toBe("Jane Smith");
+    expect(parsed.contacts[0].category).toBe("magnolia");
+    expect(parsed.contacts[0].address).toBe("123 Main Street, Roswell, GA 30076");
   });
   test("rejects duplicate contact ids", () => {
     const contact = {
       id: "same",
       name: "Jane Smith",
       role: "Executive Director",
+      category: "doctors",
       cell: null,
       main: null,
       fax: null,

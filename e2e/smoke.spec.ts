@@ -316,7 +316,7 @@ test("disclaimer: identifies the app as independent and unofficial", async ({ pa
   );
 });
 
-test("contacts: staff directory lists the published contacts", async ({ page }) => {
+test("contacts: directory filters the published contacts", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
   const featuredContact = page
@@ -328,17 +328,43 @@ test("contacts: staff directory lists the published contacts", async ({ page }) 
   const nav = page.getByRole("navigation", { name: "Main" });
   await nav.getByRole("link", { name: "Directory" }).click();
 
-  await expect(page).toHaveTitle("Staff Directory | Magnolia Companion");
-  await expect(page.getByRole("heading", { name: "Staff Directory" })).toBeVisible();
+  await expect(page).toHaveTitle("Directory | Magnolia Companion");
+  await expect(page.getByRole("heading", { name: "Directory", exact: true })).toBeVisible();
+  const filters = page.getByRole("group", { name: "Filter directory" });
+  await expect(filters.getByRole("button", { name: /^All\s+9$/ })).toHaveAttribute("aria-pressed", "true");
+  await expect(filters.getByRole("button", { name: /^Magnolia\s+6$/ })).toBeVisible();
+  await expect(filters.getByRole("button", { name: /^Emergency\s+3$/ })).toBeVisible();
+  await expect(filters.getByRole("button", { name: /^Doctors\s+0$/ })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Roswell Fire Station 24" })).toHaveClass(/text-ink/);
   await expect(page.getByText("Fire and Rescue", { exact: true })).toHaveClass(/text-copper/);
   await expect(page.getByRole("heading", { name: "Roswell Public Safety Headquarters" })).toBeVisible();
+  const emergencyRoom = page.getByRole("listitem").filter({
+    has: page.getByRole("heading", { name: "Wellstar North Fulton Medical Center" }),
+  });
+  await expect(emergencyRoom.getByText("Nearest Emergency Room", { exact: true })).toBeVisible();
+  await expect(
+    emergencyRoom.getByText("3000 Hospital Boulevard, Roswell, GA 30076", { exact: true }),
+  ).toBeVisible();
+  await expect(emergencyRoom.getByText("(770) 751-2500", { exact: true })).toBeVisible();
   const lyshon = page.getByRole("listitem").filter({
     has: page.getByRole("heading", { name: "Lyshon Calyen" }),
   });
   await expect(lyshon.getByText("(470) 294-7448", { exact: true })).toBeVisible();
   await expect(lyshon.getByText("(770) 643-9433", { exact: true })).toBeVisible();
   await expect(lyshon.getByText("(770) 643-9678", { exact: true })).toBeVisible();
+
+  await filters.getByRole("button", { name: /^Emergency\s+3$/ }).click();
+  await expect(page.getByRole("heading", { name: "Wellstar North Fulton Medical Center" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Lyshon Calyen" })).toHaveCount(0);
+
+  await filters.getByRole("button", { name: /^Magnolia\s+6$/ }).click();
+  await expect(page.getByRole("heading", { name: "Lyshon Calyen" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Wellstar North Fulton Medical Center" })).toHaveCount(0);
+
+  await filters.getByRole("button", { name: /^Doctors\s+0$/ }).click();
+  await expect(page.getByText("No doctors have been added yet.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Lyshon Calyen" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Wellstar North Fulton Medical Center" })).toHaveCount(0);
 });
 
 test("mobile: footer clears the fixed navigation without excess space", async ({ page }) => {

@@ -14,12 +14,20 @@ export default function ContactDetails({
     { label: "Fax", value: contact.fax, callable: false },
   ] as const;
 
-  if (!phoneNumbers.some(({ value }) => value) && !contact.email) return null;
+  if (!phoneNumbers.some(({ value }) => value) && !contact.email && !contact.address) return null;
 
   return (
     <dl
       className={`grid grid-cols-[max-content_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1 text-[15px] leading-snug ${className}`}
     >
+      {contact.address && (
+        <>
+          <dt className="text-moss">Address:</dt>
+          <dd className="min-w-0 font-medium text-ink [overflow-wrap:anywhere]">
+            {contact.address}
+          </dd>
+        </>
+      )}
       {phoneNumbers.map(({ label, value, callable }) =>
         value ? (
           <Fragment key={label}>
