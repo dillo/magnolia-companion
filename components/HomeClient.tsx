@@ -240,13 +240,13 @@ export default function HomeClient({
               selected={mealPick}
               onSelect={selectMealPick}
             />
-
-            <RentReminder date={mealDate} />
-
-            {!menuDay && (
-              <p className="mb-3 text-moss">The menu for this date hasn&apos;t been added yet.</p>
-            )}
           </div>
+
+          <RentReminder date={mealDate} />
+
+          {!menuDay && (
+            <p className="mb-3 text-moss">The menu for this date hasn&apos;t been added yet.</p>
+          )}
 
           <MedicationRefillReminder date={today} />
 
