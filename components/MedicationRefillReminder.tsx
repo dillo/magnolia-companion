@@ -18,7 +18,7 @@ export default function MedicationRefillReminder({ date }: { date: string }) {
 
       <div className="flex min-w-0 items-center justify-between gap-2">
         <h2 className="font-display text-lg font-semibold leading-tight text-ink">
-          Refill meds
+          Refill pill box
         </h2>
         <span className="shrink-0 whitespace-nowrap rounded-full bg-copper px-2 py-0.5 text-[12px] font-bold text-petal">
           Weekend task

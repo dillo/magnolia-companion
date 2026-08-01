@@ -212,7 +212,7 @@ test("medication refill reminder: appears all weekend and clears Monday", async 
 
   await page.getByRole("button", { name: "Show notifications" }).click();
   const notifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
-  await expect(notifications.getByRole("heading", { name: "Refill meds" })).toBeVisible();
+  await expect(notifications.getByRole("heading", { name: "Refill pill box" })).toBeVisible();
   await expect(notifications.getByText("Weekend task")).toBeVisible();
   await page.keyboard.press("Escape");
 
@@ -243,7 +243,7 @@ test("medication refill reminder: appears all weekend and clears Monday", async 
 
   await page.getByRole("button", { name: "Show notifications" }).click();
   const mondayNotifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
-  await expect(mondayNotifications.getByRole("heading", { name: "Refill meds" })).toHaveCount(0);
+  await expect(mondayNotifications.getByRole("heading", { name: "Refill pill box" })).toHaveCount(0);
 });
 
 test("no hydration errors, including under reduced motion", async ({ page }) => {

@@ -72,18 +72,16 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
       <div ref={rootRef} className="relative">
         <button ref={buttonRef} type="button" aria-label="Show notifications" aria-expanded={open}
           onClick={() => setOpen((value) => !value)}
-          className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
-            prominent
+          className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${prominent
               ? "bg-copper text-petal hover:bg-copper/90"
               : "bg-hairline/60 text-ink hover:bg-hairline hover:text-copper"
-          }`}>
+            }`}>
           <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
             <path d="M18 16v-5a6 6 0 0 0-12 0v5l-2 2h16l-2-2Z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
             <path d="M9.5 20a2.5 2.5 0 0 0 5 0" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
           </svg>
-          <span aria-hidden="true" className={`absolute right-2 top-2 h-2.5 w-2.5 rounded-full ${
-            prominent ? "bg-petal" : "bg-copper"
-          }`} />
+          <span aria-hidden="true" className={`absolute right-2 top-2 h-2.5 w-2.5 rounded-full ${prominent ? "bg-petal" : "bg-copper"
+            }`} />
         </button>
       </div>
 
@@ -121,7 +119,7 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
                       </div>
                       <div className="flex min-w-0 items-center justify-between gap-3">
                         <h3 className="min-w-0 font-semibold leading-tight text-ink">
-                          Refill meds
+                          Refill pill box
                         </h3>
                         <span className="shrink-0 whitespace-nowrap rounded-full bg-copper px-2 py-0.5 text-[13px] font-bold text-petal">
                           Weekend task
@@ -155,13 +153,11 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
 
                   {nextHoliday && holidayInDays !== null && (
                     <article
-                      className={`grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 px-4 py-3 ${
-                        holidaySoon ? "bg-copper/10" : ""
-                      }`}
+                      className={`grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 px-4 py-3 ${holidaySoon ? "bg-copper/10" : ""
+                        }`}
                     >
-                      <div className={`flex h-16 flex-col items-center justify-center rounded-lg text-center ${
-                        holidaySoon ? "bg-copper text-petal" : "border border-hairline bg-sand text-moss"
-                      }`}>
+                      <div className={`flex h-16 flex-col items-center justify-center rounded-lg text-center ${holidaySoon ? "bg-copper text-petal" : "border border-hairline bg-sand text-moss"
+                        }`}>
                         <span className="text-[13px] font-bold uppercase leading-none">
                           {shortMonthOfISO(nextHoliday.startDate)}
                         </span>
@@ -172,9 +168,8 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
                       <div className="min-w-0">
                         <div className="flex items-start justify-between gap-3">
                           <h3 className="min-w-0 font-semibold leading-tight text-ink">{nextHoliday.title}</h3>
-                          <span className={`shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[13px] font-bold ${
-                            holidaySoon ? "bg-copper text-petal" : "bg-hairline/60 text-moss"
-                          }`}>
+                          <span className={`shrink-0 whitespace-nowrap rounded-full px-2 py-0.5 text-[13px] font-bold ${holidaySoon ? "bg-copper text-petal" : "bg-hairline/60 text-moss"
+                            }`}>
                             {relativeDayLabel(holidayInDays)}
                           </span>
                         </div>
