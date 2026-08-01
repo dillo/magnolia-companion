@@ -161,7 +161,7 @@ export const nearbyPlacesSchema = z.object({
 });
 export type NearbyPlacesDirectory = z.infer<typeof nearbyPlacesSchema>;
 
-export const CONTACT_CATEGORIES = ["magnolia", "emergency", "doctors"] as const;
+export const CONTACT_CATEGORIES = ["magnolia", "emergency", "doctors", "pharmacy"] as const;
 export type ContactCategory = (typeof CONTACT_CATEGORIES)[number];
 
 export const contactSchema = z.object({

@@ -345,10 +345,11 @@ test("contacts: directory filters the published contacts", async ({ page }) => {
   await expect(page).toHaveTitle("Directory | Magnolia Companion");
   await expect(page.getByRole("heading", { name: "Directory", exact: true })).toBeVisible();
   const filters = page.getByRole("group", { name: "Filter directory" });
-  await expect(filters.getByRole("button", { name: /^All\s+11$/ })).toHaveAttribute("aria-pressed", "true");
+  await expect(filters.getByRole("button", { name: /^All\s+12$/ })).toHaveAttribute("aria-pressed", "true");
   await expect(filters.getByRole("button", { name: /^Magnolia\s+6$/ })).toBeVisible();
   await expect(filters.getByRole("button", { name: /^Emergency\s+3$/ })).toBeVisible();
   await expect(filters.getByRole("button", { name: /^Doctors\s+2$/ })).toBeVisible();
+  await expect(filters.getByRole("button", { name: /^Pharmacy\s+1$/ })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Roswell Fire Station 24" })).toHaveClass(/text-ink/);
   await expect(page.getByText("Fire and Rescue", { exact: true })).toHaveClass(/text-copper/);
   await expect(page.getByRole("heading", { name: "Roswell Public Safety Headquarters" })).toBeVisible();
@@ -398,6 +399,17 @@ test("contacts: directory filters the published contacts", async ({ page }) => {
   await expect(cardiologist.getByText("(404) 778-6070", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Lyshon Calyen" })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Wellstar North Fulton Medical Center" })).toHaveCount(0);
+
+  await filters.getByRole("button", { name: /^Pharmacy\s+1$/ }).click();
+  const pharmacy = page.getByRole("listitem").filter({
+    has: page.getByRole("heading", { name: "CVS Pharmacy #2081" }),
+  });
+  await expect(pharmacy.getByText("Pharmacy", { exact: true })).toBeVisible();
+  await expect(
+    pharmacy.getByText("8430 Holcomb Bridge Road, Alpharetta, GA 30022", { exact: true }),
+  ).toBeVisible();
+  await expect(pharmacy.getByText("(770) 640-6576", { exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Lyshon Calyen" })).toHaveCount(0);
 });
 
 test("mobile: footer clears the fixed navigation without excess space", async ({ page }) => {

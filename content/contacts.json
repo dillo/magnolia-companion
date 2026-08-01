@@ -83,6 +83,17 @@
       "address": "5671 Peachtree Dunwoody Road, Floor 3, Suite 300, Atlanta, GA 30342"
     },
     {
+      "id": "cvs-pharmacy-2081",
+      "name": "CVS Pharmacy #2081",
+      "role": "Pharmacy",
+      "category": "pharmacy",
+      "cell": null,
+      "main": "(770) 640-6576",
+      "fax": null,
+      "email": null,
+      "address": "8430 Holcomb Bridge Road, Alpharetta, GA 30022"
+    },
+    {
       "id": "wellstar-north-fulton-medical-center",
       "name": "Wellstar North Fulton Medical Center",
       "role": "Nearest Emergency Room",

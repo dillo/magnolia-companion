@@ -4,7 +4,7 @@ import { loadContacts } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Directory | Magnolia Companion",
-  description: "Contacts for Magnolia Place of Roswell staff, emergency services, and doctors.",
+  description: "Contacts for Magnolia Place of Roswell staff, emergency services, doctors, and pharmacies.",
 };
 
 export default function ContactsPage() {

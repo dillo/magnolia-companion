@@ -146,12 +146,13 @@ describe("nearbyPlacesSchema", () => {
 describe("contactsSchema", () => {
   test("accepts the committed contacts fixture", () => {
     const parsed = contactsSchema.parse(readJSON("content/contacts.json"));
-    expect(parsed.contacts).toHaveLength(11);
+    expect(parsed.contacts).toHaveLength(12);
     expect(parsed.contacts[0].name).toBe("Lyshon Calyen");
     expect(parsed.contacts.at(-1)?.name).toBe("Roswell Public Safety Headquarters");
     expect(parsed.contacts.filter((contact) => contact.category === "magnolia")).toHaveLength(6);
     expect(parsed.contacts.filter((contact) => contact.category === "emergency")).toHaveLength(3);
     expect(parsed.contacts.filter((contact) => contact.category === "doctors")).toHaveLength(2);
+    expect(parsed.contacts.filter((contact) => contact.category === "pharmacy")).toHaveLength(1);
     expect(
       parsed.contacts.find((contact) => contact.id === "albert-f-johary-md")?.address,
     ).toBe("1320 Center Drive, Suite 100, Dunwoody, GA 30338");
@@ -161,6 +162,11 @@ describe("contactsSchema", () => {
     expect(
       parsed.contacts.find((contact) => contact.id === "wellstar-north-fulton-medical-center")?.address,
     ).toBe("3000 Hospital Boulevard, Roswell, GA 30076");
+    expect(parsed.contacts.find((contact) => contact.id === "cvs-pharmacy-2081")).toMatchObject({
+      name: "CVS Pharmacy #2081",
+      main: "(770) 640-6576",
+      address: "8430 Holcomb Bridge Road, Alpharetta, GA 30022",
+    });
   });
   test("accepts a fully populated contact", () => {
     const parsed = contactsSchema.parse({

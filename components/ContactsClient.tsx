@@ -17,6 +17,7 @@ const FILTERS: {
   { key: "magnolia", label: "Magnolia", dotClass: "bg-moss" },
   { key: "emergency", label: "Emergency", dotClass: "bg-copper" },
   { key: "doctors", label: "Doctors", dotClass: "bg-ink" },
+  { key: "pharmacy", label: "Pharmacy", dotClass: "bg-moss/60" },
 ];
 
 export default function ContactsClient({ contacts }: { contacts: Contact[] }) {
@@ -34,7 +35,7 @@ export default function ContactsClient({ contacts }: { contacts: Contact[] }) {
           <p className="font-semibold uppercase tracking-wide text-copper">Get in touch</p>
           <h1 className="mt-1 font-display text-title font-semibold">Directory</h1>
           <p className="mt-3 text-moss">
-            Contacts for Magnolia Place of Roswell staff, emergency services, and doctors.
+            Contacts for Magnolia Place of Roswell staff, emergency services, doctors, and pharmacies.
           </p>
         </div>
 
@@ -98,5 +99,6 @@ function countFor(contacts: Contact[], filter: ContactFilter): number {
 function emptyMessage(filter: ContactFilter, contactCount: number): string {
   if (contactCount === 0) return "Directory contacts will appear here when they are available.";
   if (filter === "doctors") return "No doctors have been added yet.";
+  if (filter === "pharmacy") return "No pharmacies have been added yet.";
   return "No directory contacts match this filter.";
 }
