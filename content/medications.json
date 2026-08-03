@@ -8,12 +8,28 @@
         {
           "period": "morning",
           "amount": "2.5 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         },
         {
           "period": "evening",
           "amount": "2.5 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         }
       ]
     },
@@ -24,8 +40,16 @@
       "doses": [
         {
           "period": "morning",
-          "amount": "25 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "amount": "50 mg",
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         }
       ]
     },
@@ -37,7 +61,15 @@
         {
           "period": "morning",
           "amount": "5 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         }
       ]
     },
@@ -49,7 +81,15 @@
         {
           "period": "morning",
           "amount": "40 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         }
       ]
     },
@@ -61,12 +101,21 @@
         {
           "period": "morning",
           "amount": "112 mcg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday"
+          ]
         },
         {
           "period": "morning",
           "amount": "125 mcg",
-          "days": ["saturday", "sunday"]
+          "days": [
+            "saturday",
+            "sunday"
+          ]
         }
       ]
     },
@@ -78,7 +127,15 @@
         {
           "period": "evening",
           "amount": "100 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         }
       ]
     },
@@ -90,19 +147,11 @@
         {
           "period": "evening",
           "amount": "250 mg",
-          "days": ["monday", "wednesday", "friday"]
-        }
-      ]
-    },
-    {
-      "id": "potassium-chloride-er",
-      "name": "Potassium Chloride ER",
-      "purpose": "Supplement",
-      "doses": [
-        {
-          "period": "evening",
-          "amount": "10 mEq",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "wednesday",
+            "friday"
+          ]
         }
       ]
     },
@@ -114,12 +163,28 @@
         {
           "period": "morning",
           "amount": "2 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         },
         {
           "period": "evening",
           "amount": "2 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         }
       ]
     },
@@ -131,12 +196,28 @@
         {
           "period": "morning",
           "amount": "650 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         },
         {
           "period": "evening",
           "amount": "650 mg",
-          "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
         }
       ]
     }
