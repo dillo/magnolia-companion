@@ -45,13 +45,14 @@ describe("lookup", () => {
   test("findMenuDay hits and misses", () => {
     expect(findMenuDay(weeks, "2026-07-08")?.lunch.items[0].name).toBe("Garden Green Salad");
     expect(findMenuDay(weeks, "2026-07-12")?.dinner.items.at(-1)?.name).toBe("Boston Cream Cake");
-    expect(findMenuDay(weeks, "2026-08-01")).toBeNull();
+    expect(findMenuDay(weeks, "2026-08-03")?.lunch.items[1].name).toBe("Honey Dijon Roasted Chicken");
+    expect(findMenuDay(weeks, "2099-01-01")).toBeNull();
   });
-  test("menu lookups ignore placeholder menu files that have not been ingested", () => {
+  test("menu lookups use published weeks and ignore placeholders", () => {
     expect(publishedMenuWeeks(weeks).map((w) => w.weekOf)).not.toContain("2026-07-06");
     expect(menuWeekFor(weeks, "2026-07-11")?.weekOf).toBe("2026-07-05");
     expect(menuWeekFor(weeks, "2026-07-12")?.weekOf).toBe("2026-07-12");
-    expect(menuWeekFor(weeks, "2026-08-01")).toBeNull();
+    expect(menuWeekFor(weeks, "2026-08-01")?.weekOf).toBe("2026-07-26");
   });
   test("scansForDate returns the month's scans", () => {
     expect(scansForDate(months, "2026-07-08")).toEqual([]);

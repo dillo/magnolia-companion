@@ -117,7 +117,7 @@ test("medications: morning and evening routines preserve special schedules", asy
   const morning = page.getByRole("tabpanel", { name: "Morning" });
   await expect(morning.getByRole("heading", { name: "Morning medications" })).toBeVisible();
   const levothyroxine = morning.getByRole("listitem").filter({
-    has: morning.getByRole("heading", { name: "Levothyroxine" }),
+    has: page.getByRole("heading", { name: "Levothyroxine" }),
   });
   await expect(levothyroxine.getByText("112 mcg")).toBeVisible();
   await expect(levothyroxine.getByText("Monday–Friday")).toBeVisible();
@@ -128,7 +128,7 @@ test("medications: morning and evening routines preserve special schedules", asy
   await expect(eveningTab).toHaveAttribute("aria-selected", "true");
   const evening = page.getByRole("tabpanel", { name: "Evening" });
   const ciprofloxacin = evening.getByRole("listitem").filter({
-    has: evening.getByRole("heading", { name: "Ciprofloxacin" }),
+    has: page.getByRole("heading", { name: "Ciprofloxacin" }),
   });
   await expect(ciprofloxacin.getByText("Monday, Wednesday & Friday only")).toBeVisible();
   await expect(evening.getByRole("heading", { name: "Metoprolol Succinate ER" })).toHaveCount(0);
@@ -318,7 +318,7 @@ test("home: lunch card is highlighted during its serving window", async ({ page 
   await page.goto("/");
   await page.getByRole("tab", { name: "Meals" }).click();
   const lunchCard = page.getByRole("region", { name: "Lunch, serving now" });
-  await expect(lunchCard).toHaveClass(/bg-copper\/10/);
+  await expect(lunchCard).toHaveClass(/meal-card-paper-serving/);
   await expect(lunchCard.getByText("11:30 AM – 1:00 PM")).toBeVisible();
   await expect(page.getByText("Serving now")).toHaveCount(0);
   await page.getByRole("tab", { name: "Activities" }).click();

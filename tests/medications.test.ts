@@ -5,7 +5,7 @@ import { medicationsSchema } from "@/lib/schema";
 describe("medications", () => {
   test("loads and validates the committed medication directory", () => {
     const directory = loadMedications();
-    expect(directory.medications).toHaveLength(10);
+    expect(directory.medications).toHaveLength(9);
 
     const levothyroxine = directory.medications.find((medication) => medication.id === "levothyroxine");
     expect(levothyroxine?.doses).toEqual([
