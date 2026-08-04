@@ -121,87 +121,89 @@ export default function AccessibilityControl() {
             role="dialog"
             aria-modal="false"
             aria-labelledby={titleId}
-            className="pointer-events-auto relative mb-3 w-[min(calc(100vw-2rem),22rem)] rounded-lg border border-hairline bg-card p-4 text-ink shadow-2xl"
+            className="pointer-events-auto relative mb-3 w-[min(calc(100vw-2rem),22rem)] rounded-lg border border-hairline bg-card text-ink shadow-2xl"
           >
             <span
               aria-hidden="true"
               className="absolute -bottom-2 right-4 h-4 w-4 rotate-45 border-b border-r border-hairline bg-card"
             />
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div>
-                <h2 id={titleId} className="font-display text-2xl font-semibold">
-                  Accessibility
-                </h2>
-                <p className="mt-1 text-sm text-moss">Display settings for easier reading.</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label="Close accessibility settings"
-                className="grid min-h-11 min-w-11 place-items-center rounded-full border border-hairline text-2xl text-copper"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <fieldset>
-                <legend className="mb-2 font-semibold">Text size</legend>
-                <div className="grid grid-cols-3 gap-2">
-                  {TEXT_SIZES.map((size) => (
-                    <button
-                      key={size.key}
-                      type="button"
-                      aria-label={`${size.name} text`}
-                      aria-pressed={textSize === size.key}
-                      onClick={() => applyTextSize(size.key)}
-                      className={`min-h-12 rounded-lg border px-3 font-semibold ${
-                        textSize === size.key
-                          ? "border-ink bg-ink text-petal"
-                          : "border-hairline bg-petal text-ink"
-                      }`}
-                    >
-                      <span className={size.key === "xl" ? "text-xl" : size.key === "lg" ? "text-lg" : ""}>
-                        {size.label}
-                      </span>
-                    </button>
-                  ))}
+            <div className="max-h-[calc(100dvh-11rem)] overflow-y-auto rounded-lg p-4 lg:max-h-[calc(100dvh-6rem)]">
+              <div className="mb-4 flex items-start justify-between gap-3">
+                <div>
+                  <h2 id={titleId} className="font-display text-2xl font-semibold">
+                    Accessibility
+                  </h2>
+                  <p className="mt-1 text-sm text-moss">Display settings for easier reading.</p>
                 </div>
-              </fieldset>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  aria-label="Close accessibility settings"
+                  className="grid min-h-11 min-w-11 shrink-0 place-items-center rounded-full border border-hairline text-2xl text-copper"
+                >
+                  ×
+                </button>
+              </div>
 
-              <label className="flex min-h-14 items-center justify-between gap-3 rounded-lg border border-hairline bg-petal px-3 py-2">
-                <span>
-                  <span className="block font-semibold">High contrast</span>
-                  <span className="block text-sm text-moss">Darker text and stronger borders.</span>
-                </span>
-                <input
-                  type="checkbox"
-                  checked={contrast}
-                  onChange={(event) => applyContrast(event.target.checked)}
-                  className="h-6 w-6 accent-copper"
-                />
-              </label>
+              <div className="space-y-4">
+                <fieldset>
+                  <legend className="mb-2 font-semibold">Text size</legend>
+                  <div className="grid grid-cols-3 gap-2">
+                    {TEXT_SIZES.map((size) => (
+                      <button
+                        key={size.key}
+                        type="button"
+                        aria-label={`${size.name} text`}
+                        aria-pressed={textSize === size.key}
+                        onClick={() => applyTextSize(size.key)}
+                        className={`min-h-12 rounded-lg border px-3 font-semibold ${
+                          textSize === size.key
+                            ? "border-ink bg-ink text-petal"
+                            : "border-hairline bg-petal text-ink"
+                        }`}
+                      >
+                        <span className={size.key === "xl" ? "text-xl" : size.key === "lg" ? "text-lg" : ""}>
+                          {size.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
 
-              <label className="flex min-h-14 items-center justify-between gap-3 rounded-lg border border-hairline bg-petal px-3 py-2">
-                <span>
-                  <span className="block font-semibold">Reduce motion</span>
-                  <span className="block text-sm text-moss">Minimize page transitions.</span>
-                </span>
-                <input
-                  type="checkbox"
-                  checked={reducedMotion}
-                  onChange={(event) => applyReducedMotion(event.target.checked)}
-                  className="h-6 w-6 accent-copper"
-                />
-              </label>
+                <label className="flex min-h-14 items-center justify-between gap-3 rounded-lg border border-hairline bg-petal px-3 py-2">
+                  <span>
+                    <span className="block font-semibold">High contrast</span>
+                    <span className="block text-sm text-moss">Darker text and stronger borders.</span>
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={contrast}
+                    onChange={(event) => applyContrast(event.target.checked)}
+                    className="h-6 w-6 accent-copper"
+                  />
+                </label>
 
-              <button
-                type="button"
-                onClick={resetSettings}
-                className="min-h-12 w-full rounded-lg border border-copper px-4 font-semibold text-copper"
-              >
-                Reset accessibility settings
-              </button>
+                <label className="flex min-h-14 items-center justify-between gap-3 rounded-lg border border-hairline bg-petal px-3 py-2">
+                  <span>
+                    <span className="block font-semibold">Reduce motion</span>
+                    <span className="block text-sm text-moss">Minimize page transitions.</span>
+                  </span>
+                  <input
+                    type="checkbox"
+                    checked={reducedMotion}
+                    onChange={(event) => applyReducedMotion(event.target.checked)}
+                    className="h-6 w-6 accent-copper"
+                  />
+                </label>
+
+                <button
+                  type="button"
+                  onClick={resetSettings}
+                  className="min-h-12 w-full rounded-lg border border-copper px-4 font-semibold text-copper"
+                >
+                  Reset accessibility settings
+                </button>
+              </div>
             </div>
           </div>
         ) : null}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { dayNameOfISO, longDateOfISO, shortMonthOfISO } from "@/lib/dates";
 import { rentDueStatusLabel, rentReminderFor } from "@/lib/reminders";
 
@@ -31,6 +32,15 @@ export default function RentReminder({ date }: { date: string }) {
         <p className="mt-0.5 text-[15px] leading-snug text-moss">
           {reminder.daysUntilDue >= 0 ? "Rent is due" : "Rent was due"} {dueDateText}.
         </p>
+        <p className="mt-0.5 text-[14px] leading-snug text-moss">
+          Paid after the 5th, rent adds a $250 late fee.
+        </p>
+        <Link
+          href="/faq#services-and-fees"
+          className="mt-1 inline-block text-[14px] font-semibold text-copper underline-offset-4 hover:underline"
+        >
+          Billing details
+        </Link>
       </div>
     </section>
   );

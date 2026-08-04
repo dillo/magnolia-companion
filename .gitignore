@@ -28,6 +28,9 @@ playwright-report/
 
 # debug
 npm-debug.log*
+
+# impeccable design skill local state
+.impeccable/
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
