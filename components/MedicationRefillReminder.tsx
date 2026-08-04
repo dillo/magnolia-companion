@@ -8,7 +8,7 @@ export default function MedicationRefillReminder({ date }: { date: string }) {
   return (
     <section
       aria-label="Medication refill reminder"
-      className="mb-4 grid grid-cols-[2.25rem_minmax(0,1fr)] items-center gap-2.5 rounded-xl border border-copper/30 bg-copper/10 px-3 py-1.5 shadow-sm"
+      className="mb-4 grid grid-cols-[2.25rem_minmax(0,1fr)] items-center gap-2.5 rounded-xl border border-copper/40 bg-copper/15 px-3 py-1.5 shadow-md"
     >
       <div
         aria-hidden="true"

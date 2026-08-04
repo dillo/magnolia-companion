@@ -5,7 +5,6 @@ import { motion, useReducedMotionConfig } from "framer-motion";
 import type { ActivityEvent } from "@/lib/schema";
 import { formatTime } from "@/lib/dates";
 import { timelineStatuses, type TimelineStatus } from "@/lib/now";
-import { DIMENSION_META } from "@/lib/dimensions";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
 
@@ -96,11 +95,6 @@ function TimelineRow({
             className={`min-w-0 flex-1 rounded-xl border border-hairline bg-card px-4 py-3 ${
               past ? "" : elevated ? "shadow-md" : "shadow-sm"
             }`}
-            style={
-              e.dimension
-                ? { borderLeft: `3px solid ${DIMENSION_META[e.dimension].dot}` }
-                : undefined
-            }
           >
             <div className="text-lg font-semibold leading-snug">{e.title}</div>
             {(e.location || e.dimension) && (

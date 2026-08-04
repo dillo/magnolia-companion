@@ -5,7 +5,7 @@ export default function MagnoliaLogo() {
     <Link
       href="/"
       aria-label="Magnolia Companion home"
-      className="group flex min-w-0 items-center justify-start gap-1.5 text-left sm:gap-3"
+      className="group flex min-w-0 items-center justify-start gap-1.5 text-left sm:gap-3 lg:min-w-fit lg:shrink-0"
     >
       <span className="relative grid h-8 w-8 shrink-0 place-items-center text-petal sm:h-9 sm:w-9">
         <svg aria-hidden="true" viewBox="0 0 48 48" className="h-8 w-8 drop-shadow-sm sm:h-9 sm:w-9">

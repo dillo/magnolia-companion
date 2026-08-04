@@ -39,11 +39,11 @@ export default function SiteHeader({ holidays }: { holidays: Holiday[] }) {
       }`}
     >
       <div className="mx-auto max-w-6xl px-4 py-3">
-        <div className="flex items-center justify-between gap-2 sm:gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-2 sm:gap-x-4">
           <MagnoliaLogo />
 
-          <div className="hidden items-center gap-3 lg:flex">
-            <nav aria-label="Main" className="flex items-center gap-1">
+          <div className="hidden items-center gap-3 lg:flex lg:flex-wrap lg:justify-end">
+            <nav aria-label="Main" className="flex flex-wrap items-center justify-end gap-1">
               {NAV.map((n) => (
                 <Link
                   key={n.href}

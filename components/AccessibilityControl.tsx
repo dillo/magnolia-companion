@@ -213,9 +213,9 @@ export default function AccessibilityControl() {
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-label="Accessibility settings"
-          className="pointer-events-auto grid h-14 w-14 place-items-center rounded-full border-[3px] border-petal bg-copper text-petal shadow-xl ring-4 ring-copper/25"
+          className="pointer-events-auto grid h-12 w-12 place-items-center rounded-full border-[3px] border-petal bg-copper text-petal shadow-xl ring-2 ring-copper/25 lg:h-14 lg:w-14"
         >
-          <svg aria-hidden="true" viewBox="0 0 32 32" className="h-9 w-9" fill="none">
+          <svg aria-hidden="true" viewBox="0 0 32 32" className="h-7 w-7 lg:h-9 lg:w-9" fill="none">
             <circle cx="16" cy="7" r="3.25" fill="currentColor" />
             <path
               d="M7.5 12.5c4.8 1.45 12.2 1.45 17 0M16 12.75v12.5M11.5 27l4.5-8 4.5 8"

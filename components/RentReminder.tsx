@@ -11,7 +11,7 @@ export default function RentReminder({ date }: { date: string }) {
   return (
     <section
       aria-label="Rent payment reminder"
-      className="mb-4 grid grid-cols-[3rem_minmax(0,1fr)] items-center gap-3 rounded-xl border border-copper/30 bg-copper/10 px-3 py-2.5 shadow-sm"
+      className="mb-4 grid grid-cols-[3rem_minmax(0,1fr)] items-center gap-3 rounded-xl border border-copper/40 bg-copper/15 px-3 py-2.5 shadow-md"
     >
       <div className="flex h-12 flex-col items-center justify-center rounded-md bg-copper text-center text-petal">
         <span className="text-[11px] font-bold uppercase leading-none">
