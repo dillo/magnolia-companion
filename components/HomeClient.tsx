@@ -105,7 +105,7 @@ export default function HomeClient({
 
   return (
     <div className="mx-auto max-w-5xl">
-      <section aria-label="Today at a glance" className="pb-5 sm:pb-8">
+      <section aria-label="Today at a glance">
         <Masthead
           eyebrow={now ? greetingFor(now) : "Today"}
           main={`${dayNameOfISO(today)}, ${monthDayOfISO(today)}`}
@@ -113,7 +113,7 @@ export default function HomeClient({
           accent={todayDay?.theme ?? null}
         />
 
-        <div className="mt-3 border-b-2 border-hairline sm:mt-4 md:grid md:grid-cols-2">
+        <div className="mt-3 overflow-hidden rounded-2xl border border-hairline bg-card/60 shadow-sm sm:mt-4 md:grid md:grid-cols-2">
           <TodayActivitySummary
             day={todayDay}
             state={activityMoment}
@@ -133,7 +133,7 @@ export default function HomeClient({
         role="tablist"
         aria-label="Home sections"
         aria-orientation="horizontal"
-        className="mt-6 grid grid-cols-2 border-b-2 border-hairline sm:mt-8"
+        className="mt-8 grid grid-cols-2 border-b-2 border-hairline sm:mt-10"
       >
         {HOME_SECTIONS.map((item, index) => {
           const selected = section === item.key;
@@ -168,7 +168,9 @@ export default function HomeClient({
                 <span
                   aria-hidden="true"
                   className={`grid h-10 w-10 shrink-0 place-items-center rounded-full transition-colors ${
-                    selected ? "bg-copper text-petal" : "bg-sand text-moss group-hover:text-ink"
+                    selected
+                      ? "bg-sand text-copper ring-1 ring-inset ring-copper/30"
+                      : "bg-sand text-moss group-hover:text-ink"
                   }`}
                 >
                   <HomeSectionIcon section={item.key} />
