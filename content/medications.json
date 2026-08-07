@@ -94,6 +94,26 @@
       ]
     },
     {
+      "id": "spironolacton",
+      "name": "Spironolacton-E",
+      "purpose": "Water pill",
+      "doses": [
+        {
+          "period": "morning",
+          "amount": "25 mg",
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
+            "sunday"
+          ]
+        }
+      ]
+    },
+    {
       "id": "levothyroxine",
       "name": "Levothyroxine",
       "purpose": "Thyroid supplement",
