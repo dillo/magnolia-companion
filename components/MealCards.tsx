@@ -1,6 +1,7 @@
 import { formatTime } from "@/lib/dates";
 import type { MealItem, MenuDay } from "@/lib/schema";
 import { servingNow } from "@/lib/now";
+import EmptyState from "@/components/EmptyState";
 
 /** Serving hours displayed on meal cards and used by the serving-now highlight. */
 export const MEALS = [
@@ -121,10 +122,19 @@ export default function MealCards({
   now?: string | null;
   className?: string;
 }) {
+  if (!day) {
+    return (
+      <EmptyState
+        message="Menu not available for this date"
+        detail="Check back after the next printed menu is added."
+      />
+    );
+  }
+
   return (
     <div className={className}>
       {MEALS.map((meal) => (
-        <MealCard key={meal.key} meal={meal} items={day?.[meal.key].items ?? null} now={now} />
+        <MealCard key={meal.key} meal={meal} items={day[meal.key].items} now={now} />
       ))}
     </div>
   );

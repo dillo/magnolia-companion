@@ -80,7 +80,7 @@ export default function FaqClient({ sections }: { sections: FaqSection[] }) {
             const active = activeId === id;
             return (
               <a key={id} href={`#${id}`}
-                className={`rounded-full border px-3 py-1.5 text-[15px] font-semibold ${
+                className={`inline-flex min-h-11 items-center rounded-full border px-3 py-1.5 font-semibold ${
                   active ? "border-copper bg-copper text-petal" : "border-hairline bg-card text-copper"
                 }`}>
                 {section.title}
@@ -121,7 +121,7 @@ export default function FaqClient({ sections }: { sections: FaqSection[] }) {
             <section key={section.title} id={faqSectionId(section.title)} className="scroll-mt-24">
               <div className="flex items-baseline justify-between gap-3">
                 <h2 className="font-display text-2xl font-semibold">{section.title}</h2>
-                <span className="text-[15px] text-moss">
+                <span className="text-moss">
                   {section.items.length} {section.items.length === 1 ? "question" : "questions"}
                 </span>
               </div>

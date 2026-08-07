@@ -25,7 +25,7 @@ export default function Timeline({ events, now = null }: { events: ActivityEvent
           <TimelineRow
             event={e}
             index={i}
-            past={now !== null && statuses[i] === "past"}
+            status={statuses[i]}
             reduced={!!reduced}
             elevated={i === markerIndex}
           />
@@ -37,11 +37,13 @@ export default function Timeline({ events, now = null }: { events: ActivityEvent
 
 function NowMarker({ now }: { now: string }) {
   return (
-    <div aria-hidden="true" className="relative my-1.5 flex items-center gap-2">
-      <span className="absolute -left-[1.45rem] h-2 w-2 rounded-full bg-copper" />
-      <span className="h-px flex-1 bg-copper/60" />
-      <span className="text-[13px] font-bold uppercase tracking-wider text-copper">
-        Now · {formatTime(now)}
+    <div className="relative my-1.5 flex items-center gap-2">
+      <span aria-hidden="true" className="absolute -left-[1.45rem] h-2 w-2 rounded-full bg-copper" />
+      <span aria-hidden="true" className="h-px flex-1 bg-copper/60" />
+      <span className="text-sm font-bold uppercase tracking-wider text-copper">
+        <span className="sr-only">Current time: </span>
+        <span aria-hidden="true">Now · </span>
+        {formatTime(now)}
       </span>
     </div>
   );
@@ -50,16 +52,24 @@ function NowMarker({ now }: { now: string }) {
 function TimelineRow({
   event: e,
   index,
-  past,
+  status,
   reduced,
   elevated,
 }: {
   event: ActivityEvent;
   index: number;
-  past: boolean;
+  status: TimelineStatus;
   reduced: boolean;
   elevated: boolean;
 }) {
+  const past = status === "past";
+  const statusLabel = status === "current"
+    ? "Happening now"
+    : status === "past"
+      ? "Finished"
+      : status === "allday"
+        ? "All-day"
+        : "Upcoming";
   const time = (
     <span
       className={`w-20 shrink-0 whitespace-nowrap pt-0.5 text-right tabular-nums ${
@@ -84,9 +94,12 @@ function TimelineRow({
         }`}
       />
       {e.routine ? (
-        <div className="flex items-baseline gap-3 py-0.5">
+        <div className="flex min-w-0 items-baseline gap-3 py-0.5">
           {time}
-          <span className="text-moss">{e.title}</span>
+          <span className="min-w-0 break-words text-moss">
+            <span className="sr-only">{statusLabel}: </span>
+            {e.title}
+          </span>
         </div>
       ) : (
         <div className="flex gap-3">
@@ -96,7 +109,10 @@ function TimelineRow({
               past ? "" : elevated ? "shadow-md" : "shadow-sm"
             }`}
           >
-            <div className="text-lg font-semibold leading-snug">{e.title}</div>
+            <div className="break-words text-lg font-semibold leading-snug">
+              <span className="sr-only">{statusLabel}: </span>
+              {e.title}
+            </div>
             {(e.location || e.dimension) && (
               <div className="mt-1 flex flex-wrap items-center gap-2 text-moss">
                 {e.location && <span>{e.location}</span>}

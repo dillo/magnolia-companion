@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
   clockHHMM, minutesOf, greetingFor, heroStateFor, timelineStatuses,
-  servingNow, tomorrowPreview,
+  mealMomentFor, servingNow, tomorrowPreview,
 } from "@/lib/now";
 import type { ActivityDay, ActivityEvent } from "@/lib/schema";
 
@@ -117,6 +117,35 @@ describe("servingNow", () => {
   });
   test("null clock (pre-mount) is false", () => {
     expect(servingNow(lunch, null)).toBe(false);
+  });
+});
+
+describe("mealMomentFor", () => {
+  const meals = [
+    { start: "07:30", end: "09:00" },
+    { start: "11:30", end: "13:00" },
+    { start: "16:00", end: "18:30" },
+  ];
+
+  test("selects the first upcoming meal before breakfast", () => {
+    expect(mealMomentFor(meals, "06:45")).toEqual({ index: 0, dayOffset: 0, kind: "next" });
+  });
+
+  test("selects a meal throughout its inclusive serving window", () => {
+    expect(mealMomentFor(meals, "11:30")).toEqual({ index: 1, dayOffset: 0, kind: "serving" });
+    expect(mealMomentFor(meals, "13:00")).toEqual({ index: 1, dayOffset: 0, kind: "serving" });
+  });
+
+  test("selects the next meal between serving windows", () => {
+    expect(mealMomentFor(meals, "15:00")).toEqual({ index: 2, dayOffset: 0, kind: "next" });
+  });
+
+  test("rolls over to tomorrow's breakfast after dinner", () => {
+    expect(mealMomentFor(meals, "19:00")).toEqual({ index: 0, dayOffset: 1, kind: "tomorrow" });
+  });
+
+  test("returns null when no meals are configured", () => {
+    expect(mealMomentFor([], "12:00")).toBeNull();
   });
 });
 

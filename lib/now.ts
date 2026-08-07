@@ -80,6 +80,28 @@ export function servingNow(meal: { start: string; end: string }, hhmm: string | 
   return hhmm !== null && hhmm >= meal.start && hhmm <= meal.end;
 }
 
+export type MealMoment = {
+  index: number;
+  dayOffset: 0 | 1;
+  kind: "serving" | "next" | "tomorrow";
+};
+
+/** The meal being served, the next meal today, or tomorrow's first meal. */
+export function mealMomentFor(
+  meals: readonly { start: string; end: string }[],
+  hhmm: string,
+): MealMoment | null {
+  if (meals.length === 0) return null;
+
+  for (let index = 0; index < meals.length; index++) {
+    const meal = meals[index];
+    if (servingNow(meal, hhmm)) return { index, dayOffset: 0, kind: "serving" };
+    if (hhmm < meal.start) return { index, dayOffset: 0, kind: "next" };
+  }
+
+  return { index: 0, dayOffset: 1, kind: "tomorrow" };
+}
+
 /** What the day-complete hero advertises for tomorrow: first timed special, else first timed event. */
 export function tomorrowPreview(day: ActivityDay | null): ActivityEvent | null {
   if (!day) return null;

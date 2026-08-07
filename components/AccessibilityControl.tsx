@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 const TEXT_SIZES = [
   { key: "", label: "A", name: "Standard" },
@@ -30,30 +30,38 @@ function announceSettingsChange() {
 }
 
 export default function AccessibilityControl() {
+  const panelId = useId();
   const titleId = useId();
   const [open, setOpen] = useState(false);
   const [textSize, setTextSize] = useState<TextSize>("");
   const [contrast, setContrast] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const closePanel = useCallback((restoreFocus = true) => {
+    setOpen(false);
+    if (restoreFocus) window.requestAnimationFrame(() => triggerRef.current?.focus());
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- saved settings live in localStorage, readable only after mount
     setTextSize(readSetting("mc-textsize") as TextSize);
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- saved settings live in localStorage, readable only after mount
     setContrast(readSetting("mc-contrast") === "high");
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- saved settings live in localStorage, readable only after mount
     setReducedMotion(readSetting("mc-reduced-motion") === "true");
   }, []);
 
   useEffect(() => {
     if (!open) return;
+    closeButtonRef.current?.focus();
     function onPointerDown(event: PointerEvent) {
       if (rootRef.current?.contains(event.target as Node)) return;
-      setOpen(false);
+      closePanel();
     }
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") closePanel();
     }
     document.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("keydown", onKeyDown);
@@ -61,7 +69,26 @@ export default function AccessibilityControl() {
       document.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [open]);
+  }, [closePanel, open]);
+
+  function trapDialogFocus(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "Tab" || !dialogRef.current) return;
+    const focusable = Array.from(
+      dialogRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
 
   function applyTextSize(key: TextSize) {
     setTextSize(key);
@@ -73,7 +100,6 @@ export default function AccessibilityControl() {
 
   function applyContrast(enabled: boolean) {
     setContrast(enabled);
-    // eslint-disable-next-line react-hooks/immutability -- root data attributes drive global accessibility CSS tokens
     document.documentElement.dataset.contrast = enabled ? "high" : "";
     saveSetting("mc-contrast", enabled ? "high" : "");
     announceSettingsChange();
@@ -81,7 +107,6 @@ export default function AccessibilityControl() {
 
   function applyReducedMotion(enabled: boolean) {
     setReducedMotion(enabled);
-    // eslint-disable-next-line react-hooks/immutability -- root data attributes drive global accessibility CSS tokens
     document.documentElement.dataset.reducedMotion = enabled ? "true" : "";
     saveSetting("mc-reduced-motion", enabled ? "true" : "");
     announceSettingsChange();
@@ -91,11 +116,8 @@ export default function AccessibilityControl() {
     setTextSize("");
     setContrast(false);
     setReducedMotion(false);
-    // eslint-disable-next-line react-hooks/immutability -- root data attributes drive global accessibility CSS tokens
     document.documentElement.dataset.textsize = "";
-    // eslint-disable-next-line react-hooks/immutability -- root data attributes drive global accessibility CSS tokens
     document.documentElement.dataset.contrast = "";
-    // eslint-disable-next-line react-hooks/immutability -- root data attributes drive global accessibility CSS tokens
     document.documentElement.dataset.reducedMotion = "";
     saveSetting("mc-textsize", "");
     saveSetting("mc-contrast", "");
@@ -108,7 +130,7 @@ export default function AccessibilityControl() {
       {open && (
         <div
           aria-hidden="true"
-          onClick={() => setOpen(false)}
+          onClick={() => closePanel()}
           className="fixed inset-0 z-[49] bg-ink/55 print:hidden"
         />
       )}
@@ -118,9 +140,12 @@ export default function AccessibilityControl() {
       >
         {open ? (
           <div
+            ref={dialogRef}
+            id={panelId}
             role="dialog"
-            aria-modal="false"
+            aria-modal="true"
             aria-labelledby={titleId}
+            onKeyDown={trapDialogFocus}
             className="pointer-events-auto relative mb-3 w-[min(calc(100vw-2rem),22rem)] rounded-lg border border-hairline bg-card text-ink shadow-2xl"
           >
             <span
@@ -136,8 +161,9 @@ export default function AccessibilityControl() {
                   <p className="mt-1 text-sm text-moss">Display settings for easier reading.</p>
                 </div>
                 <button
+                  ref={closeButtonRef}
                   type="button"
-                  onClick={() => setOpen(false)}
+                  onClick={() => closePanel()}
                   aria-label="Close accessibility settings"
                   className="grid min-h-11 min-w-11 shrink-0 place-items-center rounded-full border border-hairline text-2xl text-copper"
                 >
@@ -209,9 +235,11 @@ export default function AccessibilityControl() {
         ) : null}
 
         <button
+          ref={triggerRef}
           type="button"
-          onClick={() => setOpen((value) => !value)}
+          onClick={() => open ? closePanel(false) : setOpen(true)}
           aria-expanded={open}
+          aria-controls={panelId}
           aria-label="Accessibility settings"
           className="pointer-events-auto grid h-12 w-12 place-items-center rounded-full border-[3px] border-petal bg-copper text-petal shadow-xl ring-2 ring-copper/25 lg:h-14 lg:w-14"
         >

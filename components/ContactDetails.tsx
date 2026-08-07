@@ -18,7 +18,7 @@ export default function ContactDetails({
 
   return (
     <dl
-      className={`grid grid-cols-[max-content_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1 text-[15px] leading-snug ${className}`}
+      className={`grid grid-cols-[max-content_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1.5 leading-snug ${className}`}
     >
       {contact.address && (
         <>

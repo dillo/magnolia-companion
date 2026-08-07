@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import {
   RENT_REMINDER_LEAD_DAYS,
+  RENT_GRACE_DAYS,
   medicationRefillReminderFor,
   rentDueStatusLabel,
   rentReminderFor,
@@ -13,15 +14,24 @@ describe("rentReminderFor", () => {
     expect(rentReminderFor("2026-07-29")).toEqual({
       dueDate: "2026-08-01",
       daysUntilDue: 3,
+      graceEndsDate: "2026-08-05",
+      lateFeeDate: "2026-08-06",
+      daysUntilLateFee: 8,
     });
   });
 
-  test("continues through the first and disappears on the second", () => {
+  test("continues through the grace period and disappears when the fee begins", () => {
+    expect(RENT_GRACE_DAYS).toBe(4);
     expect(rentReminderFor("2026-08-01")).toEqual({
       dueDate: "2026-08-01",
       daysUntilDue: 0,
+      graceEndsDate: "2026-08-05",
+      lateFeeDate: "2026-08-06",
+      daysUntilLateFee: 5,
     });
-    expect(rentReminderFor("2026-08-02")).toBeNull();
+    expect(rentReminderFor("2026-08-04")?.daysUntilDue).toBe(-3);
+    expect(rentReminderFor("2026-08-05")?.daysUntilLateFee).toBe(1);
+    expect(rentReminderFor("2026-08-06")).toBeNull();
   });
 
   test("handles short months and year boundaries", () => {
@@ -35,6 +45,8 @@ describe("rentDueStatusLabel", () => {
     expect(rentDueStatusLabel(3)).toBe("Due in 3 days");
     expect(rentDueStatusLabel(1)).toBe("Due tomorrow");
     expect(rentDueStatusLabel(0)).toBe("Due today");
+    expect(rentDueStatusLabel(-1)).toBe("Grace period");
+    expect(rentDueStatusLabel(-4)).toBe("Fee starts tomorrow");
   });
 });
 

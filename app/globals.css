@@ -41,6 +41,13 @@ details[open] > .faq-answer { animation: faq-fade 0.18s ease-out; }
 
 body { background: var(--color-petal); color: var(--color-ink); }
 
+::selection {
+  background: color-mix(in srgb, var(--color-copper) 24%, var(--color-petal));
+  color: var(--color-ink);
+}
+
+input, textarea, select { accent-color: var(--color-copper); caret-color: var(--color-copper); }
+
 /* Warm, fine-grained card stock inspired by a linen restaurant menu. */
 .meal-card-paper {
   --meal-paper-base: color-mix(in srgb, var(--color-card) 58%, var(--color-petal));

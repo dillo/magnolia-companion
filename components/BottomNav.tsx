@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const TABS = [
   { href: "/", label: "Home", icon: SunIcon },
@@ -41,7 +41,14 @@ export default function BottomNav() {
   const [moreOpen, setMoreOpen] = useState(false);
   const [showMoreHint, setShowMoreHint] = useState(false);
   const rootRef = useRef<HTMLElement>(null);
+  const moreButtonRef = useRef<HTMLButtonElement>(null);
+  const firstMoreLinkRef = useRef<HTMLAnchorElement>(null);
   const moreActive = MORE.some((m) => m.href === pathname);
+
+  const closeMore = useCallback((restoreFocus = true) => {
+    setMoreOpen(false);
+    if (restoreFocus) window.requestAnimationFrame(() => moreButtonRef.current?.focus());
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- discovery state lives in localStorage, readable only after mount
@@ -50,12 +57,13 @@ export default function BottomNav() {
 
   useEffect(() => {
     if (!moreOpen) return;
+    window.requestAnimationFrame(() => firstMoreLinkRef.current?.focus());
     function onPointerDown(event: PointerEvent) {
       if (rootRef.current?.contains(event.target as Node)) return;
-      setMoreOpen(false);
+      closeMore();
     }
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setMoreOpen(false);
+      if (event.key === "Escape") closeMore();
     }
     document.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("keydown", onKeyDown);
@@ -63,7 +71,7 @@ export default function BottomNav() {
       document.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [moreOpen]);
+  }, [closeMore, moreOpen]);
 
   function markMoreDiscovered() {
     setShowMoreHint(false);
@@ -80,7 +88,7 @@ export default function BottomNav() {
       {moreOpen && (
         <div
           aria-hidden="true"
-          onClick={() => setMoreOpen(false)}
+          onClick={() => closeMore()}
           className="fixed inset-0 z-[35] bg-ink/55 lg:hidden"
         />
       )}
@@ -92,16 +100,19 @@ export default function BottomNav() {
         {moreOpen && (
           <div
             id="bottom-more-menu"
+            role="region"
+            aria-label="More pages"
             className="absolute inset-x-0 bottom-full border-t border-hairline bg-card shadow-[0_-16px_32px_rgba(42,46,34,0.16)]"
           >
             {MORE.map(({ href, label, icon: Icon }) => {
               const active = pathname === href;
               return (
                 <Link
+                  ref={href === MORE[0].href ? firstMoreLinkRef : undefined}
                   key={href}
                   href={href}
                   aria-current={active ? "page" : undefined}
-                  onClick={() => setMoreOpen(false)}
+                  onClick={() => closeMore(false)}
                   className={`flex items-center justify-between border-b border-hairline px-6 py-4 text-lg font-semibold last:border-b-0 ${
                     active ? "bg-copper text-petal" : "text-ink hover:bg-hairline/60"
                   }`}
@@ -131,7 +142,7 @@ export default function BottomNav() {
               <span className="block pr-10 text-sm font-bold text-copper">
                 Tap More for more pages
               </span>
-              <span className="mt-0.5 block text-[15px] leading-snug text-moss">
+              <span className="mt-0.5 block leading-snug text-moss">
                 Calendar, explore, holidays, FAQ &amp; About
               </span>
             </button>
@@ -154,7 +165,7 @@ export default function BottomNav() {
                 key={href}
                 href={href}
                 aria-current={active ? "page" : undefined}
-                onClick={() => setMoreOpen(false)}
+                onClick={() => closeMore(false)}
                 className={`flex flex-col items-center gap-0.5 pb-2 pt-2.5 text-[13px] ${
                   active ? "font-bold text-copper" : "font-semibold text-moss"
                 }`}
@@ -165,12 +176,13 @@ export default function BottomNav() {
             );
           })}
           <button
+            ref={moreButtonRef}
             type="button"
             aria-expanded={moreOpen}
             aria-controls="bottom-more-menu"
             onClick={() => {
-              if (!moreOpen) markMoreDiscovered();
-              setMoreOpen((value) => !value);
+              if (moreOpen) closeMore(false);
+              else openMore();
             }}
             className={`flex flex-col items-center gap-0.5 pb-2 pt-2.5 text-[13px] ${
               moreActive || moreOpen ? "font-bold text-copper" : "font-semibold text-moss"

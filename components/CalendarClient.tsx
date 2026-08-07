@@ -33,7 +33,7 @@ function ActivityFilterSelect({
           id="calendar-filter"
           value={value}
           onChange={(event) => onChange(event.target.value as Dimension | "all")}
-          className="w-full appearance-none rounded-full border border-hairline bg-card px-5 py-2.5 pr-11 font-semibold text-ink shadow-sm hover:border-copper/40"
+          className="min-h-11 w-full appearance-none rounded-full border border-hairline bg-card px-5 py-2.5 pr-11 font-semibold text-ink shadow-sm hover:border-copper/40"
         >
           <option value="all">All activities</option>
           {DIMENSIONS.map((d) => (
@@ -55,6 +55,8 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
   const [filter, setFilter] = useState<Dimension | "all">("all");
   const [selected, setSelected] = useState<string | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const selectedTriggerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!today) return;
@@ -65,7 +67,7 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
 
   const closeDayDetails = useCallback(() => {
     setSelected(null);
-    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+    window.requestAnimationFrame(() => selectedTriggerRef.current?.focus());
   }, []);
 
   useEffect(() => {
@@ -105,6 +107,30 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
   function moveMonth(delta: number) {
     setIdx((i) => Math.min(months.length - 1, Math.max(0, i + delta)));
     setSelected(null);
+  }
+
+  function openDayDetails(date: string, trigger: HTMLElement) {
+    selectedTriggerRef.current = trigger;
+    setSelected(date);
+  }
+
+  function trapDialogFocus(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "Tab" || !dialogRef.current) return;
+    const focusable = Array.from(
+      dialogRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   return (
@@ -162,7 +188,11 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
           );
           const isToday = date === today;
           return (
-            <button key={date} onClick={() => setSelected(date)}
+            <button
+              key={date}
+              type="button"
+              aria-haspopup="dialog"
+              onClick={(event) => openDayDetails(date, event.currentTarget)}
               className={`min-h-24 rounded-lg border p-1.5 text-left align-top text-[13px] transition-colors ${
                 isToday
                   ? "border-2 border-copper bg-copper/10 hover:bg-copper/15"
@@ -200,7 +230,7 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
       </div>
       <section aria-label="Activity dimension legend" className="mt-4 hidden border-y border-hairline py-3 md:block">
         <h2 className="mb-2 font-semibold">Activity dot colors</h2>
-        <div className="flex flex-wrap gap-x-4 gap-y-2 text-[15px] text-moss">
+        <div className="flex flex-wrap gap-x-4 gap-y-2 text-moss">
           {DIMENSIONS.map((d) => (
             <div key={d} className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: DIMENSION_META[d].dot }} />
@@ -264,7 +294,7 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
               </div>
               <button
                 type="button"
-                onClick={() => setSelected(day.date)}
+                onClick={(event) => openDayDetails(day.date, event.currentTarget)}
                 aria-label={`Show details for ${dayNameOfISO(day.date)}, ${longDateOfISO(day.date)}`}
                 aria-haspopup="dialog"
                 title="View day details"
@@ -278,10 +308,15 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
       {monthHolidays.length > 0 && (
         <section className="mt-4 border-y border-hairline py-3">
           <h2 className="mb-2 font-semibold">Holidays this month</h2>
-          <div className="flex flex-wrap gap-2 text-[15px]">
+          <div className="flex flex-wrap gap-2">
             {monthHolidays.map((holiday) => (
-              <button key={`${holiday.startDate}-${holiday.title}`} type="button" onClick={() => setSelected(holiday.startDate)}
-                className="rounded-full border border-hairline bg-card px-3 py-1 text-left font-semibold text-copper">
+              <button
+                key={`${holiday.startDate}-${holiday.title}`}
+                type="button"
+                aria-haspopup="dialog"
+                onClick={(event) => openDayDetails(holiday.startDate, event.currentTarget)}
+                className="min-h-11 rounded-full border border-hairline bg-card px-3 py-1 text-left font-semibold text-copper"
+              >
                 {holiday.title}
               </button>
             ))}
@@ -290,7 +325,12 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
       )}
 
       {(selDay || selectedHolidays.length > 0) && selected && (
-        <div role="dialog" aria-modal="true" aria-labelledby="calendar-day-title"
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="calendar-day-title"
+          onKeyDown={trapDialogFocus}
           className="fixed inset-0 z-50 flex items-center justify-center bg-ink/55 p-4 md:p-6"
           onClick={closeDayDetails}>
           <section className="max-h-[85vh] w-full max-w-2xl overflow-auto rounded-lg bg-petal p-5 shadow-xl"
@@ -303,7 +343,7 @@ export default function CalendarClient({ months, holidays }: { months: ActivityM
                 {selDay?.theme && <p className="font-display italic text-copper">{selDay.theme}</p>}
               </div>
               <button ref={closeButtonRef} type="button" aria-label="Close day details" onClick={closeDayDetails}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-card text-copper hover:bg-hairline">
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-hairline bg-card text-copper hover:bg-hairline">
                 <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
                   <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2.5" />
                 </svg>

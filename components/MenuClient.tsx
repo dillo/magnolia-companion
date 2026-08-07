@@ -82,19 +82,46 @@ export default function MenuClient({
     setDate(menus[next].weekOf);
   }
 
+  function moveDayFocus(index: number, event: React.KeyboardEvent<HTMLButtonElement>) {
+    let nextIndex: number | null = null;
+    if (event.key === "ArrowRight") nextIndex = (index + 1) % weekDates.length;
+    if (event.key === "ArrowLeft") nextIndex = (index - 1 + weekDates.length) % weekDates.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = weekDates.length - 1;
+    if (nextIndex === null) return;
+    event.preventDefault();
+    const nextDate = weekDates[nextIndex];
+    setDate(nextDate);
+    window.requestAnimationFrame(() => document.getElementById(`menu-day-tab-${nextDate}`)?.focus());
+  }
+
   return (
     <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
       <section className="max-w-xl">
         <Breadcrumbs />
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-2">
-          <button disabled={idx === 0} onClick={() => moveWeek(-1)}
-            className="mt-1 whitespace-nowrap font-bold text-copper disabled:opacity-30">‹ Last</button>
+          <button
+            type="button"
+            aria-label="Previous menu week"
+            disabled={idx === 0}
+            onClick={() => moveWeek(-1)}
+            className="mt-0.5 min-h-11 whitespace-nowrap rounded-full px-2 font-bold text-copper hover:bg-card disabled:cursor-not-allowed disabled:bg-transparent disabled:text-moss"
+          >
+            ‹ Last
+          </button>
           <div className="min-w-0 text-center">
             <h1 className="whitespace-nowrap font-display text-title font-semibold">This Week</h1>
             <p className="mt-1 truncate text-moss">{weekRange}</p>
           </div>
-          <button disabled={idx < 0 || idx === menus.length - 1} onClick={() => moveWeek(1)}
-            className="mt-1 whitespace-nowrap font-bold text-copper disabled:opacity-30">Next ›</button>
+          <button
+            type="button"
+            aria-label="Next menu week"
+            disabled={idx < 0 || idx === menus.length - 1}
+            onClick={() => moveWeek(1)}
+            className="mt-0.5 min-h-11 whitespace-nowrap rounded-full px-2 font-bold text-copper hover:bg-card disabled:cursor-not-allowed disabled:bg-transparent disabled:text-moss"
+          >
+            Next ›
+          </button>
         </div>
 
         <div
@@ -106,9 +133,18 @@ export default function MenuClient({
             const selected = activeDate === d;
             const isToday = today === d;
             return (
-              <button key={d} role="tab" aria-selected={selected} onClick={() => setDate(d)}
+              <button
+                key={d}
+                id={`menu-day-tab-${d}`}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                aria-controls="menu-day-panel"
+                tabIndex={selected ? 0 : -1}
+                onClick={() => setDate(d)}
+                onKeyDown={(event) => moveDayFocus(weekDates.indexOf(d), event)}
                 aria-label={`${dayNameOfISO(d)}, ${longDateOfISO(d)}${isToday ? ", today" : ""}`}
-                className={`rounded-lg border-2 px-0.5 py-1 text-center sm:px-1 sm:py-2 ${selected
+                className={`min-h-14 rounded-lg border-2 px-0.5 py-1 text-center sm:px-1 sm:py-2 ${selected
                     ? "border-copper bg-copper text-petal"
                     : isToday
                       ? "border-copper bg-card text-moss"
@@ -121,13 +157,13 @@ export default function MenuClient({
           })}
         </div>
 
-        {!week && (
-          <p className="mb-3 text-moss">
-            This week&apos;s menu hasn&apos;t been added yet. Add the new menu after Sunday ingest.
-          </p>
-        )}
-
-        <MealCards day={day} now={activeDate === today ? now : null} />
+        <div
+          id="menu-day-panel"
+          role="tabpanel"
+          aria-labelledby={`menu-day-tab-${activeDate}`}
+        >
+          <MealCards day={day} now={activeDate === today ? now : null} />
+        </div>
 
         <ScanLightbox scans={week?.sourceScan ? [week.sourceScan] : []} label="View the printed menu" />
       </section>

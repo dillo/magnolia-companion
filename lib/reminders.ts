@@ -1,10 +1,14 @@
 import { addDaysISO, dayNameOfISO, daysUntil } from "./dates";
 
 export const RENT_REMINDER_LEAD_DAYS = 3;
+export const RENT_GRACE_DAYS = 4;
 
 export type RentReminder = {
   dueDate: string;
   daysUntilDue: number;
+  graceEndsDate: string;
+  lateFeeDate: string;
+  daysUntilLateFee: number;
 };
 
 export type MedicationRefillReminder = {
@@ -18,8 +22,9 @@ function firstOfNextMonthISO(date: string): string {
 }
 
 /**
- * Rent reminders run from three days before the first through the due date.
- * The second is the first date outside the reminder window.
+ * Rent reminders run from three days before the first through the fifth.
+ * The sixth, when the printed $250 late fee begins, is the first date outside
+ * the reminder window.
  */
 export function rentReminderFor(date: string): RentReminder | null {
   const currentMonthDueDate = `${date.slice(0, 7)}-01`;
@@ -27,9 +32,16 @@ export function rentReminderFor(date: string): RentReminder | null {
 
   for (const dueDate of [currentMonthDueDate, nextMonthDueDate]) {
     const startsOn = addDaysISO(dueDate, -RENT_REMINDER_LEAD_DAYS);
-    const lastVisibleDate = dueDate;
-    if (date >= startsOn && date <= lastVisibleDate) {
-      return { dueDate, daysUntilDue: daysUntil(date, dueDate) };
+    const graceEndsDate = addDaysISO(dueDate, RENT_GRACE_DAYS);
+    if (date >= startsOn && date <= graceEndsDate) {
+      const lateFeeDate = addDaysISO(dueDate, RENT_GRACE_DAYS + 1);
+      return {
+        dueDate,
+        daysUntilDue: daysUntil(date, dueDate),
+        graceEndsDate,
+        lateFeeDate,
+        daysUntilLateFee: daysUntil(date, lateFeeDate),
+      };
     }
   }
 
@@ -40,6 +52,8 @@ export function rentDueStatusLabel(daysUntilDue: number): string {
   if (daysUntilDue > 1) return `Due in ${daysUntilDue} days`;
   if (daysUntilDue === 1) return "Due tomorrow";
   if (daysUntilDue === 0) return "Due today";
+  if (daysUntilDue === -RENT_GRACE_DAYS) return "Fee starts tomorrow";
+  if (daysUntilDue < 0) return "Grace period";
   return "Payment due";
 }
 

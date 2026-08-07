@@ -50,7 +50,7 @@ export default function ContactsClient({ contacts }: { contacts: Contact[] }) {
               type="button"
               aria-pressed={filter === item.key}
               onClick={() => setFilter(item.key)}
-              className={`flex min-h-10 items-center gap-1.5 rounded-full px-3.5 py-1.5 font-semibold transition-colors ${
+              className={`flex min-h-11 items-center gap-1.5 rounded-full px-3.5 py-1.5 font-semibold transition-colors ${
                 filter === item.key
                   ? "bg-copper text-petal"
                   : "bg-card text-moss ring-1 ring-inset ring-hairline hover:ring-copper/40 hover:text-ink"
@@ -60,7 +60,7 @@ export default function ContactsClient({ contacts }: { contacts: Contact[] }) {
                 <span aria-hidden="true" className={`h-2.5 w-2.5 rounded-full ${item.dotClass}`} />
               )}
               {item.label}
-              <span className="text-[13px] font-bold tabular-nums opacity-70">
+              <span className={`text-[13px] font-bold tabular-nums ${filter === item.key ? "text-petal" : "text-moss"}`}>
                 {countFor(contacts, item.key)}
               </span>
             </button>

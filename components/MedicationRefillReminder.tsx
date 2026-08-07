@@ -22,13 +22,13 @@ export default function MedicationRefillReminder({ date }: { date: string }) {
           <h2 className="font-display text-lg font-semibold leading-tight text-ink">
             Refill pill box
           </h2>
-          <span className="shrink-0 whitespace-nowrap rounded-full bg-copper px-2 py-0.5 text-[12px] font-bold text-petal">
+          <span className="shrink-0 rounded-full bg-copper px-2 py-0.5 text-[13px] font-bold leading-tight text-petal">
             Weekend task
           </span>
         </div>
         <Link
           href="/medications"
-          className="mt-0.5 inline-block text-[14px] font-semibold text-copper underline-offset-4 hover:underline"
+          className="mt-0.5 inline-flex min-h-11 items-center font-semibold leading-snug text-copper underline-offset-4 hover:underline"
         >
           See amounts and times on your Medications page
         </Link>

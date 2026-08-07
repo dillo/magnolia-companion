@@ -2,24 +2,31 @@
 
 import Link from "next/link";
 import type { FeaturedFaq } from "@/lib/faqs";
-import type { ActivityMonth, Contact, MenuWeek } from "@/lib/schema";
+import type { ActivityDay, ActivityEvent, ActivityMonth, Contact, MenuDay, MenuWeek } from "@/lib/schema";
 import {
   addDaysISO, mondayOfISO,
   dayNameOfISO, monthDayOfISO, monthNameOfISO, monthOfISO, formatTime,
 } from "@/lib/dates";
-import { findActivityDay, findMenuDay } from "@/lib/lookup";
+import { findActivityDay, findMenuDay, menuWeekFor, scansForDate } from "@/lib/lookup";
 import Timeline from "@/components/Timeline";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
 import { useToday } from "@/components/useToday";
-import MealCards from "@/components/MealCards";
+import MealCards, { MEALS, mealHours } from "@/components/MealCards";
 import HelpfulToday from "@/components/HelpfulToday";
-import { greetingFor, heroStateFor, tomorrowPreview } from "@/lib/now";
+import {
+  greetingFor,
+  heroStateFor,
+  mealMomentFor,
+  tomorrowPreview,
+  type HeroState,
+  type MealMoment,
+} from "@/lib/now";
 import { useNow } from "@/components/useNow";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
-import HeroCard from "@/components/HeroCard";
 import MedicationRefillReminder from "@/components/MedicationRefillReminder";
 import RentReminder from "@/components/RentReminder";
+import ScanLightbox from "@/components/ScanLightbox";
 import {
   useHomeNavigation,
   type ActivityPick,
@@ -65,15 +72,33 @@ export default function HomeClient({
     selectMealPick,
   } = useHomeNavigation();
 
-  if (!today) return null; // date is client-side by design; render after mount
+  if (!today) {
+    return (
+      <div className="mx-auto min-h-64 max-w-5xl" aria-busy="true">
+        <p role="status" className="text-moss">Preparing today&apos;s daybook…</p>
+      </div>
+    );
+  }
 
   const activityDate = activityPick === "tomorrow" ? addDaysISO(today, 1) : today;
   const mealDate = mealPick === "tomorrow" ? addDaysISO(today, 1) : today;
   const weekStart = mondayOfISO(today);
   const weekDates = Array.from({ length: 7 }, (_, i) => addDaysISO(weekStart, i));
-  const day = findActivityDay(months, activityDate);
+  const todayDay = findActivityDay(months, today);
+  const day = activityDate === today ? todayDay : findActivityDay(months, activityDate);
   const tomorrowDay = findActivityDay(months, addDaysISO(today, 1));
-  const menuDay = findMenuDay(weeks, mealDate);
+  const todayMenuDay = findMenuDay(weeks, today);
+  const tomorrowMenuDay = findMenuDay(weeks, addDaysISO(today, 1));
+  const menuDay = mealDate === today ? todayMenuDay : tomorrowMenuDay;
+  const activityMoment = now && todayDay ? heroStateFor(todayDay.events, now) : null;
+  const mealMoment = now ? mealMomentFor(MEALS, now) : null;
+  const summaryMenuDate = mealMoment?.dayOffset === 1 ? addDaysISO(today, 1) : today;
+  const summaryMenuDay = summaryMenuDate === today ? todayMenuDay : tomorrowMenuDay;
+  const summaryMenuWeek = menuWeekFor(weeks, summaryMenuDate);
+  const summarySourceScans = Array.from(new Set([
+    ...scansForDate(months, today),
+    ...(summaryMenuWeek?.sourceScan ? [summaryMenuWeek.sourceScan] : []),
+  ]));
   const weekEnd = addDaysISO(weekStart, 6);
   const weekRange = monthOfISO(weekStart) === monthOfISO(weekEnd)
     ? `${monthDayOfISO(weekStart)} – ${Number(weekEnd.slice(8))}`
@@ -86,6 +111,52 @@ export default function HomeClient({
 
   return (
     <div className="mx-auto max-w-5xl">
+      <section aria-label="Today at a glance" className="pb-5 sm:pb-8">
+        <Masthead
+          eyebrow={now ? greetingFor(now) : "Today"}
+          main={`${dayNameOfISO(today)}, ${monthDayOfISO(today)}`}
+          year={today.slice(0, 4)}
+          accent={todayDay?.theme ?? null}
+        />
+
+        <div className="mt-3 overflow-hidden rounded-2xl border border-hairline bg-card shadow-sm sm:mt-4 md:grid md:grid-cols-2">
+          <TodayActivitySummary
+            day={todayDay}
+            state={activityMoment}
+            tomorrow={tomorrowPreview(tomorrowDay)}
+            tomorrowMissing={tomorrowDay === null}
+            loading={now === null}
+          />
+          <TodayMealSummary
+            day={summaryMenuDay}
+            moment={mealMoment}
+            loading={now === null}
+          />
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-hairline bg-sand/40 px-4 py-2.5 text-sm text-moss md:col-span-2">
+            <p className="min-w-0 flex-1 break-words">
+              <span className="sm:hidden">Printed calendars; plans may change.</span>
+              <span className="hidden sm:inline">
+                Transcribed from printed calendars. Plans can change—confirm updates with staff.
+              </span>
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4">
+              <ScanLightbox
+                scans={summarySourceScans}
+                label="Sources"
+                triggerClassName="inline-flex min-h-11 items-center font-semibold text-copper underline-offset-4 hover:underline"
+              />
+              <Link
+                href="/contacts"
+                className="hidden min-h-11 items-center font-semibold text-copper underline-offset-4 hover:underline sm:inline-flex"
+              >
+                Contact staff
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <h2 className="mb-2 font-display text-xl font-semibold sm:mb-3 sm:text-2xl">Explore today</h2>
       <div
         role="tablist"
         aria-label="Home sections"
@@ -134,7 +205,7 @@ export default function HomeClient({
                   <span className={`block font-display text-xl font-semibold ${selected ? "text-copper" : ""}`}>
                     {item.label}
                   </span>
-                  <span className="mt-0.5 block text-[14px] leading-snug">{item.description}</span>
+                  <span className="mt-0.5 block leading-snug">{item.description}</span>
                 </span>
               </span>
               <span
@@ -148,126 +219,308 @@ export default function HomeClient({
         })}
       </div>
 
-      <div
-        id="home-panel-activities"
-        role="tabpanel"
-        aria-labelledby="home-tab-activities"
-        hidden={section !== "activities"}
-        className={section === "activities"
-          ? "grid gap-8 pt-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start"
-          : "hidden"}
-      >
-        <section className="min-w-0 lg:max-w-xl">
-          {activityPick === "week" ? (
-            <Masthead
-              eyebrow="This Week"
-              main={weekRange}
-              year={weekEnd.slice(0, 4)}
-              accent={weekSpecialCount > 0
-                ? `${weekSpecialCount} special ${weekSpecialCount === 1 ? "activity" : "activities"}`
-                : null}
-            />
-          ) : (
-            <Masthead
-              eyebrow={activityPick === "tomorrow" ? "Tomorrow" : now ? greetingFor(now) : " "}
-              main={`${dayNameOfISO(activityDate)}, ${monthDayOfISO(activityDate)}`}
-              year={activityDate.slice(0, 4)}
-              accent={day?.theme ?? null}
-            />
-          )}
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
+        <div className="min-w-0">
+          <div
+            id="home-panel-activities"
+            role="tabpanel"
+            aria-labelledby="home-tab-activities"
+            hidden={section !== "activities"}
+            className={section === "activities" ? "pt-6" : "hidden"}
+          >
+            <section className="min-w-0 lg:max-w-xl">
+              {activityPick === "week" ? (
+                <DetailMasthead
+                  title="This Week"
+                  date={`${weekRange}, ${weekEnd.slice(0, 4)}`}
+                  accent={weekSpecialCount > 0
+                    ? `${weekSpecialCount} special ${weekSpecialCount === 1 ? "activity" : "activities"}`
+                    : null}
+                />
+              ) : (
+                <DetailMasthead
+                  title={activityPick === "tomorrow" ? "Tomorrow’s activities" : "Today’s activities"}
+                  date={`${dayNameOfISO(activityDate)}, ${monthDayOfISO(activityDate)}, ${activityDate.slice(0, 4)}`}
+                  accent={day?.theme ?? null}
+                />
+              )}
 
-          <DateTabs
-            label="Activity dates"
-            picks={ACTIVITY_PICKS}
-            selected={activityPick}
-            onSelect={selectActivityPick}
-          />
+              <DateTabs
+                label="Activity dates"
+                picks={ACTIVITY_PICKS}
+                selected={activityPick}
+                onSelect={selectActivityPick}
+              />
 
-          {activityPick !== "week" && <RentReminder date={activityDate} />}
-          <MedicationRefillReminder date={today} />
+              {activityPick !== "week" && <RentReminder date={activityDate} />}
+              <MedicationRefillReminder date={today} />
 
-          {activityPick === "today" && now && day && (
-            <div className="mb-5">
-              <HeroCard
-                state={heroStateFor(day.events, now)}
-                tomorrow={tomorrowPreview(tomorrowDay)}
-                tomorrowMissing={tomorrowDay === null}
+              {activityPick === "week" ? (
+                <WeekActivities months={months} dates={weekDates} today={today} />
+              ) : (
+                day
+                  ? <Timeline events={day.events} now={activityPick === "today" ? now : null} />
+                  : <EmptyState message={`${monthNameOfISO(activityDate)}'s calendar hasn't been added yet.`} />
+              )}
+
+              <Link href="/calendar"
+                className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
+                View all activities
+              </Link>
+            </section>
+          </div>
+
+          <section
+            id="home-panel-meals"
+            role="tabpanel"
+            aria-labelledby="home-tab-meals"
+            hidden={section !== "meals"}
+            className={section === "meals" ? "pt-6" : "hidden"}
+          >
+            <div className="max-w-xl">
+              <DetailMasthead
+                title={mealPick === "tomorrow" ? "Tomorrow’s meals" : "Today’s meals"}
+                date={`${dayNameOfISO(mealDate)}, ${monthDayOfISO(mealDate)}, ${mealDate.slice(0, 4)}`}
+                accent="Breakfast, lunch & dinner"
+                flourish={false}
+              />
+
+              <DateTabs
+                label="Meal dates"
+                picks={MEAL_PICKS}
+                selected={mealPick}
+                onSelect={selectMealPick}
               />
             </div>
-          )}
 
-          {activityPick === "week" ? (
-            <WeekActivities months={months} dates={weekDates} today={today} />
-          ) : (
-            day
-              ? <Timeline events={day.events} now={activityPick === "today" ? now : null} />
-              : <EmptyState message={`${monthNameOfISO(activityDate)}'s calendar hasn't been added yet.`} />
-          )}
+            <RentReminder date={mealDate} />
 
-          <Link href="/calendar"
-            className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
-            View all activities
-          </Link>
-        </section>
+            <MedicationRefillReminder date={today} />
 
-        <aside className="pt-1 lg:sticky lg:top-24">
+            <MealCards
+              day={menuDay}
+              now={mealPick === "today" ? now : null}
+              className="grid gap-3 md:grid-cols-2 xl:grid-cols-3"
+            />
+
+            <Link href="/menu"
+              className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
+              View the full menu
+            </Link>
+          </section>
+        </div>
+
+        <aside className="pt-6 lg:sticky lg:top-24">
           <HelpfulToday today={today} faqs={featuredFaqs} contacts={contacts} />
         </aside>
       </div>
-
-      <section
-        id="home-panel-meals"
-        role="tabpanel"
-        aria-labelledby="home-tab-meals"
-        hidden={section !== "meals"}
-        className={section === "meals"
-          ? "grid gap-8 pt-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start"
-          : "hidden"}
-      >
-        <div className="min-w-0">
-          <div className="max-w-xl">
-            <Masthead
-              eyebrow={mealPick === "tomorrow" ? "Tomorrow’s meals" : "Today’s meals"}
-              main={`${dayNameOfISO(mealDate)}, ${monthDayOfISO(mealDate)}`}
-              year={mealDate.slice(0, 4)}
-              accent="Breakfast, lunch & dinner"
-              flourish={false}
-            />
-
-            <DateTabs
-              label="Meal dates"
-              picks={MEAL_PICKS}
-              selected={mealPick}
-              onSelect={selectMealPick}
-            />
-          </div>
-
-          <RentReminder date={mealDate} />
-
-          {!menuDay && (
-            <p className="mb-3 text-moss">The menu for this date hasn&apos;t been added yet.</p>
-          )}
-
-          <MedicationRefillReminder date={today} />
-
-          <MealCards
-            day={menuDay}
-            now={mealPick === "today" ? now : null}
-            className="grid gap-3 md:grid-cols-3"
-          />
-
-          <Link href="/menu"
-            className="mt-4 inline-block font-semibold text-copper underline-offset-4 hover:underline">
-            View the full menu
-          </Link>
-        </div>
-
-        <aside className="pt-1 lg:sticky lg:top-24">
-          <HelpfulToday today={today} faqs={featuredFaqs} contacts={contacts} />
-        </aside>
-      </section>
     </div>
   );
+}
+
+function SummaryHeader({
+  title,
+  status,
+  emphasized = false,
+}: {
+  title: string;
+  status: string | null;
+  emphasized?: boolean;
+}) {
+  return (
+    <div className="flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-hairline bg-sand/60 px-4 py-2.5 sm:px-5">
+      <h2 className="font-display text-xl font-semibold">{title}</h2>
+      {status && (
+        <span
+          className={`rounded-full border px-3 py-1 font-semibold leading-tight ${
+            emphasized
+              ? "border-copper bg-copper text-petal"
+              : "border-copper/30 bg-card text-copper"
+          }`}
+        >
+          {status}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function TodayActivitySummary({
+  day,
+  state,
+  tomorrow,
+  tomorrowMissing,
+  loading,
+}: {
+  day: ActivityDay | null;
+  state: HeroState | null;
+  tomorrow: ActivityEvent | null;
+  tomorrowMissing: boolean;
+  loading: boolean;
+}) {
+  const status = !loading && state
+    ? state.kind === "now"
+      ? "Happening now"
+      : state.kind === "done"
+        ? tomorrow?.start
+          ? "Tomorrow"
+          : "Finished today"
+        : state.first
+          ? "First up today"
+          : "Up next"
+    : null;
+
+  return (
+    <section aria-label="Activity summary" className="min-w-0">
+      <SummaryHeader title="Activities" status={status} emphasized={state?.kind === "now"} />
+      <div className="px-4 pb-4 pt-2 sm:px-5 sm:pb-5 sm:pt-2">
+        {loading ? (
+          <p className="mt-3 text-moss">Checking today&apos;s schedule…</p>
+        ) : !day ? (
+          <>
+            <h3 className="mt-3 break-words font-display text-2xl font-semibold leading-snug">Calendar not available</h3>
+            <p className="mt-1.5 text-moss">Today&apos;s activities haven&apos;t been added yet.</p>
+          </>
+        ) : !state ? (
+          <>
+            <h3 className="mt-3 break-words font-display text-2xl font-semibold leading-snug">No timed activities today</h3>
+            {day.theme && <p className="mt-1.5 text-moss">Today&apos;s theme is {day.theme}.</p>}
+          </>
+        ) : state.kind === "done" ? (
+          <>
+            {tomorrow?.start ? (
+              <>
+                <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">
+                  {tomorrow.title}
+                </h3>
+                <p className="mt-1.5 font-semibold tabular-nums text-copper">
+                  {formatTime(tomorrow.start)}
+                </p>
+              </>
+            ) : tomorrowMissing ? (
+              <>
+                <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">
+                  That&apos;s all for today
+                </h3>
+                <p className="mt-1.5 text-moss">Tomorrow&apos;s calendar hasn&apos;t been added yet.</p>
+              </>
+            ) : (
+              <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">
+                That&apos;s all for today
+              </h3>
+            )}
+          </>
+        ) : (
+          <ActivityMoment state={state} />
+        )}
+      </div>
+    </section>
+  );
+}
+
+function ActivityMoment({ state }: { state: Exclude<HeroState, { kind: "done" }> }) {
+  const event = state.event;
+  const time = state.kind === "now"
+    ? activityTimeRange(event)
+    : startsIn(state.minutesUntil, event.start!);
+
+  return (
+    <>
+      <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">{event.title}</h3>
+      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-moss">
+        <span className="font-semibold tabular-nums text-copper">{time}</span>
+        {event.location && <span>{event.location}</span>}
+        {event.dimension && <DimensionChip dimension={event.dimension} />}
+      </div>
+      {state.kind === "now" && state.next?.start && (
+        <p className="mt-3 border-t border-hairline/70 pt-2 text-moss">
+          Up next: {state.next.title} at {formatTime(state.next.start)}
+        </p>
+      )}
+    </>
+  );
+}
+
+function TodayMealSummary({
+  day,
+  moment,
+  loading,
+}: {
+  day: MenuDay | null;
+  moment: MealMoment | null;
+  loading: boolean;
+}) {
+  const meal = moment ? MEALS[moment.index] : null;
+  const items = day && meal ? day[meal.key].items : null;
+  const preview = items ? mealPreview(items) : [];
+  const status = !loading && moment
+    ? moment.kind === "serving"
+      ? "Serving now"
+      : moment.kind === "tomorrow"
+        ? "Tomorrow"
+        : "Next meal"
+    : null;
+
+  return (
+    <section
+      aria-label="Meal summary"
+      className="min-w-0 border-t border-hairline md:border-l md:border-t-0"
+    >
+      <SummaryHeader title="Meals" status={status} emphasized={moment?.kind === "serving"} />
+      <div className="px-4 pb-4 pt-2 sm:px-5 sm:pb-5 sm:pt-2">
+        {loading ? (
+          <p className="mt-3 text-moss">Checking today&apos;s menu…</p>
+        ) : !moment || !meal ? (
+          <p className="mt-3 text-moss">Meal times aren&apos;t available.</p>
+        ) : !day ? (
+          <>
+            <h3 className="mt-3 break-words font-display text-2xl font-semibold leading-snug">Menu not available</h3>
+            <p className="mt-1.5 text-moss">
+              The {moment.dayOffset === 1 ? "tomorrow" : "today"} menu hasn&apos;t been added yet.
+            </p>
+          </>
+        ) : (
+          <>
+            <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-0.5 sm:mt-3">
+              <h3 className="break-words font-display text-xl font-semibold leading-snug sm:text-2xl">{meal.label}</h3>
+              <p className="font-semibold tabular-nums text-copper">{mealHours(meal)}</p>
+            </div>
+            {preview.length > 0 && (
+              <p className="mt-2 break-words leading-snug text-moss sm:mt-3">
+                {preview[0]}
+                {preview.slice(1).map((item) => (
+                  <span key={item} className="hidden sm:inline"> · {item}</span>
+                ))}
+                {items && items.length > 1 && (
+                  <span className="sm:hidden"> · +{items.length - 1} more</span>
+                )}
+                {items && items.length > preview.length && (
+                  <span className="hidden sm:inline"> · +{items.length - preview.length} more</span>
+                )}
+              </p>
+            )}
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function startsIn(minutesUntil: number, start: string): string {
+  if (minutesUntil >= 60) return `At ${formatTime(start)}`;
+  return minutesUntil === 1 ? "Starts in 1 minute" : `Starts in ${minutesUntil} minutes`;
+}
+
+function activityTimeRange(event: ActivityEvent): string {
+  if (!event.start) return "All day";
+  return event.end ? `${formatTime(event.start)} – ${formatTime(event.end)}` : formatTime(event.start);
+}
+
+function mealPreview(items: MenuDay["breakfast"]["items"]): string[] {
+  const mains = items.filter((item) => item.kind === "main");
+  const supporting = items.filter((item) => item.kind !== "main" && item.kind !== "dessert");
+  const choices = mains.length > 0 ? [...mains, ...supporting] : items;
+  return choices.slice(0, 3).map((item) => item.name);
 }
 
 function DateTabs<T extends string>({
@@ -309,7 +562,7 @@ function DateTabs<T extends string>({
 }
 
 /**
- * Shared masthead skeleton: eyebrow, date h1, and accent line. Every line
+ * Shared masthead skeleton: orientation, date heading, and accent line. Every line
  * renders in every view (the accent
  * line reserves its height when empty) so the pills below never shift when
  * switching tabs.
@@ -330,11 +583,39 @@ function Masthead({
   return (
     <>
       <p className="text-moss">{eyebrow}</p>
-      <h1 className="whitespace-nowrap font-display text-title font-semibold">
-        {/* Year hides below md; the fluid text-title size fits the longest year-less date ("Wednesday, September 30") at any width. */}
+      <h1 className="text-balance font-display text-title font-semibold leading-tight">
         {main}
         <span className="hidden md:inline">, {year}</span>
       </h1>
+      <p className="mt-1.5 flex items-center gap-2 font-display text-xl italic text-copper">
+        {accent ? (
+          <>
+            {flourish && <MagnoliaFlourish className="h-5 w-5 shrink-0" />}
+            {accent}
+          </>
+        ) : (
+          " "
+        )}
+      </p>
+    </>
+  );
+}
+
+function DetailMasthead({
+  title,
+  date,
+  accent,
+  flourish = true,
+}: {
+  title: string;
+  date: string;
+  accent: string | null;
+  flourish?: boolean;
+}) {
+  return (
+    <>
+      <h3 className="text-balance font-display text-3xl font-semibold leading-tight">{title}</h3>
+      <p className="mt-1 text-moss">{date}</p>
       <p className="mt-1.5 flex items-center gap-2 font-display text-xl italic text-copper">
         {accent ? (
           <>
@@ -417,7 +698,7 @@ function WeekActivities({ months, dates, today }: { months: ActivityMonth[]; dat
                 </div>
               ))}
               {routineCount > 0 && (
-                <p className="ml-[5.75rem] text-[15px] text-moss">+ {routineCount} daily routine items</p>
+                <p className="ml-[5.75rem] text-moss">+ {routineCount} daily routine items</p>
               )}
             </div>
           </section>

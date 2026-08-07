@@ -8,6 +8,14 @@ async function pinClock(page: Page) {
 test("home: activities and meals use their navigation defaults", async ({ page, context }) => {
   await pinClock(page);
   await page.goto("/");
+  const todaySummary = page.getByRole("region", { name: "Today at a glance" });
+  await expect(todaySummary.getByRole("heading", { name: "Activities" })).toBeVisible();
+  await expect(todaySummary.getByRole("heading", { name: "Meals" })).toBeVisible();
+  const summaryBox = await todaySummary.boundingBox();
+  const sectionTabsBox = await page.getByRole("tablist", { name: "Home sections" }).boundingBox();
+  expect(summaryBox).not.toBeNull();
+  expect(sectionTabsBox).not.toBeNull();
+  expect(summaryBox!.y + summaryBox!.height).toBeLessThanOrEqual(sectionTabsBox!.y);
   await expect(page.getByRole("tab", { name: "Activities" })).toHaveAttribute("aria-selected", "true");
   await expect(page.getByRole("button", { name: "Today", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("heading", { name: "Wednesday, July 8, 2026" })).toBeVisible();
@@ -17,9 +25,7 @@ test("home: activities and meals use their navigation defaults", async ({ page, 
   await page.getByRole("tab", { name: "Meals" }).click();
   await expect(page.getByText("Today’s meals")).toBeVisible();
   await expect(page.getByText("Roasted Turkey")).toBeVisible();
-  await expect(
-    page.getByRole("tabpanel", { name: "Meals" }).getByRole("heading", { name: "Helpful today" }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Helpful today" })).toBeVisible();
 
   await page.getByRole("button", { name: "Tomorrow", exact: true }).click();
   await expect(page.getByText("Tomorrow’s meals")).toBeVisible();
@@ -48,6 +54,102 @@ test("home: activities and meals use their navigation defaults", async ({ page, 
   await newTab.goto("/");
   await expect(newTab.getByRole("tab", { name: "Activities" })).toHaveAttribute("aria-selected", "true");
   await expect(newTab.getByRole("button", { name: "Today", exact: true })).toHaveAttribute("aria-pressed", "true");
+});
+
+test("home: Today summary adapts from a phone stack to balanced tablet lanes", async ({ page }) => {
+  await pinClock(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const activity = page.getByRole("region", { name: "Activity summary" });
+  const meal = page.getByRole("region", { name: "Meal summary" });
+  const mobileActivityBox = await activity.boundingBox();
+  const mobileMealBox = await meal.boundingBox();
+  expect(mobileActivityBox).not.toBeNull();
+  expect(mobileMealBox).not.toBeNull();
+  expect(mobileMealBox!.y).toBeGreaterThanOrEqual(mobileActivityBox!.y + mobileActivityBox!.height - 1);
+  expect(Math.abs(mobileMealBox!.x - mobileActivityBox!.x)).toBeLessThanOrEqual(1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+
+  await page.setViewportSize({ width: 800, height: 1024 });
+  const tabletActivityBox = await activity.boundingBox();
+  const tabletMealBox = await meal.boundingBox();
+  expect(tabletActivityBox).not.toBeNull();
+  expect(tabletMealBox).not.toBeNull();
+  expect(Math.abs(tabletMealBox!.y - tabletActivityBox!.y)).toBeLessThanOrEqual(1);
+  expect(Math.abs(tabletMealBox!.width - tabletActivityBox!.width)).toBeLessThanOrEqual(1);
+
+  await page.getByRole("tab", { name: "Meals" }).click();
+  const breakfastBox = await page.getByRole("region", { name: "Breakfast" }).boundingBox();
+  const lunchBox = await page.getByRole("region", { name: "Lunch" }).boundingBox();
+  const dinnerBox = await page.getByRole("region", { name: "Dinner" }).boundingBox();
+  expect(breakfastBox).not.toBeNull();
+  expect(lunchBox).not.toBeNull();
+  expect(dinnerBox).not.toBeNull();
+  expect(Math.abs(lunchBox!.y - breakfastBox!.y)).toBeLessThanOrEqual(1);
+  expect(dinnerBox!.y).toBeGreaterThan(breakfastBox!.y + breakfastBox!.height - 1);
+});
+
+test("home: end-of-day phone summary leaves Explore today above navigation", async ({ page }) => {
+  await page.clock.install({ time: new Date("2026-08-07T02:40:00Z") }); // Aug 6, 10:40 PM EDT
+  await page.setViewportSize({ width: 390, height: 700 });
+  await page.goto("/");
+
+  const activity = page.getByRole("region", { name: "Activity summary" });
+  await expect(activity.getByText("Tomorrow", { exact: true })).toBeVisible();
+  await expect(activity.getByText("Age in Motion Exercise with Powerback")).toBeVisible();
+  await expect(activity.getByText("10:15 AM", { exact: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Meal summary" }).getByText("Tomorrow")).toBeVisible();
+
+  const exploreBox = await page.getByRole("heading", { name: "Explore today" }).boundingBox();
+  const bottomNavBox = await page.locator('nav[aria-label="Main"]:visible').boundingBox();
+  expect(exploreBox).not.toBeNull();
+  expect(bottomNavBox).not.toBeNull();
+  expect(exploreBox!.y + exploreBox!.height).toBeLessThan(bottomNavBox!.y);
+});
+
+test("home: printed source pages open as a keyboard-contained dialog", async ({ page }) => {
+  await pinClock(page);
+  await page.goto("/");
+
+  const sourceButton = page.getByRole("button", { name: "Sources" });
+  await sourceButton.click();
+  const sourceDialog = page.getByRole("dialog", { name: "Printed source pages" });
+  await expect(sourceDialog).toBeVisible();
+  await expect(sourceDialog.getByRole("button", { name: "Close printed source pages" })).toBeFocused();
+  await expect(sourceDialog.getByRole("img", { name: "Printed source page 1 of 1" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(sourceButton).toBeFocused();
+});
+
+test("home: extra-large text reflows without horizontal overflow at 320px", async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.setItem("mc-textsize", "xl"));
+  await page.clock.install({ time: new Date("2026-08-07T02:40:00Z") });
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto("/");
+
+  await expect(page.getByRole("heading", { name: "Thursday, August 6" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Activity summary" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Meal summary" })).toBeVisible();
+  const overflow = await page.evaluate(() =>
+    Array.from(document.querySelectorAll<HTMLElement>("body *"))
+      .map((element) => ({
+        tag: element.tagName,
+        className: element.className,
+        text: element.textContent?.trim().slice(0, 80) ?? "",
+        left: element.getBoundingClientRect().left,
+        right: element.getBoundingClientRect().right,
+      }))
+      .filter((element) => element.left < -1 || element.right > window.innerWidth + 1),
+  );
+  expect(overflow).toEqual([]);
+});
+
+test("not found: offers a clear route back to today", async ({ page }) => {
+  await page.goto("/not-in-the-daybook");
+  await expect(page.getByRole("heading", { name: "That page isn't in the daybook" })).toBeVisible();
+  await page.getByRole("link", { name: "Return home" }).click();
+  await expect(page).toHaveURL(/\/$/);
 });
 
 test("calendar: grid, filter, day detail", async ({ page }) => {
@@ -166,12 +268,20 @@ test("holidays: Explore-style filters group religious holidays", async ({ page }
 
 test("header: holiday notification shows only the next holiday", async ({ page }) => {
   await pinClock(page);
+  await page.setViewportSize({ width: 390, height: 600 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Show notifications" }).click();
+  const notificationButton = page.getByRole("button", { name: "Show notifications" });
+  await notificationButton.click();
 
-  const notifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
+  const notifications = page.getByRole("dialog", { name: "Notifications" });
+  await expect(notifications.getByRole("button", { name: "Close notifications" })).toBeFocused();
   await expect(notifications.getByRole("heading", { name: "Labor Day" })).toBeVisible();
   await expect(notifications.getByRole("heading", { name: "Columbus Day" })).toHaveCount(0);
+  const notificationBox = await notifications.boundingBox();
+  expect(notificationBox).not.toBeNull();
+  expect(notificationBox!.y + notificationBox!.height).toBeLessThanOrEqual(600);
+  await page.keyboard.press("Escape");
+  await expect(notificationButton).toBeFocused();
 });
 
 test("rent reminder: appears in notifications and Home Today and Tomorrow views", async ({ page }) => {
@@ -179,7 +289,7 @@ test("rent reminder: appears in notifications and Home Today and Tomorrow views"
   await page.goto("/");
 
   await page.getByRole("button", { name: "Show notifications" }).click();
-  const notifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
+  const notifications = page.getByRole("dialog", { name: "Notifications" });
   await expect(notifications.getByRole("heading", { name: "Rent payment" })).toBeVisible();
   await expect(notifications.getByText("Due in 3 days")).toBeVisible();
   await page.keyboard.press("Escape");
@@ -187,9 +297,10 @@ test("rent reminder: appears in notifications and Home Today and Tomorrow views"
   const activities = page.getByRole("tabpanel", { name: "Activities" });
   const rentReminder = activities.getByRole("region", { name: "Rent payment reminder" });
   await expect(rentReminder).toBeVisible();
-  const firstUp = activities.getByRole("region", { name: "Right now" });
+  const firstUp = page.getByRole("region", { name: "Activity summary" });
   await expect(firstUp.getByText("First up today")).toBeVisible();
-  expect((await rentReminder.boundingBox())!.height).toBeLessThan((await firstUp.boundingBox())!.height);
+  await expect(rentReminder.getByText("No late fee through August 5. The $250 fee begins August 6.")).toBeVisible();
+  await expect(rentReminder.getByRole("button", { name: "Already paid? Hide for August" })).toBeVisible();
   await page.getByRole("button", { name: "Tomorrow", exact: true }).click();
   await expect(activities.getByRole("region", { name: "Rent payment reminder" })).toBeVisible();
 
@@ -198,6 +309,27 @@ test("rent reminder: appears in notifications and Home Today and Tomorrow views"
   await expect(meals.getByRole("region", { name: "Rent payment reminder" })).toBeVisible();
   await meals.getByRole("button", { name: "Tomorrow", exact: true }).click();
   await expect(meals.getByRole("region", { name: "Rent payment reminder" })).toBeVisible();
+});
+
+test("rent reminder: persists through grace period, acknowledges locally, and resets next month", async ({ page }) => {
+  await page.clock.install({ time: new Date("2026-08-04T16:00:00Z") }); // Aug 4, noon EDT
+  await page.goto("/");
+
+  const rentReminder = page.getByRole("region", { name: "Rent payment reminder" });
+  await expect(rentReminder.getByText("Grace period")).toBeVisible();
+  await rentReminder.getByRole("button", { name: "Already paid? Hide for August" }).click();
+  await expect(rentReminder).toHaveCount(0);
+
+  await page.reload();
+  await expect(page.getByRole("region", { name: "Rent payment reminder" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Show notifications" }).click();
+  await expect(page.getByRole("dialog", { name: "Notifications" }).getByRole("heading", { name: "Rent payment" })).toHaveCount(0);
+  await page.keyboard.press("Escape");
+
+  await page.clock.setSystemTime(new Date("2026-09-29T16:00:00Z")); // Sep 29, noon EDT
+  await page.reload();
+  await expect(page.getByRole("region", { name: "Rent payment reminder" }).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Already paid? Hide for October" }).first()).toBeVisible();
 });
 
 test("medication refill reminder: appears all weekend and clears Monday", async ({ page }) => {
@@ -211,7 +343,7 @@ test("medication refill reminder: appears all weekend and clears Monday", async 
   ).toBeVisible();
 
   await page.getByRole("button", { name: "Show notifications" }).click();
-  const notifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
+  const notifications = page.getByRole("dialog", { name: "Notifications" });
   await expect(notifications.getByRole("heading", { name: "Refill pill box" })).toBeVisible();
   await expect(notifications.getByText("Weekend task")).toBeVisible();
   await page.keyboard.press("Escape");
@@ -253,7 +385,7 @@ test("medication refill reminder: appears all weekend and clears Monday", async 
   ).toHaveCount(0);
 
   await page.getByRole("button", { name: "Show notifications" }).click();
-  const mondayNotifications = page.getByRole("heading", { name: "Notifications" }).locator("..").locator("..");
+  const mondayNotifications = page.getByRole("dialog", { name: "Notifications" });
   await expect(mondayNotifications.getByRole("heading", { name: "Refill pill box" })).toHaveCount(0);
 });
 
@@ -282,14 +414,27 @@ test("menu: day tabs swap the meal cards", async ({ page }) => {
   await expect(page.getByText("Breaded Catfish")).toBeVisible();
 });
 
+test("home: a missing menu is one explicit state with a recovery path", async ({ page }) => {
+  await page.clock.install({ time: new Date("2026-09-15T16:00:00Z") });
+  await page.goto("/");
+  await page.getByRole("tab", { name: "Meals" }).click();
+
+  const meals = page.getByRole("tabpanel", { name: "Meals" });
+  await expect(meals.getByRole("heading", { name: "Menu not available for this date" })).toBeVisible();
+  await expect(meals.locator(".meal-card-paper")).toHaveCount(0);
+  await expect(meals.getByLabel("Menu pending")).toHaveCount(0);
+  await expect(meals.getByRole("link", { name: "View the full menu" })).toBeVisible();
+});
+
 test("home: hero card and now marker are time-aware", async ({ page }) => {
   await pinClock(page); // 3:00 PM — Wind Down Wednesday (15:00) is in progress
   await page.goto("/");
-  const hero = page.getByLabel("Right now");
+  const hero = page.getByLabel("Activity summary");
   await expect(hero.getByText("Happening now")).toBeVisible();
   await expect(hero.getByText("Wind Down Wednesday with Live Entertainment")).toBeVisible();
   await expect(hero.getByText("Up next: Brain Teasers & Word Search at 5:00 PM")).toBeVisible();
   await expect(page.getByText("Now · 3:00 PM")).toBeVisible();
+  await expect(page.getByText("Happening now:", { exact: true })).toBeAttached();
   await expect(page.getByText("Good afternoon")).toBeVisible();
 });
 
@@ -320,10 +465,12 @@ test("home: lunch card is highlighted during its serving window", async ({ page 
   const lunchCard = page.getByRole("region", { name: "Lunch, serving now" });
   await expect(lunchCard).toHaveClass(/meal-card-paper-serving/);
   await expect(lunchCard.getByText("11:30 AM – 1:00 PM")).toBeVisible();
-  await expect(page.getByText("Serving now")).toHaveCount(0);
+  await expect(
+    page.getByRole("region", { name: "Meal summary" }).getByText("Serving now"),
+  ).toBeVisible();
   await page.getByRole("tab", { name: "Activities" }).click();
   await page.getByRole("button", { name: "Today", exact: true }).click();
-  const hero = page.getByLabel("Right now");
+  const hero = page.getByLabel("Activity summary");
   await expect(hero.getByText("Up next")).toBeVisible();
   await expect(hero.getByText("Starts in 30 minutes")).toBeVisible();
 });
@@ -345,7 +492,6 @@ test("contacts: directory filters the published contacts", async ({ page }) => {
   await pinClock(page);
   await page.goto("/");
   const featuredContact = page
-    .getByRole("tabpanel", { name: "Activities" })
     .getByText("From the directory")
     .locator("..");
   await expect(featuredContact.getByRole("heading")).toHaveClass(/text-ink/);
