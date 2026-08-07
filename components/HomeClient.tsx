@@ -7,7 +7,7 @@ import {
   addDaysISO, mondayOfISO,
   dayNameOfISO, monthDayOfISO, monthNameOfISO, monthOfISO, formatTime,
 } from "@/lib/dates";
-import { findActivityDay, findMenuDay, menuWeekFor, scansForDate } from "@/lib/lookup";
+import { findActivityDay, findMenuDay } from "@/lib/lookup";
 import Timeline from "@/components/Timeline";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
@@ -26,7 +26,6 @@ import { useNow } from "@/components/useNow";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
 import MedicationRefillReminder from "@/components/MedicationRefillReminder";
 import RentReminder from "@/components/RentReminder";
-import ScanLightbox from "@/components/ScanLightbox";
 import {
   useHomeNavigation,
   type ActivityPick,
@@ -94,11 +93,6 @@ export default function HomeClient({
   const mealMoment = now ? mealMomentFor(MEALS, now) : null;
   const summaryMenuDate = mealMoment?.dayOffset === 1 ? addDaysISO(today, 1) : today;
   const summaryMenuDay = summaryMenuDate === today ? todayMenuDay : tomorrowMenuDay;
-  const summaryMenuWeek = menuWeekFor(weeks, summaryMenuDate);
-  const summarySourceScans = Array.from(new Set([
-    ...scansForDate(months, today),
-    ...(summaryMenuWeek?.sourceScan ? [summaryMenuWeek.sourceScan] : []),
-  ]));
   const weekEnd = addDaysISO(weekStart, 6);
   const weekRange = monthOfISO(weekStart) === monthOfISO(weekEnd)
     ? `${monthDayOfISO(weekStart)} – ${Number(weekEnd.slice(8))}`
@@ -119,7 +113,7 @@ export default function HomeClient({
           accent={todayDay?.theme ?? null}
         />
 
-        <div className="mt-3 overflow-hidden rounded-2xl border border-hairline bg-card shadow-sm sm:mt-4 md:grid md:grid-cols-2">
+        <div className="mt-3 border-b-2 border-hairline sm:mt-4 md:grid md:grid-cols-2">
           <TodayActivitySummary
             day={todayDay}
             state={activityMoment}
@@ -132,36 +126,14 @@ export default function HomeClient({
             moment={mealMoment}
             loading={now === null}
           />
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-hairline bg-sand/40 px-4 py-2.5 text-sm text-moss md:col-span-2">
-            <p className="min-w-0 flex-1 break-words">
-              <span className="sm:hidden">Printed calendars; plans may change.</span>
-              <span className="hidden sm:inline">
-                Transcribed from printed calendars. Plans can change—confirm updates with staff.
-              </span>
-            </p>
-            <div className="flex flex-wrap items-center gap-x-4">
-              <ScanLightbox
-                scans={summarySourceScans}
-                label="Sources"
-                triggerClassName="inline-flex min-h-11 items-center font-semibold text-copper underline-offset-4 hover:underline"
-              />
-              <Link
-                href="/contacts"
-                className="hidden min-h-11 items-center font-semibold text-copper underline-offset-4 hover:underline sm:inline-flex"
-              >
-                Contact staff
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
 
-      <h2 className="mb-2 font-display text-xl font-semibold sm:mb-3 sm:text-2xl">Explore today</h2>
       <div
         role="tablist"
         aria-label="Home sections"
         aria-orientation="horizontal"
-        className="grid grid-cols-2 border-b-2 border-hairline"
+        className="mt-6 grid grid-cols-2 border-b-2 border-hairline sm:mt-8"
       >
         {HOME_SECTIONS.map((item, index) => {
           const selected = section === item.key;
