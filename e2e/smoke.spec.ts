@@ -569,6 +569,35 @@ test("contacts: directory filters the published contacts", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Lyshon Calyen" })).toHaveCount(0);
 });
 
+test("contacts: intro and filters reflow without horizontal overflow", async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.setItem("mc-textsize", "xl"));
+  await page.setViewportSize({ width: 800, height: 900 });
+  await page.goto("/contacts");
+
+  const introBox = await page.locator("main header").boundingBox();
+  const filters = page.getByRole("group", { name: "Filter directory" });
+  const filtersBox = await filters.boundingBox();
+  expect(introBox).not.toBeNull();
+  expect(filtersBox).not.toBeNull();
+  expect(filtersBox!.y).toBeGreaterThanOrEqual(introBox!.y + introBox!.height);
+
+  await page.setViewportSize({ width: 320, height: 700 });
+  await expect(page.getByRole("heading", { name: "Directory", exact: true })).toBeVisible();
+  await expect(filters.getByRole("button", { name: /^Pharmacy\s+1$/ })).toBeVisible();
+  const overflow = await page.evaluate(() =>
+    Array.from(document.querySelectorAll<HTMLElement>("body *"))
+      .map((element) => ({
+        tag: element.tagName,
+        className: element.className,
+        text: element.textContent?.trim().slice(0, 80) ?? "",
+        left: element.getBoundingClientRect().left,
+        right: element.getBoundingClientRect().right,
+      }))
+      .filter((element) => element.left < -1 || element.right > window.innerWidth + 1),
+  );
+  expect(overflow).toEqual([]);
+});
+
 test("mobile: footer clears the fixed navigation without excess space", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");

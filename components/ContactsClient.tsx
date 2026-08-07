@@ -30,19 +30,19 @@ export default function ContactsClient({ contacts }: { contacts: Contact[] }) {
   return (
     <div className="mx-auto max-w-3xl">
       <Breadcrumbs />
-      <div className="md:flex md:items-end md:justify-between md:gap-6">
-        <div className="max-w-2xl">
-          <p className="font-semibold uppercase tracking-wide text-copper">Get in touch</p>
-          <h1 className="mt-1 font-display text-title font-semibold">Directory</h1>
-          <p className="mt-3 text-moss">
-            Contacts for Magnolia Place of Roswell staff, emergency services, doctors, and pharmacies.
-          </p>
-        </div>
+      <header className="max-w-2xl">
+        <h1 className="font-display text-title font-semibold">Directory</h1>
+        <p className="mt-2 max-w-xl text-moss">
+          Contacts for Magnolia Place of Roswell staff, emergency services, doctors, and pharmacies.
+        </p>
+      </header>
 
+      <div className="mt-6 border-t border-hairline pt-4">
+        <p className="mb-2 font-semibold text-moss">Show contacts</p>
         <div
           role="group"
           aria-label="Filter directory"
-          className="mt-4 flex shrink-0 flex-wrap items-center gap-2 md:mt-0"
+          className="flex max-w-full flex-wrap items-center gap-2"
         >
           {FILTERS.map((item) => (
             <button
@@ -50,7 +50,7 @@ export default function ContactsClient({ contacts }: { contacts: Contact[] }) {
               type="button"
               aria-pressed={filter === item.key}
               onClick={() => setFilter(item.key)}
-              className={`flex min-h-11 items-center gap-1.5 rounded-full px-3.5 py-1.5 font-semibold transition-colors ${
+              className={`inline-flex min-h-11 max-w-full shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 font-semibold transition-colors ${
                 filter === item.key
                   ? "bg-copper text-petal"
                   : "bg-card text-moss ring-1 ring-inset ring-hairline hover:ring-copper/40 hover:text-ink"
@@ -69,7 +69,7 @@ export default function ContactsClient({ contacts }: { contacts: Contact[] }) {
       </div>
 
       {filtered.length > 0 ? (
-        <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+        <ul className="mt-6 grid gap-4 md:grid-cols-2">
           {filtered.map((contact) => (
             <li
               key={contact.id}
