@@ -106,11 +106,12 @@ test("home: summary halves sit on separate grounds", async ({ page }) => {
   expect(activityGround).not.toBe("rgba(0, 0, 0, 0)");
   expect(activityGround).not.toBe(mealGround);
 
-  // Exactly one hairline in the card: the seam. The headings no longer underline.
+  // Exactly one hairline in the card: the seam. The headings no longer underline, and the seam is present.
   const activityHeader = activity.getByRole("heading", { name: "Activities" }).locator("..");
   const mealHeader = meal.getByRole("heading", { name: "Meals" }).locator("..");
   expect(await activityHeader.evaluate((el) => getComputedStyle(el).borderBottomWidth)).toBe("0px");
   expect(await mealHeader.evaluate((el) => getComputedStyle(el).borderBottomWidth)).toBe("0px");
+  expect(await meal.evaluate((el) => getComputedStyle(el).borderTopWidth)).not.toBe("0px");
 
   // Each heading carries the same glyph the tab strip below uses.
   await expect(activity.getByRole("heading", { name: "Activities" }).locator("svg")).toHaveCount(1);

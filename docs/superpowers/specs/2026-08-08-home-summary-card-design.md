@@ -63,8 +63,12 @@ more weight than a title underline and the halves read as one undifferentiated
 stack.
 
 - `SummaryHeader` loses `border-b border-hairline` entirely.
-- `TodayMealSummary` keeps `border-t border-hairline` as the card's only line,
-  now reinforced by the rose→white change.
+- `TodayMealSummary` keeps `border-t border-hairline` as the seam — the only
+  hairline in the card's chrome, now reinforced by the rose→white change.
+
+(`ActivityMoment`'s own `border-t border-hairline/70` above "Up next: …",
+drawn when an activity is in progress with a successor, is separate: it's
+in-content, pre-existing, and left alone here.)
 
 ## Icons
 
