@@ -293,23 +293,34 @@ export default function HomeClient({
 }
 
 function SummaryHeader({
+  section,
   title,
   status,
   emphasized = false,
+  pillOnLightGround = false,
 }: {
+  section: HomeSection;
   title: string;
   status: string | null;
   emphasized?: boolean;
+  pillOnLightGround?: boolean;
 }) {
   return (
-    <div className="flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-hairline px-4 py-2.5 sm:px-5">
-      <h2 className="font-display text-xl font-semibold">{title}</h2>
+    <div className="flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2.5 sm:px-5">
+      <h2 className="flex items-center gap-2.5 font-display text-xl font-semibold">
+        <span aria-hidden="true" className="shrink-0 text-copper">
+          <HomeSectionIcon section={section} />
+        </span>
+        {title}
+      </h2>
       {status && (
         <span
           className={`rounded-full border px-3 py-1 font-semibold leading-tight ${
             emphasized
               ? "border-copper bg-copper text-petal"
-              : "border-summary-accent/30 bg-card text-summary-accent"
+              : `border-summary-accent/30 text-summary-accent ${
+                  pillOnLightGround ? "bg-summary" : "bg-card"
+                }`
           }`}
         >
           {status}
@@ -345,8 +356,13 @@ function TodayActivitySummary({
     : null;
 
   return (
-    <section aria-label="Activity summary" className="min-w-0">
-      <SummaryHeader title="Activities" status={status} emphasized={state?.kind === "now"} />
+    <section aria-label="Activity summary" className="min-w-0 bg-summary">
+      <SummaryHeader
+        section="activities"
+        title="Activities"
+        status={status}
+        emphasized={state?.kind === "now"}
+      />
       <div className="px-4 pb-4 pt-2 sm:px-5 sm:pb-5 sm:pt-2">
         {loading ? (
           <p className="mt-3 text-moss">Checking today&apos;s schedule…</p>
@@ -436,8 +452,14 @@ function TodayMealSummary({
     : null;
 
   return (
-    <section aria-label="Meal summary" className="min-w-0 border-t border-hairline">
-      <SummaryHeader title="Meals" status={status} emphasized={moment?.kind === "serving"} />
+    <section aria-label="Meal summary" className="min-w-0 border-t border-hairline bg-card">
+      <SummaryHeader
+        section="meals"
+        title="Meals"
+        status={status}
+        emphasized={moment?.kind === "serving"}
+        pillOnLightGround
+      />
       <div className="px-4 pb-4 pt-2 sm:px-5 sm:pb-5 sm:pt-2">
         {loading ? (
           <p className="mt-3 text-moss">Checking today&apos;s menu…</p>

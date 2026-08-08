@@ -91,6 +91,38 @@ test("home: Today summary is a phone-only stack", async ({ page }) => {
   expect(dinnerBox!.y).toBeGreaterThan(breakfastBox!.y + breakfastBox!.height - 1);
 });
 
+test("home: summary halves sit on separate grounds", async ({ page }) => {
+  await pinClock(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const activity = page.getByRole("region", { name: "Activity summary" });
+  const meal = page.getByRole("region", { name: "Meal summary" });
+
+  // The boundary between the halves is a surface change, not just a hairline.
+  const activityGround = await activity.evaluate((el) => getComputedStyle(el).backgroundColor);
+  const mealGround = await meal.evaluate((el) => getComputedStyle(el).backgroundColor);
+  expect(mealGround).toBe("rgb(255, 255, 255)");
+  expect(activityGround).not.toBe("rgba(0, 0, 0, 0)");
+  expect(activityGround).not.toBe(mealGround);
+
+  // Exactly one hairline in the card: the seam. The headings no longer underline.
+  const activityHeader = activity.getByRole("heading", { name: "Activities" }).locator("..");
+  const mealHeader = meal.getByRole("heading", { name: "Meals" }).locator("..");
+  expect(await activityHeader.evaluate((el) => getComputedStyle(el).borderBottomWidth)).toBe("0px");
+  expect(await mealHeader.evaluate((el) => getComputedStyle(el).borderBottomWidth)).toBe("0px");
+
+  // Each heading carries the same glyph the tab strip below uses.
+  await expect(activity.getByRole("heading", { name: "Activities" }).locator("svg")).toHaveCount(1);
+  await expect(meal.getByRole("heading", { name: "Meals" }).locator("svg")).toHaveCount(1);
+
+  // The quiet pill stays legible on the white half instead of vanishing into it.
+  const nextMealPill = meal.getByText("Next meal", { exact: true });
+  await expect(nextMealPill).toBeVisible();
+  expect(await nextMealPill.evaluate((el) => getComputedStyle(el).backgroundColor))
+    .not.toBe("rgb(255, 255, 255)");
+});
+
 test("home: end-of-day phone summary leaves Explore today above navigation", async ({ page }) => {
   await page.clock.install({ time: new Date("2026-08-07T02:40:00Z") }); // Aug 6, 10:40 PM EDT
   await page.setViewportSize({ width: 390, height: 700 });
