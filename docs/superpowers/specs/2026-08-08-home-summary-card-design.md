@@ -37,8 +37,14 @@ one layout to maintain instead of two.
 The boundary between the halves becomes a surface change rather than a line,
 which reads faster than any rule:
 
-- The wrapper keeps `bg-summary` (rose `#F2DEE8`); Activities inherits it.
+- The wrapper keeps `bg-summary` (rose `#F2DEE8`), and `TodayActivitySummary`
+  declares `bg-summary` on its own section too.
 - `TodayMealSummary` gets `bg-card` (white `#FFFFFF`).
+
+Both halves declare their own ground rather than one inheriting from the
+wrapper. The redundancy is deliberate: each section states what it sits on, and
+a computed background is assertable in a test where an inherited transparent
+one is not.
 
 The wrapper already carries `overflow-hidden rounded-2xl border border-hairline
 shadow-sm`, so the white half clips into the bottom corners with no extra work.
@@ -99,11 +105,18 @@ themselves stay valid because the card's content is unchanged.
 
 | Test | Change |
 |---|---|
-| `:8` "activities and meals use their navigation defaults" | Add `setViewportSize({ width: 390, height: 844 })` |
-| `:287` "rent reminder: appears in notifications and Home Today and Tomorrow views" | Same |
+| `:287` "rent reminder: appears in notifications and Home Today and Tomorrow views" | Add `setViewportSize({ width: 390, height: 844 })` |
 | `:429` "hero card and now marker are time-aware" | Same |
 | `:461` "lunch card is highlighted during its serving window" | Same |
+| `:8` "activities and meals use their navigation defaults" | Drop its summary assertions — see below |
 | `:59` "Today summary adapts from a phone stack to balanced tablet lanes" | Rewrite — see below |
+
+`:8` cannot move to a phone viewport. It clicks page-to-page navigation links,
+and below 1024px the header's nav is hidden (`SiteHeader.tsx:45` is `lg:flex`),
+so the banner has no "Home" link and "Calendar" sits behind the collapsed More
+menu in `BottomNav`. It stays on desktop and gives up its summary assertions
+(lines 11-18) instead; that coverage moves into the rewritten `:59`, which is
+where summary layout belongs anyway.
 
 `:59`'s premise dies with the two-lane layout. Keep its 390px half (the two
 regions stack, share a left edge, no horizontal overflow). Replace the 800px
