@@ -113,7 +113,7 @@ export default function HomeClient({
           accent={todayDay?.theme ?? null}
         />
 
-        <div className="mt-3 overflow-hidden rounded-2xl border border-hairline bg-summary shadow-sm sm:mt-4 md:grid md:grid-cols-2">
+        <div className="mt-3 overflow-hidden rounded-2xl border border-hairline bg-summary shadow-sm sm:mt-4 md:hidden">
           <TodayActivitySummary
             day={todayDay}
             state={activityMoment}
@@ -436,10 +436,7 @@ function TodayMealSummary({
     : null;
 
   return (
-    <section
-      aria-label="Meal summary"
-      className="min-w-0 border-t border-hairline md:border-l md:border-t-0"
-    >
+    <section aria-label="Meal summary" className="min-w-0 border-t border-hairline">
       <SummaryHeader title="Meals" status={status} emphasized={moment?.kind === "serving"} />
       <div className="px-4 pb-4 pt-2 sm:px-5 sm:pb-5 sm:pt-2">
         {loading ? (

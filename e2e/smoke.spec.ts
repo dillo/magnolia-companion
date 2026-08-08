@@ -8,14 +8,6 @@ async function pinClock(page: Page) {
 test("home: activities and meals use their navigation defaults", async ({ page, context }) => {
   await pinClock(page);
   await page.goto("/");
-  const todaySummary = page.getByRole("region", { name: "Today at a glance" });
-  await expect(todaySummary.getByRole("heading", { name: "Activities" })).toBeVisible();
-  await expect(todaySummary.getByRole("heading", { name: "Meals" })).toBeVisible();
-  const summaryBox = await todaySummary.boundingBox();
-  const sectionTabsBox = await page.getByRole("tablist", { name: "Home sections" }).boundingBox();
-  expect(summaryBox).not.toBeNull();
-  expect(sectionTabsBox).not.toBeNull();
-  expect(summaryBox!.y + summaryBox!.height).toBeLessThanOrEqual(sectionTabsBox!.y);
   await expect(page.getByRole("tab", { name: "Activities" })).toHaveAttribute("aria-selected", "true");
   await expect(page.getByRole("button", { name: "Today", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("heading", { name: "Wednesday, July 8, 2026" })).toBeVisible();
@@ -56,13 +48,16 @@ test("home: activities and meals use their navigation defaults", async ({ page, 
   await expect(newTab.getByRole("button", { name: "Today", exact: true })).toHaveAttribute("aria-pressed", "true");
 });
 
-test("home: Today summary adapts from a phone stack to balanced tablet lanes", async ({ page }) => {
+test("home: Today summary is a phone-only stack", async ({ page }) => {
   await pinClock(page);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
   const activity = page.getByRole("region", { name: "Activity summary" });
   const meal = page.getByRole("region", { name: "Meal summary" });
+  await expect(activity.getByRole("heading", { name: "Activities" })).toBeVisible();
+  await expect(meal.getByRole("heading", { name: "Meals" })).toBeVisible();
+
   const mobileActivityBox = await activity.boundingBox();
   const mobileMealBox = await meal.boundingBox();
   expect(mobileActivityBox).not.toBeNull();
@@ -71,13 +66,19 @@ test("home: Today summary adapts from a phone stack to balanced tablet lanes", a
   expect(Math.abs(mobileMealBox!.x - mobileActivityBox!.x)).toBeLessThanOrEqual(1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 
+  const summaryBox = await page.getByRole("region", { name: "Today at a glance" }).boundingBox();
+  const sectionTabsBox = await page.getByRole("tablist", { name: "Home sections" }).boundingBox();
+  expect(summaryBox).not.toBeNull();
+  expect(sectionTabsBox).not.toBeNull();
+  expect(summaryBox!.y + summaryBox!.height).toBeLessThanOrEqual(sectionTabsBox!.y);
+
+  // From md up, the tab panels below carry the same information in full, so the
+  // card is hidden and the date masthead runs straight into the tab strip.
   await page.setViewportSize({ width: 800, height: 1024 });
-  const tabletActivityBox = await activity.boundingBox();
-  const tabletMealBox = await meal.boundingBox();
-  expect(tabletActivityBox).not.toBeNull();
-  expect(tabletMealBox).not.toBeNull();
-  expect(Math.abs(tabletMealBox!.y - tabletActivityBox!.y)).toBeLessThanOrEqual(1);
-  expect(Math.abs(tabletMealBox!.width - tabletActivityBox!.width)).toBeLessThanOrEqual(1);
+  await expect(activity).toBeHidden();
+  await expect(meal).toBeHidden();
+  await expect(page.getByRole("heading", { name: "Wednesday, July 8, 2026" })).toBeVisible();
+  await expect(page.getByRole("tablist", { name: "Home sections" })).toBeVisible();
 
   await page.getByRole("tab", { name: "Meals" }).click();
   const breakfastBox = await page.getByRole("region", { name: "Breakfast" }).boundingBox();
@@ -286,6 +287,7 @@ test("header: holiday notification shows only the next holiday", async ({ page }
 
 test("rent reminder: appears in notifications and Home Today and Tomorrow views", async ({ page }) => {
   await page.clock.install({ time: new Date("2026-07-29T11:00:00Z") });
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
   await page.getByRole("button", { name: "Show notifications" }).click();
@@ -428,6 +430,7 @@ test("home: a missing menu is one explicit state with a recovery path", async ({
 
 test("home: hero card and now marker are time-aware", async ({ page }) => {
   await pinClock(page); // 3:00 PM — Wind Down Wednesday (15:00) is in progress
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   const hero = page.getByLabel("Activity summary");
   await expect(hero.getByText("Happening now")).toBeVisible();
@@ -460,6 +463,7 @@ test("faq: search filters questions live", async ({ page }) => {
 
 test("home: lunch card is highlighted during its serving window", async ({ page }) => {
   await page.clock.install({ time: new Date("2026-07-08T16:30:00Z") }); // 12:30 PM EDT
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await page.getByRole("tab", { name: "Meals" }).click();
   const lunchCard = page.getByRole("region", { name: "Lunch, serving now" });
