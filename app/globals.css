@@ -8,6 +8,8 @@
   --color-hairline: #E3DCCB;
   --color-card: #FFFFFF;
   --color-sand: #EEE9DC; /* chrome band: petal mixed halfway to hairline; AA-checked for moss/copper text */
+  --color-summary: #F2DEE8;
+  --color-summary-accent: #813458;
   --font-display: var(--font-fraunces), "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
   /* Page-title scale: fluid so long titles/dates fit one line on phones, full display size from ~sm up. */
   --text-title: clamp(1.25rem, 7.3vw - 2px, 2.25rem);

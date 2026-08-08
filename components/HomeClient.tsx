@@ -113,7 +113,7 @@ export default function HomeClient({
           accent={todayDay?.theme ?? null}
         />
 
-        <div className="mt-3 overflow-hidden rounded-2xl border border-hairline bg-card/60 shadow-sm sm:mt-4 md:grid md:grid-cols-2">
+        <div className="mt-3 overflow-hidden rounded-2xl border border-hairline bg-summary shadow-sm sm:mt-4 md:grid md:grid-cols-2">
           <TodayActivitySummary
             day={todayDay}
             state={activityMoment}
@@ -302,14 +302,14 @@ function SummaryHeader({
   emphasized?: boolean;
 }) {
   return (
-    <div className="flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-hairline bg-sand/60 px-4 py-2.5 sm:px-5">
+    <div className="flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-hairline px-4 py-2.5 sm:px-5">
       <h2 className="font-display text-xl font-semibold">{title}</h2>
       {status && (
         <span
           className={`rounded-full border px-3 py-1 font-semibold leading-tight ${
             emphasized
               ? "border-copper bg-copper text-petal"
-              : "border-copper/30 bg-card text-copper"
+              : "border-summary-accent/30 bg-card text-summary-accent"
           }`}
         >
           {status}
@@ -367,7 +367,7 @@ function TodayActivitySummary({
                 <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">
                   {tomorrow.title}
                 </h3>
-                <p className="mt-1.5 font-semibold tabular-nums text-copper">
+                <p className="mt-1.5 font-semibold tabular-nums text-summary-accent">
                   {formatTime(tomorrow.start)}
                 </p>
               </>
@@ -402,7 +402,7 @@ function ActivityMoment({ state }: { state: Exclude<HeroState, { kind: "done" }>
     <>
       <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">{event.title}</h3>
       <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-moss">
-        <span className="font-semibold tabular-nums text-copper">{time}</span>
+        <span className="font-semibold tabular-nums text-summary-accent">{time}</span>
         {event.location && <span>{event.location}</span>}
         {event.dimension && <DimensionChip dimension={event.dimension} />}
       </div>
@@ -457,7 +457,7 @@ function TodayMealSummary({
           <>
             <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-0.5 sm:mt-3">
               <h3 className="break-words font-display text-xl font-semibold leading-snug sm:text-2xl">{meal.label}</h3>
-              <p className="font-semibold tabular-nums text-copper">{mealHours(meal)}</p>
+              <p className="font-semibold tabular-nums text-summary-accent">{mealHours(meal)}</p>
             </div>
             {preview.length > 0 && (
               <p className="mt-2 break-words leading-snug text-moss sm:mt-3">
