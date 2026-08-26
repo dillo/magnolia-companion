@@ -1,0 +1,714 @@
+{
+  "weekOf": "2026-08-23",
+  "sourceScan": "scans/2026-08-23-menu.jpeg",
+  "alwaysAvailable": [
+    "Milk offered at every meal"
+  ],
+  "days": [
+    {
+      "date": "2026-08-23",
+      "breakfast": {
+        "items": [
+          {
+            "name": "Oven Baked Cheese Omelet",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c 100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice Whole Grain Toast",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Coffee",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "1 c Garden Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "3 oz Brown Sugar Meatloaf",
+            "kind": "main"
+          },
+          {
+            "name": "3 oz Herb Roasted Turkey with Gravy",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Bread Stuffing",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Seasoned Cauliflower",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 slice Dutch Apple Pie",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "2/3 c Cream of Mushroom Soup",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Classic Tuna Salad Sandwich",
+            "kind": "main"
+          },
+          {
+            "name": "1 c Garden Frittata Bake",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Three Bean Salad",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Ice Cream",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-08-24",
+      "breakfast": {
+        "items": [
+          {
+            "name": "2 - French Toast",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Egg of Choice",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c 100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice Whole Grain Toast",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Coffee",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "1 c Garden Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "3 oz Baked Rosemary Lemon Chicken",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Eggplant Parmesan and Marinara",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Creamy Sundried Tomato Pasta",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Marinated Mushrooms",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice Iced Red Velvet Cake",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "2/3 c Soup Du Jour",
+            "kind": "main"
+          },
+          {
+            "name": "3 oz Pulled Pork",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Pastrami Sandwich",
+            "kind": "main"
+          },
+          {
+            "name": "3 oz French Fries",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Sweet Onion Coleslaw",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 - SF Brownies",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-08-25",
+      "breakfast": {
+        "items": [
+          {
+            "name": "1 - Egg of Choice",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c 100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice Whole Grain Toast",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Coffee",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "1 c Garden Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "3 oz Beef Tips in Gravy",
+            "kind": "main"
+          },
+          {
+            "name": "3 oz Baby Back Pork Ribs",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c AuGratin Potatoes",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Collard Greens",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Banana Bread Pudding",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "2/3 c Tomato Basil Parmesan Soup",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Italian Sausage Poor Boy",
+            "kind": "main"
+          },
+          {
+            "name": "1 c Greek Chicken Pasta",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Baby Carrots",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Garlic Breadsticks",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "3\"x 2\" pc Coffee Cake",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-08-26",
+      "breakfast": {
+        "items": [
+          {
+            "name": "1 oz Cold Cereal",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Egg of Choice",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c 100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice Whole Grain Toast",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Coffee",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "1 c Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "3 oz Grilled Flat Iron Steak with Chimichurri Sauce",
+            "kind": "main"
+          },
+          {
+            "name": "3 oz Garlic Buttered Mussels",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Mushroom Risotto",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Grilled Asparagus",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice New York Style Cheesecake",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "2/3 c Beans and Greens Soup",
+            "kind": "main"
+          },
+          {
+            "name": "1 c Bruschetta Chicken Bake",
+            "kind": "main"
+          },
+          {
+            "name": "1 - BLT Wrap",
+            "kind": "main"
+          },
+          {
+            "name": "3 oz French Fries",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Sauteed Yellow Squash",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "1/2 c Ice Cream",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-08-27",
+      "breakfast": {
+        "items": [
+          {
+            "name": "2 - Pancakes",
+            "kind": "main"
+          },
+          {
+            "name": "1 oz Sausage Link",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c 100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice Whole Grain Toast",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Coffee",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "1 c Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "3 oz Hawaiian Meatballs",
+            "kind": "main"
+          },
+          {
+            "name": "3 oz Hawaiian Baked Chicken",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Island Style Fried Rice",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Fresh Vegetable Stir Fry",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice Coconut Custard Pie",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "2/3 c Fresh Vegetable Soup",
+            "kind": "main"
+          },
+          {
+            "name": "1 - All Beef Hot Dog",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Cuban Sandwich",
+            "kind": "main"
+          },
+          {
+            "name": "1 oz Chips",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Fresh Fruit Salad",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Mixed Vegetables",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "1/2 c SF Dessert",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-08-28",
+      "breakfast": {
+        "items": [
+          {
+            "name": "1 - Breakfast Biscuits and Gravy",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Egg of Choice",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c 100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice Whole Grain Toast",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Coffee",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "1 c Garden Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "3 oz Poached Salmon with Lemon Dill Cream Sauce",
+            "kind": "main"
+          },
+          {
+            "name": "1 c Beef Stroganoff and Noodles",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Parsley Noodles",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Oven Roasted Broccoli",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "3\"x 2\" pc Chocolate Caramel Cake",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "2/3 c Soup Du Jour",
+            "kind": "main"
+          },
+          {
+            "name": "1 slice Pepperoni Pizza",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Chicken Caesar Wrap",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Melon Salad",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Chef's Steamed Vegetable",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 - Monster Cookie",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-08-29",
+      "breakfast": {
+        "items": [
+          {
+            "name": "1 - Belgian Waffle",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Egg of Choice",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c 100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "1 slice Whole Grain Toast",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Coffee",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "1 c Garden Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Shrimp and Grits",
+            "kind": "main"
+          },
+          {
+            "name": "3 oz Crispy Pork Chops",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Baked Sweet Potato",
+            "kind": "side"
+          },
+          {
+            "name": "1/2 c Sauteed Zucchini",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "3\"x 2\" pc Carrot Cake",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "2/3 c Homestyle Vegetable Soup",
+            "kind": "main"
+          },
+          {
+            "name": "1 - Grilled Chicken Sandwich",
+            "kind": "main"
+          },
+          {
+            "name": "1 c Beef and Corn Casserole",
+            "kind": "main"
+          },
+          {
+            "name": "1/2 c Roasted Rosemary Potatoes",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Garden Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "1 - Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "1 c Beverage Choice",
+            "kind": "drink"
+          },
+          {
+            "name": "1/2 c Peaches and Cream Dessert",
+            "kind": "dessert"
+          }
+        ]
+      }
+    }
+  ]
+}
