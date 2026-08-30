@@ -40,7 +40,7 @@ describe("lookup", () => {
     expect(findActivityDay(months, "2026-07-08")?.theme).toBe("Nat'l Raspberry Day");
   });
   test("findActivityDay misses unknown dates", () => {
-    expect(findActivityDay(months, "2026-09-01")).toBeNull();
+    expect(findActivityDay(months, "2099-01-01")).toBeNull();
   });
   test("findMenuDay hits and misses", () => {
     expect(findMenuDay(weeks, "2026-07-08")?.lunch.items[0].name).toBe("Garden Green Salad");
