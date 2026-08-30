@@ -307,7 +307,7 @@ function SummaryHeader({
 }) {
   return (
     <div className="flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2.5 sm:px-5">
-      <h2 className="flex items-center gap-2.5 font-display text-xl font-semibold">
+      <h2 className="flex items-center gap-2.5 text-base font-semibold text-moss">
         <span aria-hidden="true" className="shrink-0 text-copper">
           <HomeSectionIcon section={section} />
         </span>
@@ -368,7 +368,7 @@ function TodayActivitySummary({
           <p className="mt-3 text-moss">Checking today&apos;s schedule…</p>
         ) : !day ? (
           <>
-            <h3 className="mt-3 break-words font-display text-2xl font-semibold leading-snug">Calendar not available</h3>
+            <h3 className="mt-3 break-words text-base font-semibold leading-snug text-moss">Calendar not available</h3>
             <p className="mt-1.5 text-moss">Today&apos;s activities haven&apos;t been added yet.</p>
           </>
         ) : !state ? (
@@ -467,7 +467,7 @@ function TodayMealSummary({
           <p className="mt-3 text-moss">Meal times aren&apos;t available.</p>
         ) : !day ? (
           <>
-            <h3 className="mt-3 break-words font-display text-2xl font-semibold leading-snug">Menu not available</h3>
+            <h3 className="mt-3 break-words text-base font-semibold leading-snug text-moss">Menu not available</h3>
             <p className="mt-1.5 text-moss">
               The {moment.dayOffset === 1 ? "tomorrow" : "today"} menu hasn&apos;t been added yet.
             </p>
