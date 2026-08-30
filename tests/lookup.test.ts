@@ -60,6 +60,7 @@ describe("lookup", () => {
   });
   test("holiday lookups find upcoming and ranged holidays", () => {
     expect(upcomingHolidays(holidays, "2026-07-17", 1)[0].title).toBe("Labor Day");
-    expect(holidaysInRange(holidays, "2026-12-05", "2026-12-05").map((day) => day.title)).toContain("Hanukkah");
+    expect(holidaysInRange(holidays, "2026-12-04", "2026-12-04").map((day) => day.title)).toContain("Hanukkah");
+    expect(holidaysInRange(holidays, "2026-12-05", "2026-12-05").map((day) => day.title)).not.toContain("Hanukkah");
   });
 });
