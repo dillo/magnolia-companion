@@ -5,19 +5,15 @@ import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from
 import { createPortal } from "react-dom";
 import type { Holiday } from "@/lib/schema";
 import {
-  dayNameOfISO,
   daysUntil,
-  longDateOfISO,
   relativeDayLabel,
   shortMonthOfISO,
 } from "@/lib/dates";
 import { upcomingHolidays } from "@/lib/lookup";
-import {
-  medicationRefillReminderFor,
-  rentDueStatusLabel,
-} from "@/lib/reminders";
+import { medicationRefillReminderFor } from "@/lib/reminders";
 import { useToday } from "@/components/useToday";
 import { useRentReminder } from "@/components/useRentReminder";
+import RentPaymentSummary from "@/components/RentPaymentSummary";
 
 function startDateLabel(iso: string): string {
   return new Intl.DateTimeFormat("en-US", {
@@ -189,24 +185,7 @@ export default function Notifications({ holidays }: { holidays: Holiday[] }) {
 
                   {rentReminder && (
                     <article className="grid grid-cols-[4.25rem_minmax(0,1fr)] gap-3 bg-copper/10 px-4 py-3">
-                      <div className="flex h-16 flex-col items-center justify-center rounded-lg bg-copper text-center text-petal">
-                        <span className="text-[13px] font-bold uppercase leading-none">
-                          {shortMonthOfISO(rentReminder.dueDate)}
-                        </span>
-                        <span className="mt-1 text-2xl font-semibold leading-none tabular-nums">1</span>
-                      </div>
-                      <div className="min-w-0">
-                        <div className="flex items-start justify-between gap-3">
-                          <h3 className="min-w-0 font-semibold leading-tight text-ink">Rent payment</h3>
-                          <span className="shrink-0 whitespace-nowrap rounded-full bg-copper px-2 py-0.5 text-[13px] font-bold text-petal">
-                            {rentDueStatusLabel(rentReminder.daysUntilDue)}
-                          </span>
-                        </div>
-                        <p className="mt-1 leading-snug text-moss">
-                          {rentReminder.daysUntilDue >= 0 ? "Due" : "Was due"}{" "}
-                          {dayNameOfISO(rentReminder.dueDate)}, {longDateOfISO(rentReminder.dueDate)}
-                        </p>
-                      </div>
+                      <RentPaymentSummary reminder={rentReminder} headingLevel={3} />
                     </article>
                   )}
 

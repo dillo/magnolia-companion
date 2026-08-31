@@ -334,8 +334,10 @@ test("rent reminder: appears in notifications and Home Today and Tomorrow views"
   await expect(rentReminder).toBeVisible();
   const firstUp = page.getByRole("region", { name: "Activity summary" });
   await expect(firstUp.getByText("First up today")).toBeVisible();
-  await expect(rentReminder.getByText("No late fee through August 5. The $250 fee begins August 6.")).toBeVisible();
-  await expect(rentReminder.getByRole("button", { name: "Already paid? Hide for August" })).toBeVisible();
+  await expect(rentReminder.getByText("Due Saturday, August 1, 2026")).toBeVisible();
+  await expect(rentReminder.getByText("No late fee", { exact: false })).toHaveCount(0);
+  await expect(rentReminder.getByRole("link", { name: "Billing details" })).toHaveCount(0);
+  await expect(rentReminder.getByRole("button", { name: "Mark August rent as paid and hide reminder" })).toBeVisible();
   await page.getByRole("button", { name: "Tomorrow", exact: true }).click();
   await expect(activities.getByRole("region", { name: "Rent payment reminder" })).toBeVisible();
 
@@ -352,7 +354,7 @@ test("rent reminder: persists through grace period, acknowledges locally, and re
 
   const rentReminder = page.getByRole("region", { name: "Rent payment reminder" });
   await expect(rentReminder.getByText("Grace period")).toBeVisible();
-  await rentReminder.getByRole("button", { name: "Already paid? Hide for August" }).click();
+  await rentReminder.getByRole("button", { name: "Mark August rent as paid and hide reminder" }).click();
   await expect(rentReminder).toHaveCount(0);
 
   await page.reload();
@@ -364,7 +366,7 @@ test("rent reminder: persists through grace period, acknowledges locally, and re
   await page.clock.setSystemTime(new Date("2026-09-29T16:00:00Z")); // Sep 29, noon EDT
   await page.reload();
   await expect(page.getByRole("region", { name: "Rent payment reminder" }).first()).toBeVisible();
-  await expect(page.getByRole("button", { name: "Already paid? Hide for October" }).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Mark October rent as paid and hide reminder" }).first()).toBeVisible();
 });
 
 test("medication refill reminder: appears all weekend and clears Monday", async ({ page }) => {
