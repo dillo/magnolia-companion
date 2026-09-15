@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { FeaturedFaq } from "@/lib/faqs";
-import type { ActivityDay, ActivityEvent, ActivityMonth, Contact, MenuDay, MenuWeek } from "@/lib/schema";
+import type { ActivityMonth, Contact, MenuWeek } from "@/lib/schema";
 import {
   addDaysISO, mondayOfISO,
   dayNameOfISO, monthDayOfISO, monthNameOfISO, monthOfISO, formatTime,
@@ -12,16 +12,9 @@ import Timeline from "@/components/Timeline";
 import DimensionChip from "@/components/DimensionChip";
 import EmptyState from "@/components/EmptyState";
 import { useToday } from "@/components/useToday";
-import MealCards, { MEALS, mealHours } from "@/components/MealCards";
+import MealCards from "@/components/MealCards";
 import HelpfulToday from "@/components/HelpfulToday";
-import {
-  greetingFor,
-  heroStateFor,
-  mealMomentFor,
-  tomorrowPreview,
-  type HeroState,
-  type MealMoment,
-} from "@/lib/now";
+import { greetingFor } from "@/lib/now";
 import { useNow } from "@/components/useNow";
 import MagnoliaFlourish from "@/components/MagnoliaFlourish";
 import MedicationRefillReminder from "@/components/MedicationRefillReminder";
@@ -85,14 +78,9 @@ export default function HomeClient({
   const weekDates = Array.from({ length: 7 }, (_, i) => addDaysISO(weekStart, i));
   const todayDay = findActivityDay(months, today);
   const day = activityDate === today ? todayDay : findActivityDay(months, activityDate);
-  const tomorrowDay = findActivityDay(months, addDaysISO(today, 1));
   const todayMenuDay = findMenuDay(weeks, today);
   const tomorrowMenuDay = findMenuDay(weeks, addDaysISO(today, 1));
   const menuDay = mealDate === today ? todayMenuDay : tomorrowMenuDay;
-  const activityMoment = now && todayDay ? heroStateFor(todayDay.events, now) : null;
-  const mealMoment = now ? mealMomentFor(MEALS, now) : null;
-  const summaryMenuDate = mealMoment?.dayOffset === 1 ? addDaysISO(today, 1) : today;
-  const summaryMenuDay = summaryMenuDate === today ? todayMenuDay : tomorrowMenuDay;
   const weekEnd = addDaysISO(weekStart, 6);
   const weekRange = monthOfISO(weekStart) === monthOfISO(weekEnd)
     ? `${monthDayOfISO(weekStart)} – ${Number(weekEnd.slice(8))}`
@@ -113,20 +101,6 @@ export default function HomeClient({
           accent={todayDay?.theme ?? null}
         />
 
-        <div className="mt-3 overflow-hidden rounded-2xl border border-hairline bg-summary shadow-sm sm:mt-4 md:hidden">
-          <TodayActivitySummary
-            day={todayDay}
-            state={activityMoment}
-            tomorrow={tomorrowPreview(tomorrowDay)}
-            tomorrowMissing={tomorrowDay === null}
-            loading={now === null}
-          />
-          <TodayMealSummary
-            day={summaryMenuDay}
-            moment={mealMoment}
-            loading={now === null}
-          />
-        </div>
       </section>
 
       <div
@@ -290,230 +264,6 @@ export default function HomeClient({
       </div>
     </div>
   );
-}
-
-function SummaryHeader({
-  section,
-  title,
-  status,
-  emphasized = false,
-  pillOnLightGround = false,
-}: {
-  section: HomeSection;
-  title: string;
-  status: string | null;
-  emphasized?: boolean;
-  pillOnLightGround?: boolean;
-}) {
-  return (
-    <div className="flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2.5 sm:px-5">
-      <h2 className="flex items-center gap-2.5 text-base font-semibold text-moss">
-        <span aria-hidden="true" className="shrink-0 text-copper">
-          <HomeSectionIcon section={section} />
-        </span>
-        {title}
-      </h2>
-      {status && (
-        <span
-          className={`rounded-full border px-3 py-1 font-semibold leading-tight ${
-            emphasized
-              ? "border-copper bg-copper text-petal"
-              : `border-summary-accent/30 text-summary-accent ${
-                  pillOnLightGround ? "bg-summary" : "bg-card"
-                }`
-          }`}
-        >
-          {status}
-        </span>
-      )}
-    </div>
-  );
-}
-
-function TodayActivitySummary({
-  day,
-  state,
-  tomorrow,
-  tomorrowMissing,
-  loading,
-}: {
-  day: ActivityDay | null;
-  state: HeroState | null;
-  tomorrow: ActivityEvent | null;
-  tomorrowMissing: boolean;
-  loading: boolean;
-}) {
-  const status = !loading && state
-    ? state.kind === "now"
-      ? "Happening now"
-      : state.kind === "done"
-        ? tomorrow?.start
-          ? "Tomorrow"
-          : "Finished today"
-        : state.first
-          ? "First up today"
-          : "Up next"
-    : null;
-
-  return (
-    <section aria-label="Activity summary" className="min-w-0 bg-summary">
-      <SummaryHeader
-        section="activities"
-        title="Activities"
-        status={status}
-        emphasized={state?.kind === "now"}
-      />
-      <div className="px-4 pb-4 pt-2 sm:px-5 sm:pb-5 sm:pt-2">
-        {loading ? (
-          <p className="mt-3 text-moss">Checking today&apos;s schedule…</p>
-        ) : !day ? (
-          <>
-            <h3 className="mt-3 break-words text-base font-semibold leading-snug text-moss">Calendar not available</h3>
-            <p className="mt-1.5 text-moss">Today&apos;s activities haven&apos;t been added yet.</p>
-          </>
-        ) : !state ? (
-          <>
-            <h3 className="mt-3 break-words font-display text-2xl font-semibold leading-snug">No timed activities today</h3>
-            {day.theme && <p className="mt-1.5 text-moss">Today&apos;s theme is {day.theme}.</p>}
-          </>
-        ) : state.kind === "done" ? (
-          <>
-            {tomorrow?.start ? (
-              <>
-                <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">
-                  {tomorrow.title}
-                </h3>
-                <p className="mt-1.5 font-semibold tabular-nums text-summary-accent">
-                  {formatTime(tomorrow.start)}
-                </p>
-              </>
-            ) : tomorrowMissing ? (
-              <>
-                <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">
-                  That&apos;s all for today
-                </h3>
-                <p className="mt-1.5 text-moss">Tomorrow&apos;s calendar hasn&apos;t been added yet.</p>
-              </>
-            ) : (
-              <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">
-                That&apos;s all for today
-              </h3>
-            )}
-          </>
-        ) : (
-          <ActivityMoment state={state} />
-        )}
-      </div>
-    </section>
-  );
-}
-
-function ActivityMoment({ state }: { state: Exclude<HeroState, { kind: "done" }> }) {
-  const event = state.event;
-  const time = state.kind === "now"
-    ? activityTimeRange(event)
-    : startsIn(state.minutesUntil, event.start!);
-
-  return (
-    <>
-      <h3 className="mt-2 break-words font-display text-xl font-semibold leading-snug sm:mt-3 sm:text-2xl">{event.title}</h3>
-      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-moss">
-        <span className="font-semibold tabular-nums text-summary-accent">{time}</span>
-        {event.location && <span>{event.location}</span>}
-        {event.dimension && <DimensionChip dimension={event.dimension} />}
-      </div>
-      {state.kind === "now" && state.next?.start && (
-        <p className="mt-3 border-t border-hairline/70 pt-2 text-moss">
-          Up next: {state.next.title} at {formatTime(state.next.start)}
-        </p>
-      )}
-    </>
-  );
-}
-
-function TodayMealSummary({
-  day,
-  moment,
-  loading,
-}: {
-  day: MenuDay | null;
-  moment: MealMoment | null;
-  loading: boolean;
-}) {
-  const meal = moment ? MEALS[moment.index] : null;
-  const items = day && meal ? day[meal.key].items : null;
-  const preview = items ? mealPreview(items) : [];
-  const status = !loading && moment
-    ? moment.kind === "serving"
-      ? "Serving now"
-      : moment.kind === "tomorrow"
-        ? "Tomorrow"
-        : "Next meal"
-    : null;
-
-  return (
-    <section aria-label="Meal summary" className="min-w-0 border-t border-hairline bg-card">
-      <SummaryHeader
-        section="meals"
-        title="Meals"
-        status={status}
-        emphasized={moment?.kind === "serving"}
-        pillOnLightGround
-      />
-      <div className="px-4 pb-4 pt-2 sm:px-5 sm:pb-5 sm:pt-2">
-        {loading ? (
-          <p className="mt-3 text-moss">Checking today&apos;s menu…</p>
-        ) : !moment || !meal ? (
-          <p className="mt-3 text-moss">Meal times aren&apos;t available.</p>
-        ) : !day ? (
-          <>
-            <h3 className="mt-3 break-words text-base font-semibold leading-snug text-moss">Menu not available</h3>
-            <p className="mt-1.5 text-moss">
-              The {moment.dayOffset === 1 ? "tomorrow" : "today"} menu hasn&apos;t been added yet.
-            </p>
-          </>
-        ) : (
-          <>
-            <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-0.5 sm:mt-3">
-              <h3 className="break-words font-display text-xl font-semibold leading-snug sm:text-2xl">{meal.label}</h3>
-              <p className="font-semibold tabular-nums text-summary-accent">{mealHours(meal)}</p>
-            </div>
-            {preview.length > 0 && (
-              <p className="mt-2 break-words leading-snug text-moss sm:mt-3">
-                {preview[0]}
-                {preview.slice(1).map((item) => (
-                  <span key={item} className="hidden sm:inline"> · {item}</span>
-                ))}
-                {items && items.length > 1 && (
-                  <span className="sm:hidden"> · +{items.length - 1} more</span>
-                )}
-                {items && items.length > preview.length && (
-                  <span className="hidden sm:inline"> · +{items.length - preview.length} more</span>
-                )}
-              </p>
-            )}
-          </>
-        )}
-      </div>
-    </section>
-  );
-}
-
-function startsIn(minutesUntil: number, start: string): string {
-  if (minutesUntil >= 60) return `At ${formatTime(start)}`;
-  return minutesUntil === 1 ? "Starts in 1 minute" : `Starts in ${minutesUntil} minutes`;
-}
-
-function activityTimeRange(event: ActivityEvent): string {
-  if (!event.start) return "All day";
-  return event.end ? `${formatTime(event.start)} – ${formatTime(event.end)}` : formatTime(event.start);
-}
-
-function mealPreview(items: MenuDay["breakfast"]["items"]): string[] {
-  const mains = items.filter((item) => item.kind === "main");
-  const supporting = items.filter((item) => item.kind !== "main" && item.kind !== "dessert");
-  const choices = mains.length > 0 ? [...mains, ...supporting] : items;
-  return choices.slice(0, 3).map((item) => item.name);
 }
 
 function DateTabs<T extends string>({
