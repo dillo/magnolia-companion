@@ -7,7 +7,7 @@ import EmptyState from "@/components/EmptyState";
 export const MEALS = [
   { key: "breakfast", label: "Breakfast", start: "07:30", end: "09:00" },
   { key: "lunch", label: "Lunch", start: "11:30", end: "13:00" },
-  { key: "dinner", label: "Dinner", start: "16:00", end: "18:30" },
+  { key: "dinner", label: "Dinner", start: "16:00", end: "18:00" },
 ] as const;
 
 export type MealInfo = (typeof MEALS)[number];
@@ -68,11 +68,10 @@ export function MealCard({
   return (
     <section
       aria-label={`${meal.label}${isServing ? ", serving now" : ""}`}
-      className={`meal-card-paper rounded-xl border px-5 py-4 ${
-        isServing
+      className={`meal-card-paper rounded-xl border px-5 py-4 ${isServing
           ? "meal-card-paper-serving border-copper shadow-md ring-1 ring-copper/20"
           : "border-hairline shadow-sm"
-      }`}
+        }`}
     >
       <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
         <h3 className="flex items-end gap-2 text-[15px] font-bold uppercase leading-5 tracking-wider text-ink">

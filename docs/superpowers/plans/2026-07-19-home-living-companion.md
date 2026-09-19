@@ -930,7 +930,7 @@ import { formatTime } from "@/lib/dates";
 export const MEALS = [
   { key: "breakfast", label: "Breakfast", start: "07:30", end: "09:00" },
   { key: "lunch", label: "Lunch", start: "11:30", end: "13:00" },
-  { key: "dinner", label: "Dinner", start: "17:00", end: "18:30" },
+  { key: "dinner", label: "Dinner", start: "17:00", end: "18:00" },
 ] as const;
 
 export function mealHours({ start, end }: { start: string; end: string }): string {
