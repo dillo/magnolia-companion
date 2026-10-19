@@ -1,0 +1,594 @@
+{
+  "weekOf": "2026-10-18",
+  "sourceScan": "scans/2026-10-18-menu.jpeg",
+  "alwaysAvailable": [
+    "Milk offered at every meal"
+  ],
+  "days": [
+    {
+      "date": "2026-10-18",
+      "breakfast": {
+        "items": [
+          {
+            "name": "Denver Omelet",
+            "kind": "main"
+          },
+          {
+            "name": "Hash Browns",
+            "kind": "side"
+          },
+          {
+            "name": "Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "Whole Grain Toast",
+            "kind": "side"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Garlic Broiled Chicken Breast",
+            "kind": "main"
+          },
+          {
+            "name": "Classic Meatloaf",
+            "kind": "main"
+          },
+          {
+            "name": "Garlic Mashed Potatoes",
+            "kind": "side"
+          },
+          {
+            "name": "Italian Peas",
+            "kind": "side"
+          },
+          {
+            "name": "Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "Vanilla Cream Pie",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "Basil Tomato Soup",
+            "kind": "main"
+          },
+          {
+            "name": "Grilled Cheese Sandwich",
+            "kind": "main"
+          },
+          {
+            "name": "Turkey Salad",
+            "kind": "main"
+          },
+          {
+            "name": "Pears",
+            "kind": "side"
+          },
+          {
+            "name": "Cucumber Dill Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Chocolate Chip Cookie",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-10-19",
+      "breakfast": {
+        "items": [
+          {
+            "name": "Bacon and Egg Casserole",
+            "kind": "main"
+          },
+          {
+            "name": "Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "Whole Grain Toast",
+            "kind": "side"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Maple Crusted Pork Roast",
+            "kind": "main"
+          },
+          {
+            "name": "Rosemary Roasted Chicken Thigh",
+            "kind": "main"
+          },
+          {
+            "name": "Baked Sweet Potato",
+            "kind": "side"
+          },
+          {
+            "name": "Pinto Beans",
+            "kind": "side"
+          },
+          {
+            "name": "Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "Blueberry Coffee Cake",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "Garden Vegetable Soup",
+            "kind": "main"
+          },
+          {
+            "name": "Grilled Shrimp, Rice and Pineapple",
+            "kind": "main"
+          },
+          {
+            "name": "Classic French Dip Sandwich",
+            "kind": "main"
+          },
+          {
+            "name": "Fruit Compote",
+            "kind": "side"
+          },
+          {
+            "name": "Buttered Zucchini",
+            "kind": "side"
+          },
+          {
+            "name": "Layered Pudding",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-10-20",
+      "breakfast": {
+        "items": [
+          {
+            "name": "Brown Sugar French Toast",
+            "kind": "main"
+          },
+          {
+            "name": "Sausage Link",
+            "kind": "side"
+          },
+          {
+            "name": "Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "100% Juice",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Salisbury Steak with Brown Sauce",
+            "kind": "main"
+          },
+          {
+            "name": "Lemon Garlic Flounder",
+            "kind": "main"
+          },
+          {
+            "name": "Lemon Chive Rice",
+            "kind": "side"
+          },
+          {
+            "name": "Lemon Glazed Carrots",
+            "kind": "side"
+          },
+          {
+            "name": "Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "Maple Bread Pudding",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "Cream of Broccoli Soup",
+            "kind": "main"
+          },
+          {
+            "name": "Autumn Chicken Chopped Salad",
+            "kind": "main"
+          },
+          {
+            "name": "Sausage and Potatoes",
+            "kind": "main"
+          },
+          {
+            "name": "Baked Cheddar Roll",
+            "kind": "side"
+          },
+          {
+            "name": "Berries and Cream",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-10-21",
+      "breakfast": {
+        "items": [
+          {
+            "name": "Cinnamon and Sugar Oatmeal",
+            "kind": "main"
+          },
+          {
+            "name": "Egg of Choice",
+            "kind": "main"
+          },
+          {
+            "name": "Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "100% Juice",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Homestyle Turkey with Gravy",
+            "kind": "main"
+          },
+          {
+            "name": "Peach Glazed Pork Chop",
+            "kind": "main"
+          },
+          {
+            "name": "Sage Stuffing",
+            "kind": "side"
+          },
+          {
+            "name": "Baked Squash",
+            "kind": "side"
+          },
+          {
+            "name": "Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "Apple Cobbler",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "Homestyle Vegetable Soup",
+            "kind": "main"
+          },
+          {
+            "name": "Shepherd's Pie",
+            "kind": "main"
+          },
+          {
+            "name": "Cheese Quesadilla",
+            "kind": "main"
+          },
+          {
+            "name": "Fruit Medley",
+            "kind": "side"
+          },
+          {
+            "name": "Roasted Cauliflower",
+            "kind": "side"
+          },
+          {
+            "name": "Vanilla Ice Cream",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-10-22",
+      "breakfast": {
+        "items": [
+          {
+            "name": "Cheesy Scrambled Eggs",
+            "kind": "main"
+          },
+          {
+            "name": "Sausage Link",
+            "kind": "side"
+          },
+          {
+            "name": "Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "100% Juice",
+            "kind": "drink"
+          },
+          {
+            "name": "Whole Grain Toast",
+            "kind": "side"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Spaghetti and Meat Sauce",
+            "kind": "main"
+          },
+          {
+            "name": "Shrimp Alfredo with Linguine",
+            "kind": "main"
+          },
+          {
+            "name": "Buttered Pasta",
+            "kind": "side"
+          },
+          {
+            "name": "Whole Green Beans",
+            "kind": "side"
+          },
+          {
+            "name": "Garlic Bread",
+            "kind": "side"
+          },
+          {
+            "name": "Tiramisu",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "Cream of Vegetable Soup",
+            "kind": "main"
+          },
+          {
+            "name": "Balsamic Cherry Glazed Chicken",
+            "kind": "main"
+          },
+          {
+            "name": "BLT Avocado Wrap",
+            "kind": "main"
+          },
+          {
+            "name": "Orange Pineapple Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Southwest Vegetable Medley",
+            "kind": "side"
+          },
+          {
+            "name": "Chocolate Chip Rice Krispies Treats",
+            "kind": "dessert"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-10-23",
+      "breakfast": {
+        "items": [
+          {
+            "name": "English Muffin Breakfast Sandwich",
+            "kind": "main"
+          },
+          {
+            "name": "Hash Browns",
+            "kind": "side"
+          },
+          {
+            "name": "Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "100% Juice",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Beef Paprika",
+            "kind": "main"
+          },
+          {
+            "name": "Country Fried Shrimp",
+            "kind": "main"
+          },
+          {
+            "name": "Creamy AuGratin Potatoes",
+            "kind": "side"
+          },
+          {
+            "name": "Baked Beans",
+            "kind": "side"
+          },
+          {
+            "name": "Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "Peanut Butter Brownie",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "Lentil Soup",
+            "kind": "main"
+          },
+          {
+            "name": "Ham Melt",
+            "kind": "main"
+          },
+          {
+            "name": "Chicken Bacon Rice Casserole",
+            "kind": "main"
+          },
+          {
+            "name": "Coleslaw Vinaigrette",
+            "kind": "side"
+          },
+          {
+            "name": "Select Peach Salad",
+            "kind": "side"
+          }
+        ]
+      }
+    },
+    {
+      "date": "2026-10-24",
+      "breakfast": {
+        "items": [
+          {
+            "name": "Buttermilk Pancakes",
+            "kind": "main"
+          },
+          {
+            "name": "Bacon",
+            "kind": "side"
+          },
+          {
+            "name": "Fresh Fruit",
+            "kind": "side"
+          },
+          {
+            "name": "100% Juice",
+            "kind": "drink"
+          }
+        ]
+      },
+      "lunch": {
+        "items": [
+          {
+            "name": "Green Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Parmesan Crusted Chicken",
+            "kind": "main"
+          },
+          {
+            "name": "Beef Barley Soup",
+            "kind": "main"
+          },
+          {
+            "name": "Smashed Red Potatoes",
+            "kind": "side"
+          },
+          {
+            "name": "Capri Blend",
+            "kind": "side"
+          },
+          {
+            "name": "Baked Roll",
+            "kind": "side"
+          },
+          {
+            "name": "Easy Berry Trifle",
+            "kind": "dessert"
+          }
+        ]
+      },
+      "dinner": {
+        "items": [
+          {
+            "name": "Pasta Fagioli Soup",
+            "kind": "main"
+          },
+          {
+            "name": "Pepperoni and Mushroom Pizza",
+            "kind": "main"
+          },
+          {
+            "name": "Ham Pasta Salad",
+            "kind": "main"
+          },
+          {
+            "name": "Grapes",
+            "kind": "side"
+          },
+          {
+            "name": "Tossed Vegetable Salad",
+            "kind": "side"
+          },
+          {
+            "name": "Garlic Bread",
+            "kind": "side"
+          },
+          {
+            "name": "Carrot Cake Bar",
+            "kind": "dessert"
+          }
+        ]
+      }
+    }
+  ]
+}
